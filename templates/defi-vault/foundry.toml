@@ -1,0 +1,30 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.24"
+optimizer = true
+optimizer_runs = 1_000_000
+via_ir = false
+evm_version = "paris"
+gas_reports = ["StableVault"]
+fs_permissions = [{ access = "read", path = "./" }]
+
+[profile.ci]
+verbosity = 3
+fuzz = { runs = 1024 }
+invariant = { runs = 256, depth = 32 }
+
+[rpc_endpoints]
+base = "${BASE_RPC}"
+base_sepolia = "${BASE_SEPOLIA_RPC}"
+arbitrum = "${ARBITRUM_RPC}"
+optimism = "${OPTIMISM_RPC}"
+mainnet = "${MAINNET_RPC}"
+
+[etherscan]
+base = { key = "${BASESCAN_API_KEY}", chain = 8453 }
+base_sepolia = { key = "${BASESCAN_API_KEY}", chain = 84532 }
+arbitrum = { key = "${ARBISCAN_API_KEY}", chain = 42161 }
+optimism = { key = "${OP_ETHERSCAN_API_KEY}", chain = 10 }
+mainnet = { key = "${ETHERSCAN_API_KEY}", chain = 1 }
