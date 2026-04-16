@@ -72,6 +72,36 @@ contract StableVaultTest is Test {
         assertEq(vault.strategy(), strat1);
     }
 
+    function test_mint_mintsShares() public {
+        vm.startPrank(alice);
+        usdc.approve(address(vault), 1_000e6);
+        uint256 assets = vault.mint(1_000e6, alice);
+        vm.stopPrank();
+        assertEq(assets, 1_000e6);
+        assertEq(vault.balanceOf(alice), 1_000e6);
+    }
+
+    function test_redeem_returnsAssets() public {
+        vm.startPrank(alice);
+        usdc.approve(address(vault), 1_000e6);
+        vault.deposit(1_000e6, alice);
+        uint256 assets = vault.redeem(1_000e6, alice, alice);
+        vm.stopPrank();
+        assertEq(assets, 1_000e6);
+        assertEq(vault.balanceOf(alice), 0);
+        assertEq(usdc.balanceOf(alice), 10_000e6);
+    }
+
+    function test_mintCap_blocksOverflow() public {
+        vm.startPrank(alice);
+        usdc.mint(alice, 1_500_000e6);
+        usdc.approve(address(vault), type(uint256).max);
+        vault.mint(900_000e6, alice);
+        vm.expectRevert(StableVault.DepositCapExceeded.selector);
+        vault.mint(200_000e6, alice);
+        vm.stopPrank();
+    }
+
     function test_pause_blocksDeposits() public {
         vm.prank(owner);
         vault.pause();
@@ -80,6 +110,63 @@ contract StableVaultTest is Test {
         vm.expectRevert();
         vault.deposit(1_000e6, alice);
         vm.stopPrank();
+    }
+
+    function test_pause_blocksMint() public {
+        vm.prank(owner);
+        vault.pause();
+        vm.startPrank(alice);
+        usdc.approve(address(vault), 1_000e6);
+        vm.expectRevert();
+        vault.mint(1_000e6, alice);
+        vm.stopPrank();
+    }
+
+    function test_pause_blocksWithdraw() public {
+        vm.startPrank(alice);
+        usdc.approve(address(vault), 1_000e6);
+        vault.deposit(1_000e6, alice);
+        vm.stopPrank();
+
+        vm.prank(owner);
+        vault.pause();
+
+        vm.prank(alice);
+        vm.expectRevert();
+        vault.withdraw(1_000e6, alice, alice);
+    }
+
+    function test_pause_blocksRedeem() public {
+        vm.startPrank(alice);
+        usdc.approve(address(vault), 1_000e6);
+        vault.deposit(1_000e6, alice);
+        vm.stopPrank();
+
+        vm.prank(owner);
+        vault.pause();
+
+        vm.prank(alice);
+        vm.expectRevert();
+        vault.redeem(1_000e6, alice, alice);
+    }
+
+    function test_maxDeposit_respectsCap() public {
+        assertEq(vault.maxDeposit(alice), 1_000_000e6);
+        vm.startPrank(alice);
+        usdc.mint(alice, 600_000e6);
+        usdc.approve(address(vault), 600_000e6);
+        vault.deposit(600_000e6, alice);
+        vm.stopPrank();
+        assertEq(vault.maxDeposit(alice), 400_000e6);
+    }
+
+    function test_maxDeposit_zeroWhenPaused() public {
+        vm.prank(owner);
+        vault.pause();
+        assertEq(vault.maxDeposit(alice), 0);
+        assertEq(vault.maxMint(alice), 0);
+        assertEq(vault.maxWithdraw(alice), 0);
+        assertEq(vault.maxRedeem(alice), 0);
     }
 
     function testFuzz_shareAccounting(uint96 a1, uint96 a2) public {
