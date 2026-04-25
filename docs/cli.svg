@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="14">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b0e12"/>
+      <stop offset="1" stop-color="#0a0c10"/>
+    </linearGradient>
+  </defs>
+
+  <!-- page background -->
+  <rect width="960" height="680" fill="#07090c"/>
+
+  <!-- terminal window -->
+  <g filter="url(#shadow)">
+    <rect x="24" y="24" width="912" height="632" rx="12" fill="url(#bg)" stroke="#1a1f27" stroke-width="1"/>
+    <!-- title bar -->
+    <rect x="24" y="24" width="912" height="34" rx="12" fill="#11151b"/>
+    <rect x="24" y="46" width="912" height="12" fill="#11151b"/>
+    <circle cx="46" cy="41" r="6" fill="#ff5f57"/>
+    <circle cx="66" cy="41" r="6" fill="#febc2e"/>
+    <circle cx="86" cy="41" r="6" fill="#28c840"/>
+    <text x="480" y="45" text-anchor="middle" fill="#7a8699" font-size="12">~/projects/stable-vault  —  eth</text>
+  </g>
+
+  <!-- content -->
+  <g font-size="14.5">
+    <!-- prompt 1 -->
+    <text x="48" y="92" fill="#7a8699">$</text>
+    <text x="64" y="92" fill="#e6e9ef">eth <tspan fill="#7adcf0">--help</tspan></text>
+
+    <!-- banner rule -->
+    <text x="48" y="118" fill="#3b4352" xml:space="preserve">──────────────────────────────────────────</text>
+    <text x="48" y="136" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">  ethereum.new</tspan><tspan fill="#3b4352">  ›  </tspan><tspan fill="#7a8699">idea → build → ship → audit → raise</tspan></text>
+    <text x="48" y="154" fill="#3b4352" xml:space="preserve">──────────────────────────────────────────</text>
+
+    <!-- usage -->
+    <text x="48" y="184" fill="#7a8699" xml:space="preserve">  usage</text>
+    <text x="48" y="202" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">    eth</tspan> <tspan fill="#7adcf0">&lt;command&gt;</tspan> <tspan fill="#7a8699">[options]</tspan></text>
+
+    <!-- commands -->
+    <text x="48" y="230" fill="#7a8699" xml:space="preserve">  commands</text>
+    <text x="48" y="248" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">    new     </tspan> <tspan fill="#7a8699">guided flow: idea → build → ship</tspan></text>
+    <text x="48" y="266" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">    idea    </tspan> <tspan fill="#7a8699">generate a fundable ethereum idea</tspan></text>
+    <text x="48" y="284" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">    build   </tspan> <tspan fill="#7a8699">contracts + frontend from a brief</tspan></text>
+    <text x="48" y="302" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">    audit   </tspan> <tspan fill="#7a8699">security pass before you ship</tspan></text>
+    <text x="48" y="320" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">    ship    </tspan> <tspan fill="#7a8699">deploy + verify + launch pack</tspan></text>
+    <text x="48" y="338" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">    raise   </tspan> <tspan fill="#7a8699">deck + investor map for your round</tspan></text>
+    <text x="48" y="356" xml:space="preserve"><tspan fill="#e6e9ef" font-weight="700">    doctor  </tspan> <tspan fill="#7a8699">verify your toolchain</tspan></text>
+
+    <text x="48" y="386" xml:space="preserve"><tspan fill="#7a8699">  run </tspan><tspan fill="#e6e9ef" font-weight="700">eth new</tspan><tspan fill="#7a8699"> to start.</tspan></text>
+
+    <!-- prompt 2 -->
+    <text x="48" y="430" fill="#7a8699">$</text>
+    <text x="64" y="430" fill="#e6e9ef">eth <tspan fill="#7adcf0">doctor</tspan></text>
+
+    <!-- doctor output -->
+    <text x="48" y="456" xml:space="preserve"><tspan fill="#3b4352">┌  </tspan><tspan fill="#e6e9ef" font-weight="700">doctor</tspan></text>
+    <text x="48" y="474" xml:space="preserve"><tspan fill="#3b4352">│</tspan> <tspan fill="#3ece7a">✓</tspan> <tspan fill="#e6e9ef" font-weight="700">node      </tspan> <tspan fill="#7a8699">v20.12.0</tspan></text>
+    <text x="48" y="492" xml:space="preserve"><tspan fill="#3b4352">│</tspan> <tspan fill="#3ece7a">✓</tspan> <tspan fill="#e6e9ef" font-weight="700">foundry   </tspan> <tspan fill="#7a8699">forge 0.2.0</tspan></text>
+    <text x="48" y="510" xml:space="preserve"><tspan fill="#3b4352">│</tspan> <tspan fill="#3ece7a">✓</tspan> <tspan fill="#e6e9ef" font-weight="700">git       </tspan> <tspan fill="#7a8699">ok</tspan></text>
+    <text x="48" y="528" xml:space="preserve"><tspan fill="#3b4352">│</tspan> <tspan fill="#3ece7a">✓</tspan> <tspan fill="#e6e9ef" font-weight="700">slither   </tspan> <tspan fill="#7a8699">ok</tspan></text>
+    <text x="48" y="546" xml:space="preserve"><tspan fill="#3b4352">│</tspan> <tspan fill="#3ece7a">✓</tspan> <tspan fill="#e6e9ef" font-weight="700">rpc       </tspan> <tspan fill="#7a8699">base · https:/…NAq4</tspan></text>
+    <text x="48" y="564" xml:space="preserve"><tspan fill="#3b4352">│</tspan> <tspan fill="#3ece7a">✓</tspan> <tspan fill="#e6e9ef" font-weight="700">anthropic </tspan> <tspan fill="#7a8699">ok</tspan></text>
+    <text x="48" y="582" xml:space="preserve"><tspan fill="#3b4352">│</tspan></text>
+    <text x="48" y="600" xml:space="preserve"><tspan fill="#3b4352">└  </tspan><tspan fill="#3ece7a">all green.</tspan></text>
+
+    <!-- cursor -->
+    <text x="48" y="634" fill="#7a8699">$</text>
+    <rect x="64" y="620" width="8" height="16" fill="#7adcf0">
+      <animate attributeName="opacity" values="1;1;0;0" dur="1.1s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+</svg>

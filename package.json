@@ -1,0 +1,51 @@
+{
+  "name": "ethereum.new",
+  "version": "0.1.0",
+  "description": "Idea → Build → Ship → Audit → Raise. An AI-native Ethereum framework for founders obsessed with taste.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "eth": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "skills",
+    "SKILL.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "eth": "node dist/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "@clack/prompts": "^0.7.0",
+    "picocolors": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.0"
+  },
+  "keywords": [
+    "ethereum",
+    "base",
+    "arbitrum",
+    "optimism",
+    "zksync",
+    "foundry",
+    "scaffold-eth",
+    "ai",
+    "claude",
+    "cli",
+    "dapp",
+    "solidity"
+  ]
+}
