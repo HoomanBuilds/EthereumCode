@@ -1,16 +1,13 @@
-import { readFile } from "node:fs/promises";
-import { resolve, dirname } from "node:path";
+import { readFile, readdir, stat } from "node:fs/promises";
+import { resolve, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SKILLS, type SkillSlug, type TaskKey } from "./registry.js";
 
-// Skills are bundled inside the repo at `skills/<slug>.md`. We resolve relative to the
-// compiled module URL so this works whether the CLI is run from source (tsx) or from
-// the built `dist/index.js`. Published packages ship the `skills/` directory via the
-// `files` field in package.json.
-
 const here = dirname(fileURLToPath(import.meta.url));
-// From `dist/index.js` or `cli/skills/loader.ts`, walk up to the repo root, then into skills.
+// Resolve `skills/` from both source layout (cli/skills/loader.ts → ../../skills)
+// and bundled dist layout (dist/index.js → ../skills).
 const CANDIDATES = [
+  resolve(here, "..", "skills"),
   resolve(here, "..", "..", "skills"),
   resolve(here, "..", "..", "..", "skills"),
 ];
@@ -20,24 +17,60 @@ interface LoadedSkill {
   markdown: string;
 }
 
-// In-memory cache — skills are static per process run.
 const memo = new Map<SkillSlug, string>();
+let pathIndex: Map<string, string> | null = null;
 
-async function readSkillFile(slug: SkillSlug): Promise<string> {
-  const cached = memo.get(slug);
-  if (cached !== undefined) return cached;
+async function buildPathIndex(): Promise<Map<string, string>> {
+  if (pathIndex) return pathIndex;
   let lastErr: unknown = null;
   for (const base of CANDIDATES) {
-    const path = resolve(base, `${slug}.md`);
     try {
-      const md = await readFile(path, "utf8");
-      memo.set(slug, md);
-      return md;
+      const phases = await readdir(base, { withFileTypes: true });
+      const idx = new Map<string, string>();
+      for (const phase of phases) {
+        if (!phase.isDirectory()) continue;
+        const phaseDir = join(base, phase.name);
+        const slugs = await readdir(phaseDir, { withFileTypes: true });
+        for (const slugEntry of slugs) {
+          if (!slugEntry.isDirectory()) continue;
+          const skillPath = join(phaseDir, slugEntry.name, "SKILL.md");
+          try {
+            await stat(skillPath);
+          } catch {
+            continue;
+          }
+          if (idx.has(slugEntry.name)) {
+            throw new Error(
+              `ethskills: duplicate slug "${slugEntry.name}" in skills/`
+            );
+          }
+          idx.set(slugEntry.name, skillPath);
+        }
+      }
+      if (idx.size === 0) {
+        lastErr = new Error(`no skills found under ${base}`);
+        continue;
+      }
+      pathIndex = idx;
+      return idx;
     } catch (err) {
       lastErr = err;
     }
   }
-  throw new Error(`ethskills: could not locate skills/${slug}.md (${String(lastErr)})`);
+  throw new Error(`ethskills: could not locate skills/ directory (${String(lastErr)})`);
+}
+
+async function readSkillFile(slug: SkillSlug): Promise<string> {
+  const cached = memo.get(slug);
+  if (cached !== undefined) return cached;
+  const idx = await buildPathIndex();
+  const path = idx.get(slug);
+  if (!path) {
+    throw new Error(`ethskills: skill "${slug}" not found in skills/`);
+  }
+  const md = await readFile(path, "utf8");
+  memo.set(slug, md);
+  return md;
 }
 
 export async function loadSkill(slug: SkillSlug): Promise<LoadedSkill> {
@@ -49,8 +82,6 @@ export async function loadSkillsFor(task: TaskKey): Promise<LoadedSkill[]> {
   return Promise.all(SKILLS[task].map(loadSkill));
 }
 
-// Pack loaded skills into a single system-context block. Each skill keeps its own
-// heading so the model can cite which one it pulled a rule from.
 export function packSkills(skills: LoadedSkill[]): string {
   const header = [
     "# ETHSKILLS — grounded context (bundled, not fetched)",
