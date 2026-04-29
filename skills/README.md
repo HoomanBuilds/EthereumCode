@@ -2,43 +2,60 @@
 
 Bundled snapshot of the [ethskills](https://github.com/ethskills/ethskills) knowledge base.
 
-These files are loaded directly from disk by `cli/skills/loader.ts` and injected into every Claude invocation as grounded context. **No runtime fetching.** No network dependency. What you see here is what every agent sees.
+These files run in two places:
 
-## contents
+1. **API path.** `cli/skills/loader.ts` reads them and `cli/agents/runtime.ts::invoke()` injects them as system context into every Claude API call. No network fetch.
+2. **Slash-command path.** `eth init` copies them into `~/.claude/skills/<slug>/` and `~/.codex/skills/<slug>/` so users can invoke them as `/why`, `/audit`, etc. inside Claude Code or Codex.
 
-| file | purpose |
-| ---- | ------- |
-| `ship.md` | end-to-end dApp deployment flow (master guide) |
-| `concepts.md` | mental models for onchain state |
-| `l2s.md` | Layer 2 selection reasoning |
-| `standards.md` | ERC token standards |
-| `why.md` | why Ethereum (vs other chains) |
-| `security.md` | defensive patterns |
-| `tools.md` | frameworks & libraries |
-| `addresses.md` | verified contract addresses — never hallucinate |
-| `gas.md` | live gas cost reality |
-| `testing.md` | Foundry testing patterns |
-| `frontend-ux.md` | UX rules (three-button flow, etc.) |
-| `frontend-playbook.md` | Scaffold-ETH 2 patterns |
-| `wallets.md` | wallet integrations |
-| `orchestration.md` | three-phase build system |
-| `audit.md` | audit methodology (500+ checklist items) |
-| `qa.md` | pre-ship QA checklist |
-| `building-blocks.md` | DeFi composability (Money Legos) |
-| `indexing.md` | onchain data queries (The Graph, Ponder) |
-| `noir.md` | zero-knowledge privacy |
-| `protocol.md` | EIP lifecycle and upgrades |
+## layout
+
+```
+skills/
+  SKILL_ROUTER.md         routing table — agents self-correct to the right skill
+  idea/
+    why/SKILL.md
+    concepts/SKILL.md
+    l2s/SKILL.md
+  build/
+    standards/SKILL.md
+    security/SKILL.md
+    tools/SKILL.md
+    addresses/SKILL.md
+    gas/SKILL.md
+    testing/SKILL.md
+    building-blocks/SKILL.md
+    frontend-ux/SKILL.md
+    frontend-playbook/SKILL.md
+    wallets/SKILL.md
+    orchestration/SKILL.md
+    indexing/SKILL.md
+    noir/SKILL.md
+    protocol/SKILL.md
+  audit/
+    audit/SKILL.md
+    qa/SKILL.md
+  ship/
+    ship/SKILL.md
+```
+
+Each `SKILL.md` carries `name` + `description` frontmatter so agent runtimes can show a useful catalog entry.
 
 ## refreshing
 
-These files are a snapshot. To pull newer versions, re-run the fetch from the ethskills repo or:
+These files are a snapshot. Re-fetch from upstream:
 
 ```bash
-for s in ship concepts l2s standards why security tools addresses gas testing \
-         frontend-ux frontend-playbook wallets orchestration audit qa \
-         building-blocks indexing noir protocol; do
-  curl -sSf -o "skills/$s.md" "https://ethskills.com/$s/SKILL.md"
+for s in why concepts l2s; do
+  curl -sSf -o "skills/idea/$s/SKILL.md" "https://ethskills.com/$s/SKILL.md"
 done
+for s in standards security tools addresses gas testing building-blocks \
+         frontend-ux frontend-playbook wallets orchestration indexing noir protocol; do
+  curl -sSf -o "skills/build/$s/SKILL.md" "https://ethskills.com/$s/SKILL.md"
+done
+for s in audit qa; do
+  curl -sSf -o "skills/audit/$s/SKILL.md" "https://ethskills.com/$s/SKILL.md"
+done
+curl -sSf -o "skills/ship/ship/SKILL.md" "https://ethskills.com/ship/SKILL.md"
 ```
 
 ## license
