@@ -7,6 +7,7 @@ import { cmdShip } from "./commands/ship.js";
 import { cmdAudit } from "./commands/audit.js";
 import { cmdRaise } from "./commands/raise.js";
 import { cmdDoctor } from "./commands/doctor.js";
+import { cmdInit } from "./commands/init.js";
 
 type Cmd = (argv: string[]) => Promise<void>;
 
@@ -18,6 +19,7 @@ const commands: Record<string, { run: Cmd; summary: string }> = {
   ship: { run: cmdShip, summary: "deploy + verify + launch pack" },
   raise: { run: cmdRaise, summary: "deck + investor map for your round" },
   doctor: { run: cmdDoctor, summary: "verify your toolchain" },
+  init: { run: cmdInit, summary: "install skills into ~/.claude and ~/.codex" },
 };
 
 function help(): void {
