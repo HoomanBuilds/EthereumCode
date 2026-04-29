@@ -33,6 +33,14 @@ export async function deploy(opts: { target: "testnet" | "mainnet"; chain?: Chai
     "--broadcast",
     "--slow",
   ];
+  if (cfg.walletKeyPath) {
+    args.push("--keystore", cfg.walletKeyPath);
+    if (cfg.walletPasswordFile) {
+      args.push("--password-file", cfg.walletPasswordFile);
+    }
+  } else {
+    throw new Error("no wallet configured. run `cast wallet new` then set wallet_key_path in ~/.ethereum.new/config.toml");
+  }
   if (cfg.etherscanKey) {
     args.push("--verify", "--etherscan-api-key", cfg.etherscanKey);
   }

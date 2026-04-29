@@ -7,6 +7,7 @@ export interface Config {
   rpc?: string;
   anthropicKey?: string;
   walletKeyPath?: string;
+  walletPasswordFile?: string;
   etherscanKey?: string;
 }
 
@@ -32,6 +33,7 @@ export async function loadConfig(): Promise<Config> {
     rpc: map.rpc,
     anthropicKey: map.anthropic_key,
     walletKeyPath: map.wallet_key_path,
+    walletPasswordFile: map.wallet_password_file,
     etherscanKey: map.etherscan_key,
   };
 }

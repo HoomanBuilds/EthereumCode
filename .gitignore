@@ -9,3 +9,8 @@ coverage
 cli/skills/cache
 ~/.ethereum.new
 .ethereum.new
+
+# Foundry build artifacts
+templates/*/cache
+templates/*/out
+templates/*/foundry.lock

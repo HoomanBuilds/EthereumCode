@@ -73,6 +73,56 @@ contract StableVault is ERC4626, Ownable2Step, Pausable, ReentrancyGuard {
         shares = super.withdraw(assets, receiver, owner_);
     }
 
+    function mint(uint256 shares, address receiver)
+        public
+        override
+        whenNotPaused
+        nonReentrant
+        returns (uint256 assets)
+    {
+        assets = previewMint(shares);
+        if (totalAssets() + assets > depositCap) {
+            emit DepositCapHit(depositCap, assets);
+            revert DepositCapExceeded();
+        }
+        assets = super.mint(shares, receiver);
+    }
+
+    function redeem(uint256 shares, address receiver, address owner_)
+        public
+        override
+        whenNotPaused
+        nonReentrant
+        returns (uint256 assets)
+    {
+        assets = super.redeem(shares, receiver, owner_);
+    }
+
+    // -- EIP-4626 limits (cap + pause aware) ------------------------------
+
+    function maxDeposit(address) public view override returns (uint256) {
+        if (paused()) return 0;
+        uint256 ta = totalAssets();
+        return ta >= depositCap ? 0 : depositCap - ta;
+    }
+
+    function maxMint(address) public view override returns (uint256) {
+        if (paused()) return 0;
+        uint256 ta = totalAssets();
+        if (ta >= depositCap) return 0;
+        return convertToShares(depositCap - ta);
+    }
+
+    function maxWithdraw(address owner_) public view override returns (uint256) {
+        if (paused()) return 0;
+        return super.maxWithdraw(owner_);
+    }
+
+    function maxRedeem(address owner_) public view override returns (uint256) {
+        if (paused()) return 0;
+        return super.maxRedeem(owner_);
+    }
+
     // -- strategy rotation (timelocked) ------------------------------------
 
     function proposeStrategy(address next) external onlyOwner {
