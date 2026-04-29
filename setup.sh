@@ -87,7 +87,17 @@ fi
 # --- 6. doctor ---------------------------------------------------------------
 head "doctor" "verifying toolchain"
 if eth doctor; then
-  ok "you're ready. run: ${BOLD}eth new${END}"
+  ok "toolchain ok"
 else
   warn "doctor reported issues. fix them and re-run 'eth doctor'."
 fi
+
+# --- 7. install agent skills -------------------------------------------------
+head "skills" "installing slash-command skills"
+if eth init >/dev/null 2>&1; then
+  ok "skills installed to ~/.claude/skills and ~/.codex/skills"
+else
+  warn "could not install skills. run 'eth init' manually."
+fi
+
+ok "ready. run: ${BOLD}eth new${END}"
