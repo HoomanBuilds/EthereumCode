@@ -111,6 +111,18 @@ export ANTHROPIC_API_KEY=sk-ant-...
 eth new
 ```
 
+### slash-command path (no API key needed)
+
+`eth init` installs the bundled skills into `~/.claude/skills/` and `~/.codex/skills/`. After that, anything an `eth` command can ground on is also available as a slash command inside [Claude Code](https://claude.ai/code) or [Codex](https://openai.com/index/codex/):
+
+```bash
+eth init
+claude "/why  Should I build my idea on Ethereum?"
+claude "/audit  Review my contracts before mainnet."
+```
+
+The `eth` binary still uses the same files via the API path — one source of truth for both runtimes.
+
 ### local development (if you're hacking on the framework itself)
 
 ```bash
