@@ -153,7 +153,7 @@ node dist/index.js doctor
               ▼           ▼              ▼           ▼           ▼
          ┌───────────────────────────────────────────────────────────┐
          │           agents/runtime.ts  (single chokepoint)           │
-         │  + loads bundled skills from ./skills/<slug>.md            │
+         │  + loads bundled skills from ./skills/<phase>/<slug>/SKILL.md │
          │  + injects as system context before every Claude call     │
          │  + enforces: no hallucinated addresses, no secrets in writes│
          └───────────────────────────────────────────────────────────┘
@@ -176,28 +176,17 @@ ethereum.new/
 ├── SKILL.md                    self-describing for other AI agents
 ├── docs/
 │   └── cli.svg                 terminal screenshot for the README
-├── skills/                     bundled ethskills snapshot (20 .md files, MIT)
-│   ├── ship.md
-│   ├── security.md
-│   ├── audit.md
-│   ├── addresses.md            ← never hallucinate
-│   ├── gas.md                  ← live gas reality
-│   ├── l2s.md
-│   ├── standards.md
-│   ├── testing.md
-│   ├── frontend-ux.md
-│   ├── frontend-playbook.md
-│   ├── wallets.md
-│   ├── orchestration.md
-│   ├── qa.md
-│   ├── concepts.md
-│   ├── why.md
-│   ├── tools.md
-│   ├── building-blocks.md
-│   ├── indexing.md
-│   ├── noir.md
-│   ├── protocol.md
+├── skills/                     bundled ethskills snapshot (20 SKILL.md files, MIT)
+│   ├── SKILL_ROUTER.md         routing table for self-correcting skill switches
+│   ├── idea/                   why · concepts · l2s
+│   ├── build/                  standards · security · tools · addresses · gas ·
+│   │                           testing · building-blocks · frontend-ux ·
+│   │                           frontend-playbook · wallets · orchestration ·
+│   │                           indexing · noir · protocol
+│   ├── audit/                  audit · qa
+│   ├── ship/                   ship
 │   └── README.md               attribution + refresh instructions
+│   (each leaf is <phase>/<slug>/SKILL.md with name+description frontmatter)
 ├── cli/
 │   ├── index.ts                dispatcher
 │   ├── ui/
@@ -212,7 +201,8 @@ ethereum.new/
 │   │   ├── audit.ts
 │   │   ├── ship.ts
 │   │   ├── raise.ts
-│   │   └── doctor.ts
+│   │   ├── doctor.ts
+│   │   └── init.ts             install skills into ~/.claude and ~/.codex
 │   ├── agents/
 │   │   ├── runtime.ts          the single Claude chokepoint
 │   │   ├── architect.ts        Opus 4.6 · returns a Plan JSON
@@ -222,7 +212,7 @@ ethereum.new/
 │   │   └── raise.ts            deck + investors + landscape
 │   ├── skills/
 │   │   ├── registry.ts         task → skill slug routing table
-│   │   └── loader.ts           reads ../../skills/<slug>.md from disk
+│   │   └── loader.ts           walks ../../skills/<phase>/<slug>/SKILL.md, memoised
 │   ├── chains/
 │   │   ├── registry.ts         mainnet · base · arbitrum · op · zksync
 │   │   └── recommend.ts        heuristic use-case → chain hint
@@ -255,7 +245,7 @@ ethereum.new/
 Every call to Claude passes through `cli/agents/runtime.ts`, which:
 
 1. Looks up the task in `cli/skills/registry.ts`.
-2. Reads the markdown directly from `./skills/<slug>.md` on disk — bundled with the repo, **never fetched**.
+2. Reads the markdown directly from `./skills/<phase>/<slug>/SKILL.md` on disk — bundled with the repo, **never fetched**.
 3. Injects the skills as system context ahead of the task-specific prompt.
 4. Enforces three hard rules: no hallucinated addresses, live gas checks (`cast base-fee`), no secrets in diffs.
 
