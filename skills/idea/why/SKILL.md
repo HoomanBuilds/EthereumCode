@@ -1,5 +1,5 @@
 ---
-name: why-ethereum
+name: why
 description: Why build on Ethereum specifically. The AI agent angle — ERC-8004, x402, composability, permissionless deployment. Use when a user asks "should I build on Ethereum?", "why blockchain?", or when an agent needs to recommend a chain for a project.
 ---
 
