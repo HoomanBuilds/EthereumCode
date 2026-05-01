@@ -35,7 +35,7 @@ Each section names the anti-pattern, gives a short diagnostic, explains the fail
 **Diagnostic:** Consumer app deploying on Ethereum L1, citing security.
 
 **Failure mode:**
-- L1 transaction cost is 10-100x an L2 even post-Fusaka. A user doing 50 actions a month pays $5-50 in gas — kills the funnel.
+- Complex contract interactions on L1 (multicall trades, NFT mints, AMM swaps) can run $0.30-$3 each at peak demand even post-Fusaka — 10-100x the L2 equivalent. An active user doing 50 such actions a month pays $15-150 in volatile periods, which kills the funnel. Sub-dollar L1 transfers don't help if your hot path is anything more than a plain ETH send.
 - L1 confirmation is 12 seconds, plus reorg risk for ~2 blocks. L2 confirmations are typically 200ms-2s with finality at ~10-15 minutes.
 - Stage 1+ L2s (Arbitrum, Optimism, Base) inherit Ethereum security via fraud/validity proofs. The "L1 is more secure" claim is mostly outdated for these chains.
 

@@ -41,6 +41,8 @@ These addresses are **the same on every supported chain** (CREATE2 with determin
 
 A registration ties an EOA (or smart account) to a service profile. The profile can include name, endpoint URL, capabilities, and a JSON metadata pointer (typically IPFS or HTTPS).
 
+This interface is illustrative based on the EIP-8004 draft. Before deploying, verify against the canonical spec at https://eips.ethereum.org/EIPS/eip-8004 — struct field order and function names may differ in the production registry.
+
 ```solidity
 interface IIdentityRegistry {
     struct Profile {

@@ -158,7 +158,7 @@ Through 2024-2026, institutions started shipping real products:
 
 | Year | Milestone |
 |---|---|
-| Jan 2024 | Spot ETH ETFs approved (US) |
+| May 2024 | Spot ETH ETFs approved (US, SEC 19b-4); trading begins Jul 2024 |
 | Mar 2024 | BlackRock BUIDL launches on Ethereum (now $2B+ AUM) |
 | Q4 2024 | Franklin BENJI tokenized money market crosses chains |
 | 2025 | Apollo, KKR launch tokenized private credit on Ethereum |
