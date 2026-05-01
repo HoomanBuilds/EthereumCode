@@ -34,6 +34,10 @@ Four questions to catch yourself: can anyone be stopped from using it? Can someo
 
 **This is the most important concept in all of Ethereum. If you internalize nothing else, internalize this.**
 
+Read [references/incentive-design.md](references/incentive-design.md) before designing any maintenance, liquidation, harvest, rebalance, or "happens later" function — it has the cookbook of who-pokes-it patterns, calibration tables for rewards, and the pull-vs-push rule.
+
+Read [references/state-machines.md](references/state-machines.md) when sketching multi-phase contracts (auctions, vesting, escrows, games) — it covers enum vs implicit phases, time vs condition gates, invariants, and dead-state fallbacks.
+
 ### Smart Contracts Are State Machines
 
 A smart contract is a state machine. It sits in one state, and it moves to another state when someone **pokes it** — calls a function, pays gas, triggers a transition. Between pokes, it does absolutely nothing. It doesn't think, it doesn't check, it doesn't wake up. It just sits there.
@@ -173,6 +177,8 @@ uint random = uint(blockhash(block.number - 1));
 
 Use commit-reveal for simple cases. Use Chainlink VRF when you need provable randomness (lotteries, NFT reveals, gaming).
 
+Read [references/randomness.md](references/randomness.md) before implementing any of these — it has the full commit-reveal walkthrough (including the 256-block horizon, address binding, and forfeit fallbacks), Chainlink VRF v2.5 integration sketch, the modulo-bias trap, and a decision matrix for picking the right pattern.
+
 ---
 
 ## Teaching Your Human
@@ -195,6 +201,8 @@ Lead with liquidation incentives: *"If your loan gets risky, anyone in the world
 
 ### Oracles
 *"Smart contracts can't Google things. If your contract needs a price, someone has to put it onchain. Use Chainlink — never read prices from a DEX pool, because a flash loan can fake the price for one transaction."*
+
+Read [references/oracles.md](references/oracles.md) before reading any external price, status, or value in a contract — it has the four guarantees every read must enforce, Chainlink staleness checks, L2 sequencer-uptime feeds, Uniswap V3 TWAP construction, pull oracles (Pyth, RedStone), cross-checking, and oracle-failure fallbacks.
 
 ### Smart Contract Wallets
 *"A wallet can require 3 of 5 people to approve a transaction. $60B+ in assets is secured this way. It's how teams and DAOs manage money without trusting any single person."*
