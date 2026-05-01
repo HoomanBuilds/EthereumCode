@@ -31,7 +31,7 @@ The columns name the chains; the rows name the app type. The cell names a single
 | Gasless UX | **zkSync Era** | Native account abstraction — every account is a smart contract, paymasters are first-class, no bundlers |
 | MEV-protected trading | **Unichain** | TEE-based block building, time-priority ordering, encrypted mempool |
 | Rust / compute-heavy | **Arbitrum (Stylus)** | WASM VM alongside EVM, 10-100x gas savings on heavy math/crypto |
-| Mobile / payments / emerging markets | **Celo** | MiniPay, USDm/EURm/BRLm stablecoins, sub-cent fees, Africa/LatAm |
+| Mobile / payments / emerging markets | **Celo** | MiniPay, USDm/EURm/BRLm stablecoins, sub-cent fees, Africa/LatAm. Verify rebrand status and canonical addresses at https://mento.org before integrating. |
 | Stablecoin rails / RWA / B2B payments | **Polygon PoS** | $500M+ monthly payment volume, 410M+ wallets, AggLayer roadmap |
 | L3 / appchain | **Arbitrum Orbit** | Mature framework, 47+ live Orbit chains |
 | Maximum censorship resistance | **Mainnet** | Final settlement, no operator |
@@ -49,7 +49,7 @@ The columns name the chains; the rows name the app type. The cell names a single
 
 **Arbitrum Stylus for Rust.** Stylus runs WASM contracts that share state with EVM contracts on the same chain. You can call a Rust contract from a Solidity contract and vice versa. Gas savings are 10-100x on hash-heavy or arithmetic-heavy code (cryptography, compression, custom VM logic). Contracts must be "activated" via the `ARB_WASM` precompile (`0x0000000000000000000000000000000000000071`) before first use.
 
-**Celo for mobile payments.** Celo migrated from L1 to OP Stack L2 on March 26, 2025 (block 31056500). Sub-cent fees plus integration with MiniPay (Opera Mini wallet) make it the only chain optimized end-to-end for low-income mobile users. USDm, EURm, and BRLm (rebranded from cUSD/cEUR/cREAL by Mento Protocol in December 2025) keep their original contract addresses.
+**Celo for mobile payments.** Celo migrated from L1 to OP Stack L2 on March 26, 2025 (block 31056500). Sub-cent fees plus integration with MiniPay (Opera Mini wallet) make it the only chain optimized end-to-end for low-income mobile users. USDm, EURm, and BRLm (rebranded from cUSD/cEUR/cREAL by Mento Protocol in December 2025) keep their original contract addresses. Verify rebrand status and canonical addresses at https://mento.org before integrating.
 
 **Polygon PoS for stablecoin rails.** Polygon PoS is not a rollup, but it has product-market fit for low-stakes payment flows. Stripe, Revolut, and a number of fintechs settle on it. The MATIC → POL migration is roughly 85% complete. Polygon zkEVM is being shut down (announced June 2025) — do not start new projects there.
 
@@ -87,7 +87,7 @@ Pick the chain whose testnet your team will actually use. Most testnets are reli
 
 | Mainnet Chain | Testnet | Faucet | Notes |
 |---|---|---|---|
-| Mainnet | Sepolia | https://sepoliafaucet.com, https://www.alchemy.com/faucets/ethereum-sepolia | Default L1 testnet. Holesky is being deprecated; Hoodi is its successor for staking-focused testing. |
+| Mainnet | Sepolia | https://sepoliafaucet.com, https://www.alchemy.com/faucets/ethereum-sepolia | Default L1 testnet. Holesky is being deprecated; Hoodi is its successor for staking-focused testing. Verify current testnet status at https://ethereum.org/en/developers/docs/networks/. |
 | Arbitrum | Arbitrum Sepolia | https://faucet.quicknode.com/arbitrum/sepolia | Bridge from Sepolia ETH |
 | Base | Base Sepolia | https://www.alchemy.com/faucets/base-sepolia | Free Coinbase Smart Wallet on testnet |
 | Optimism | OP Sepolia | https://app.optimism.io/faucet | OP Stack — same flow as Base Sepolia |
@@ -141,6 +141,9 @@ START
  ├── App is stablecoin rails / RWA / B2B?
  │     └── YES → Polygon PoS (NOT zkEVM)
  │
+ ├── App is consumer-facing and targeting RetroPGF / OP Collective grants?
+ │     └── YES → Optimism
+ │
  └── DEFAULT → Base (cheapest major L2, best on-ramp, healthiest 2025-2026 growth)
 ```
 
@@ -166,14 +169,14 @@ Quick reference for what lives where. Verify protocol availability against the c
 - **DEX:** Aero (was Aerodrome) is the dominant DEX with the deepest liquidity for most pairs.
 - **Lending:** Aave v3, Morpho, Moonwell.
 - **Consumer:** Farcaster (Warpcast), Coinbase Smart Wallet, AgentKit, Friend.tech-class apps.
-- **Stables:** native USDC at `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`.
+- **Stables:** native USDC at `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`. Verify against https://www.circle.com/multi-chain-usdc — Circle occasionally migrates apps off `USDC.e`.
 - **Why builders pick it:** lowest CAC for US/Coinbase users, on-ramp is one tap, AI agent tooling lives here.
 
 ### Arbitrum One (chain ID 42161)
 - **DEX:** Camelot for spot, Uniswap v3 also strong; **GMX** for perps.
 - **Yield:** Pendle (yield tokenization), Jones DAO, Dolomite, Radiant.
 - **Lending:** Aave v3, Morpho, Compound.
-- **Stables:** prefer **native USDC** at `0xaf88d065e77c8cC2239327C5EDb3A432268e5831` over bridged USDC.e.
+- **Stables:** prefer **native USDC** at `0xaf88d065e77c8cC2239327C5EDb3A432268e5831` over bridged USDC.e. Verify against https://www.circle.com/multi-chain-usdc — Circle occasionally migrates apps off `USDC.e`.
 - **Stylus:** Rust/C/C++ contracts via WASM VM, activated through `ARB_WASM` precompile (`0x0000000000000000000000000000000000000071`).
 - **Why builders pick it:** deepest DeFi liquidity, mature audit ecosystem, Stylus for compute-heavy code.
 
@@ -189,7 +192,7 @@ Quick reference for what lives where. Verify protocol availability against the c
 
 ### Celo (chain ID 42220)
 - **Wallet:** MiniPay, integrated into Opera Mini.
-- **Stables (rebranded by Mento Protocol, December 2025):** USDm (was cUSD) at `0x765de816845861e75a25fca122bb6898b8b1282a`, EURm (was cEUR) at `0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73`, BRLm (was cREAL) at `0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787`. Same contracts, new symbols.
+- **Stables (rebranded by Mento Protocol, December 2025):** USDm (was cUSD) at `0x765de816845861e75a25fca122bb6898b8b1282a`, EURm (was cEUR) at `0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73`, BRLm (was cREAL) at `0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787`. Same contracts, new symbols. Verify rebrand status and canonical addresses at https://mento.org before integrating.
 - **Why builders pick it:** sub-cent fees, mobile-first UX, Africa/LatAm distribution.
 
 ### zkSync Era (chain ID 324)

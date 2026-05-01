@@ -1,6 +1,6 @@
 # Bridging — Cookbook
 
-Moving value between Ethereum L1 and L2s, or between L2s, is one of the most exploited surfaces in crypto. **Over $3B has been stolen from cross-chain bridges since 2021** (Ronin, Nomad, Wormhole, Multichain, Harmony, and others). Most of those losses came from trusted multisigs or off-chain validator sets, not from official optimistic/ZK bridges.
+Moving value between Ethereum L1 and L2s, or between L2s, is one of the most exploited surfaces in crypto. **Over $3B has been stolen from cross-chain bridges since 2021** (Ronin, Nomad, Wormhole, Multichain, Harmony, and others). Per Chainalysis and Rekt News tallies as of 2024-2025; verify at https://rekt.news/leaderboard. Most of those losses came from trusted multisigs or off-chain validator sets, not from official optimistic/ZK bridges.
 
 This file is the cookbook for bridging without making the same mistakes. Read it before integrating a bridge in your app, before quoting bridge times to a user, and before recommending a bridge for a transfer.
 
@@ -27,7 +27,7 @@ There are exactly two categories of bridge. Mixing them up is the most common mi
 | zkSync Era | https://bridge.zksync.io | ~15-30 min | ~15-60 min | ZK; finality-bound |
 | Scroll | https://scroll.io/bridge | ~15-30 min | ~30-120 min | ZK |
 | Linea | https://bridge.linea.build | ~15-30 min | ~30-120 min | ZK |
-| Polygon PoS | https://portal.polygon.technology | ~10-15 min | ~30-60 min (Plasma) or instant (PoS) | Not a rollup; different security model |
+| Polygon PoS | https://portal.polygon.technology | ~7-8 min after checkpoint | ~30 min - 3 hours via PoS bridge (after checkpoint), or ~7 days via Plasma exit. Verify against https://docs.polygon.technology before quoting times. | Not a rollup; different security model |
 
 > Verify each URL and chain configuration against the canonical docs (https://docs.arbitrum.io, https://docs.base.org, https://docs.optimism.io, https://docs.zksync.io, etc.) before integrating into a frontend. Bridge UIs occasionally move.
 
@@ -99,6 +99,8 @@ Not every "USDC" on every chain is Circle-issued native USDC. Some chains have *
 - **Optimism:** native USDC (`0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85`) AND bridged USDC.e (`0x7F5c764cBc14f9669B88837ca1490cCa17c31607`).
 - **zkSync, Scroll, Linea:** native USDC support — verify per chain via Circle's documentation (https://www.circle.com/multi-chain-usdc).
 
+Verify against https://www.circle.com/multi-chain-usdc — Circle occasionally migrates apps off `USDC.e`.
+
 Always quote and prefer the **native** version. Bridged versions can be deprecated when Circle launches native, leaving liquidity stranded.
 
 ### Pitfall: Treating LayerZero as "trustless"
@@ -153,7 +155,7 @@ contract BaseDepositor {
 }
 ```
 
-The deposit will appear on Base in ~10-15 minutes. The user does not pay Base gas for the deposit; the bridge prepays.
+The deposit will appear on Base in ~10-15 minutes. The user pays L1 gas to call `depositETHTo`. The corresponding L2 deposit transaction is created automatically by the OP Stack derivation pipeline; the `_minGasLimit` parameter funds the L2 execution out of the deposited amount.
 
 ## Code: viem Across Quote (Off-Chain)
 

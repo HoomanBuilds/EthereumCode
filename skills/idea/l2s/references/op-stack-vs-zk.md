@@ -62,13 +62,13 @@ You compile with standard `solc`, deploy with standard tooling, expect identical
 
 ### zkSync Era — Compiler Swap Required
 
-zkSync Era requires the **`zksolc`** compiler (a fork/wrapper of `solc` with a different bytecode target). Foundry has zksync support; verify against canonical docs at https://docs.zksync.io for the latest setup. The differences that bite production:
+zkSync Era requires **`zksolc`**, a separate compiler that consumes solc's Yul/EVM-IR output and emits zkEVM bytecode. It is not a solc fork. Foundry has zksync support; verify against canonical docs at https://docs.zksync.io for the latest setup. The differences that bite production:
 
 - **No `EXTCODECOPY`.** Compile-time error. Code that introspects other contracts' bytecode will not compile.
-- **65,536-instruction contract limit.** Larger contracts must be split.
+- **Contract size limit:** approximately 64K of 32-byte words of zkEVM bytecode — different from EIP-170's 24KB on Ethereum. Larger contracts must be split.
 - **Non-inlinable libraries must be pre-deployed.** Standard mainnet libraries that get inlined need separate deployment.
 - **Native account abstraction.** Every account is a smart contract. EOAs as you know them on mainnet do not exist — accounts can have custom signature schemes, paymasters, and arbitrary validation logic.
-- **`tx.origin` is reliable** in a way mainnet's is not, because all accounts are AA contracts.
+- **`tx.origin` semantics differ on zkSync** — the bootloader (`0x8001`) can appear as `tx.origin` in some call paths. Do not use `tx.origin` for authentication on zkSync; use `msg.sender` or signature-based auth.
 - **Different gas pricing.** Pubdata posting cost is separate from execution gas.
 
 If you are deploying Solidity on zkSync that was written for mainnet, expect a **1-3 week** porting effort, including audit re-scope.
@@ -209,7 +209,7 @@ These are the actual issues that show up in production when teams treat L2s as f
 
 **`EXTCODECOPY` checks.** Some patterns introspect other contracts' bytecode to detect proxies, check ERC-165 interface ids, etc. These do not compile on zkSync. Use ERC-165 `supportsInterface` instead.
 
-**Contract size limits.** On mainnet, the EIP-170 limit is 24,576 bytes. zkSync has a 65,536 **instruction** limit, which is different and often tighter for large contracts. Split early.
+**Contract size limits.** On mainnet, the EIP-170 limit is 24,576 bytes. zkSync's limit is approximately 64K of 32-byte zkEVM bytecode words, which is a different unit than EIP-170 and often tighter for large contracts. Split early.
 
 **Hardcoded gas amounts.** A `gas: 50000` hint that works on mainnet may underflow on chains with different gas pricing (zkSync's pubdata, Arbitrum's L1 calldata fee). Use `.call{gas: ...}` only when you have a calibrated value, otherwise let Solidity infer.
 

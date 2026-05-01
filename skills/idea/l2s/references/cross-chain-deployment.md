@@ -42,7 +42,7 @@ The standard cross-chain CREATE2 deployer is at:
 0x4e59b44847b379578588920cA78FbF26c0B4956C
 ```
 
-This is the **Arachnid deterministic deployer** (sometimes called the "create2 proxy"), deployed via a self-funding pre-signed transaction so it has the same address on every EVM chain that supports the standard. Foundry uses this deployer by default for `CREATE2` operations via `forge create --create2`.
+This is the **Arachnid deterministic deployer** (sometimes called the "create2 proxy"), deployed via a self-funding pre-signed transaction so it has the same address on every EVM chain that supports the standard. When `forge create` is invoked with `--salt`, Foundry automatically routes the deployment through this proxy.
 
 Verify the deployer exists on your target chain before relying on it:
 
@@ -55,7 +55,7 @@ If `cast code` returns `0x`, the deployer is not on that chain. You need to eith
 1. Deploy it yourself via the canonical pre-signed transaction (https://github.com/Arachnid/deterministic-deployment-proxy).
 2. Use a chain-specific equivalent (most chains have one — check the chain's docs).
 
-Most major L2s (Arbitrum, Base, Optimism, Unichain, Celo, Scroll, Linea) have the deployer pre-installed. **zkSync Era does not** — see "zkSync Caveat" below.
+On most major L2s (Arbitrum, Base, Optimism, Unichain, Celo, Scroll, Linea) the Arachnid deployer has been deployed by community members via the canonical pre-signed transaction (it has no admin key and the same address everywhere). Do not assume — always run the `cast code` check above before deploying. zkSync Era uses a different scheme; see "zkSync Caveat" below.
 
 ## Salt Patterns That Don't Bite You Later
 
@@ -104,6 +104,11 @@ Zero salts and small-integer salts are heavily contested. Someone can deploy a m
 
 A typical Foundry script for deploying the same contract to multiple chains with a deterministic address:
 
+There are two routes that produce a deterministic address:
+
+- **Foundry CLI:** `forge create --salt 0x...` automatically routes through the Arachnid proxy at `0x4e59b44847b379578588920cA78FbF26c0B4956C`.
+- **In a script:** call the deployer explicitly. Using `new X{salt: ...}` in Solidity calls the raw `CREATE2` opcode where `deployer = address(this)`. The address depends on whoever runs the deployment, NOT on the Arachnid proxy. To get the same address everywhere, route through the canonical deployer:
+
 ```solidity
 // script/DeployAll.s.sol
 // Illustrative. Verify against https://book.getfoundry.sh for current scripting API.
@@ -111,14 +116,20 @@ import "forge-std/Script.sol";
 import {MyContract} from "../src/MyContract.sol";
 
 contract DeployAll is Script {
+    address constant DEPLOYER = 0x4e59b44847b379578588920cA78FbF26c0B4956C;
     bytes32 internal constant SALT = keccak256("MyProject:MyContract:v1");
 
     function run() external {
         vm.startBroadcast();
-        // CREATE2 via the new keyword + salt — Solidity 0.8.7+
-        MyContract c = new MyContract{salt: SALT}(/* constructor args */);
+        bytes memory initCode = abi.encodePacked(
+            type(MyContract).creationCode,
+            abi.encode(/* constructor args */)
+        );
+        (bool ok, bytes memory ret) = DEPLOYER.call(abi.encodePacked(SALT, initCode));
+        require(ok, "create2 failed");
+        address deployed = address(uint160(bytes20(ret)));
         vm.stopBroadcast();
-        require(address(c) != address(0), "deploy failed");
+        require(deployed != address(0), "deploy failed");
     }
 }
 ```
@@ -146,8 +157,8 @@ If the bytecode is identical and the salt is the same, the resulting address is 
 ```bash
 # Compute the deterministic address ahead of time
 cast create2 \
-  --salt 0x$(cast keccak "MyProject:MyContract:v1") \
-  --init-code <hex-of-creation-bytecode> \
+  --salt $(cast keccak "MyProject:MyContract:v1") \
+  --init-code-hash $(cast keccak <hex-of-creation-bytecode>) \
   --deployer 0x4e59b44847b379578588920cA78FbF26c0B4956C
 ```
 
@@ -260,7 +271,7 @@ async function detectDeployments() {
       return {
         chain: chain.name,
         chainId: chain.id,
-        deployed: code !== undefined && code !== "0x",
+        deployed: code !== undefined && code.length > 2,
       };
     }),
   );
@@ -281,24 +292,24 @@ Defenses:
 3. **Set ownership via the constructor**, not via `initialize()`, so the deployer is irreversibly the address that ran CREATE2.
 4. **Deploy to all chains close to simultaneously** to compress the window.
 
-Pattern 1 is simplest and most robust. The contract's runtime code is identical across chains, but the constructor checks the deployer. If anyone but you tries to deploy it, the construction reverts and the address is still claimable for you later.
+Pattern 1 is simplest and most robust. Bake a single canonical owner address into bytecode as a compile-time constant — it is the same on every chain, so the address stays deterministic, and ownership is fixed regardless of who runs the deployment transaction.
 
 ```solidity
 contract Ownable {
-    address public immutable owner;
+    // Canonical owner — same constant on every chain so bytecode is identical.
+    address public constant OWNER = 0x000000000000000000000000000000000000dEaD; // replace with your multisig
 
-    error NotAuthorizedDeployer();
-
-    constructor(address _expected) {
-        if (msg.sender != _expected && tx.origin != _expected) {
-            revert NotAuthorizedDeployer();
-        }
-        owner = _expected;
+    function owner() external pure returns (address) {
+        return OWNER;
     }
 }
 ```
 
-Pass the same `_expected` on every chain, and only the address that matches `_expected` can successfully deploy.
+Because the address is a `constant` in bytecode, every chain compiles to identical `initCode` and the CREATE2 address matches. Ownership is set by the bytecode, not by `msg.sender` or `tx.origin` — so a front-runner who deploys your code on a fresh chain still hands ownership to your canonical address.
+
+Do not use `tx.origin` for this check: `tx.origin` semantics are unreliable on zkSync (the bootloader can appear as `tx.origin`; see `op-stack-vs-zk.md`) and `tx.origin` auth is fragile across chains in general.
+
+For stronger front-running protection, prefer **permissioned salts** — encode an authorised deployer into the salt itself, e.g. `salt = keccak256(abi.encode(authorizedDeployer, projectId, version))`. The proxy will produce the same address only when the same salt is used with the same init code; pair this with a small proxy factory you control on each chain if front-running is a real threat.
 
 ## Verifying After Deployment
 
@@ -320,7 +331,7 @@ After deploying on each chain:
 
 **Ignoring zkSync's different rules.** Treating zkSync as just-another-EVM in your CREATE2 logic produces address mismatches and confused integrators.
 
-**Not verifying the deployer exists on a chain.** Some niche L2s do not pre-install the universal deployer — your `forge create --create2` call will silently fall back to plain `CREATE` and the address will be nonce-dependent.
+**Not verifying the deployer exists on a chain.** Some niche L2s do not have the universal deployer in place — if you point `forge create --salt` at such a chain, the deployment will fail or fall back to nonce-dependent behavior. Run the `cast code` check first.
 
 **Treating the address as immutable for upgrades.** A CREATE2 address is fixed for that bytecode. If you want upgradability, deploy a **proxy** at the deterministic address and put the implementation behind it. The proxy's bytecode and constructor are what you fix; the implementation can change.
 

@@ -75,6 +75,8 @@ Read [references/choosing-a-chain.md](references/choosing-a-chain.md) before rec
 | Rust smart contracts | **Arbitrum** | Stylus (WASM VM alongside EVM, 10-100x gas savings) |
 | Stablecoins / payments / RWA | **Polygon PoS** | $500M+ monthly payment volume, 410M+ wallets |
 
+> Polygon PoS is not a rollup (chain ID 137); it's an EVM sidechain with its own validator set. See `references/choosing-a-chain.md` for context.
+
 ## Key Chain Details (What LLMs Get Wrong)
 
 ### Unichain
@@ -91,7 +93,7 @@ Read [references/choosing-a-chain.md](references/choosing-a-chain.md) before rec
 - **Now:** OP Stack L2 on Ethereum — **migrated March 26, 2025** (block 31056500)
 - **Focus:** Mobile-first payments, emerging markets
 - **MiniPay:** Stablecoin wallet in Opera Mini + standalone app. Phone-to-phone transfers, sub-cent fees. Primary market: Africa (Kenya, Nigeria).
-- **Multi-currency stablecoins (rebranded Dec 2025 by Mento Protocol):** USDm (was cUSD) (`0x765de816845861e75a25fca122bb6898b8b1282a`), EURm (was cEUR) (`0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73`), BRLm (was cREAL) (`0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787`). Same contract addresses, new onchain symbols.
+- **Multi-currency stablecoins (rebranded Dec 2025 by Mento Protocol):** USDm (was cUSD) (`0x765de816845861e75a25fca122bb6898b8b1282a`), EURm (was cEUR) (`0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73`), BRLm (was cREAL) (`0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787`). Same contract addresses, new onchain symbols. Verify rebrand status and canonical addresses at https://mento.org before integrating.
 
 ### Dominant DEX Per Chain
 | Chain | Dominant DEX | Model | Why NOT Uniswap |
