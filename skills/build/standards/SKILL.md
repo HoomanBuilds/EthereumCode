@@ -15,9 +15,13 @@ description: Ethereum token and protocol standards — ERC-20, ERC-721, ERC-1155
 
 **x402 exists.** HTTP 402 payment protocol from Coinbase. Production-ready with SDKs.
 
+Read [references/token-standards.md](references/token-standards.md) before writing any ERC-20, ERC-721, ERC-1155, or ERC-4626 — it covers minimal interfaces, OpenZeppelin v5 imports, share-inflation attacks, decimals gotchas, and the SafeERC20 wrapper.
+
 ## ERC-8004: Onchain Agent Identity Registry
 
 **Status:** Deployed mainnet **January 29, 2026** — production ready with growing adoption.
+
+Read [references/agent-standards.md](references/agent-standards.md) before integrating ERC-8004 or x402 — it has full ABIs, EIP-712 verification code, facilitator architecture, and the upto payment scheme.
 
 **Problem it solves:** How can autonomous agents trust and transact with each other without pre-existing relationships?
 
@@ -371,6 +375,8 @@ await reputationWriter.giveFeedback(
 
 ## EIP-7702: Smart EOAs (Live Since May 2025)
 
+Read [references/account-abstraction.md](references/account-abstraction.md) before using EIP-7702 or ERC-4337 — it covers delegation persistence, session keys, EntryPoint addresses, and the 7702-vs-4337 decision matrix.
+
 EOAs can authorize delegated smart-contract code execution without migrating to a new account type.
 
 **Enables:** Batch transactions, gas sponsorship, session-key-style UX, and custom auth logic for existing EOAs.
@@ -391,3 +397,5 @@ EOAs can authorize delegated smart-contract code execution without migrating to 
 | ERC-6551 | Token-bound accounts (NFT wallets) | ✅ Niche adoption |
 
 **These are all LIVE and being used in production. Not "coming soon."**
+
+Read [references/permit-and-meta-tx.md](references/permit-and-meta-tx.md) before implementing ERC-2612 Permit, Permit2, or any meta-tx flow — it covers DAI's non-standard variant, Permit2's universal approval, and EIP-712 signing in viem.
