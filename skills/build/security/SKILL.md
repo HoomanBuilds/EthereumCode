@@ -67,6 +67,8 @@ For complex math, use fixed-point libraries like `PRBMath` or `ABDKMath64x64`.
 
 ### 3. Reentrancy
 
+Read [references/reentrancy-and-state.md](references/reentrancy-and-state.md) before writing any contract that makes external calls — it covers cross-function reentrancy, read-only reentrancy, ERC-777/721 hooks, and the OZ 5.1 ReentrancyGuardTransient pattern.
+
 An external call can call back into your contract before the first call finishes. If you update state AFTER the external call, the attacker re-enters with stale state.
 
 ```solidity
@@ -123,6 +125,8 @@ token.safeApprove(spender, amount);
 - **Blocklist tokens (USDC, USDT):** Specific addresses can be blocked from transacting.
 
 ### 5. Never Use DEX Spot Prices as Oracles
+
+Read [references/oracle-attacks.md](references/oracle-attacks.md) before reading any external price — it has Chainlink staleness patterns, L2 sequencer-uptime feeds, Uniswap V3 TWAP code, pull oracles (Pyth/RedStone), and the multi-oracle cross-check pattern.
 
 A flash loan can manipulate any pool's spot price within a single transaction. This has caused hundreds of millions in losses.
 
@@ -232,6 +236,8 @@ Common missed validations:
 
 ## MEV & Sandwich Attacks
 
+Read [references/mev-and-frontrunning.md](references/mev-and-frontrunning.md) before designing any swap, mint, or auction — it covers private mempool routing (Flashbots Protect, MEV Blocker, CoW Swap), batch auctions, slippage parameter design, Permit2 allowance hijacking, and L2 sequencer trust assumptions.
+
 **MEV (Maximal Extractable Value):** Validators and searchers can reorder, insert, or censor transactions within a block. They profit by frontrunning your transaction, backrunning it, or both.
 
 ### Sandwich Attacks
@@ -281,6 +287,8 @@ ISwapRouter.ExactInputSingleParams memory params = ISwapRouter
 ---
 
 ## Proxy Patterns & Upgradeability
+
+Read [references/access-control-and-upgrades.md](references/access-control-and-upgrades.md) before deploying any privileged or upgradeable contract — it covers Ownable2Step, AccessControl role design, ERC-7201 namespaced storage, the Safe+Timelock pattern, and the upgrade-authority checklist.
 
 Smart contracts are immutable by default. Proxies let you upgrade the logic while keeping the same address and state.
 
