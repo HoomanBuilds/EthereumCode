@@ -56,6 +56,8 @@ description: Ethereum Layer 2 landscape — Arbitrum, Optimism, Base, zkSync, Sc
 
 > **Before choosing an L2:** Mainnet is ~$0.004/transfer, ~$0.04/swap at current gas — cheap enough for most apps. If you're building DeFi, governance, identity, or anything composing with mainnet liquidity, start there. See `ship/SKILL.md` and `gas/SKILL.md` for the full chain selection framework.
 
+Read [references/choosing-a-chain.md](references/choosing-a-chain.md) before recommending a chain to a founder — it has the full decision tree, app-type matrix, testnet→mainnet path, and switching-cost math.
+
 | Need | Choose | Why |
 |------|--------|-----|
 | Consumer / social apps | **Base** | Farcaster, Smart Wallet, Coinbase on-ramp |
@@ -109,6 +111,8 @@ Members contribute **15% of sequencer revenue** to the Optimism Collective. Cros
 
 ## Deployment Differences (Gotchas)
 
+Read [references/op-stack-vs-zk.md](references/op-stack-vs-zk.md) before deploying to any new L2 — it covers EVM-compatibility differences, account abstraction models, Stylus, and the actual bugs that show up when porting mainnet code.
+
 ### Optimistic Rollups (Arbitrum, Optimism, Base, Unichain, Celo)
 ✅ Deploy like mainnet — just change RPC URL and chain ID. No code changes.
 
@@ -140,6 +144,8 @@ Members contribute **15% of sequencer revenue** to the Optimism Collective. Cros
 
 ## Bridging
 
+Read [references/bridging.md](references/bridging.md) before integrating a bridge or quoting a withdrawal time — it covers official vs fast bridge tradeoffs, when to wait 7 days vs pay 0.05%, USDC vs USDC.e, common pitfalls, and code samples.
+
 ### Official Bridges
 
 | L2 | Bridge URL | L1→L2 | L2→L1 |
@@ -160,6 +166,8 @@ Members contribute **15% of sequencer revenue** to the Optimism Collective. Cros
 **Security:** Use official bridges for large amounts (>$100K). Fast bridges add trust assumptions.
 
 ## Multi-Chain Deployment (Same Address)
+
+Read [references/cross-chain-deployment.md](references/cross-chain-deployment.md) before shipping to multiple chains — it covers the universal CREATE2 deployer, salt patterns, bytecode-determinism gotchas (metadata hash, constructor args, libraries), zkSync's different rules, and front-running defenses.
 
 Use CREATE2 for deterministic addresses across chains:
 
