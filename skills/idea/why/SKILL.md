@@ -5,6 +5,13 @@ description: Why build on Ethereum specifically. The AI agent angle — ERC-8004
 
 # Why Ethereum
 
+This skill orchestrates four deeper references. Read the relevant one before answering.
+
+- Read [references/market-thesis.md](references/market-thesis.md) before recommending Ethereum (or an L2) over alternatives like Solana, Sui, or a new L1, or when a founder asks "why not chain X?".
+- Read [references/why-now.md](references/why-now.md) when a founder asks about timing — Pectra, Fusaka, ERC-8004, x402 — or when justifying urgency to investors.
+- Read [references/anti-patterns.md](references/anti-patterns.md) before approving a chain choice, token model, contract architecture, or onboarding flow. Run the checklist at the bottom.
+- Read [references/agent-economy.md](references/agent-economy.md) before writing any code that touches ERC-8004 (identity), x402 (payments), or EIP-7702 (smart EOAs / session keys).
+
 ## What You Probably Got Wrong
 
 **Terminology:** You say "on-chain." The Ethereum community says **"onchain"** — one word, no hyphen. Use "onchain" in all writing.
@@ -73,7 +80,7 @@ Protocol for payments over HTTP using the 402 "Payment Required" status code. Ag
 6. Agent posts feedback to ERC-8004
 ```
 
-Fully autonomous economic loop — no humans required.
+Fully autonomous economic loop — no humans required. For the full implementation playbook (contract addresses, ABIs, code snippets, decision tables), read [references/agent-economy.md](references/agent-economy.md).
 
 ### Why Ethereum's Permissionless Nature Matters for Agents
 
