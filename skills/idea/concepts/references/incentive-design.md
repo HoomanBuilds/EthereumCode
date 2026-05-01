@@ -239,7 +239,7 @@ Some designs genuinely need a privileged actor — early-stage protocols, regula
 - Use a timelock for parameter changes (24h–72h is common). The `OwnableTimelock` pattern from OpenZeppelin Governor is a starting point — verify the latest API at https://docs.openzeppelin.com/contracts.
 - Plan the path to removing the privilege. "Trustless by year 2" is a roadmap; "trustless someday" is not.
 
-The CROPS framing from the parent SKILL.md applies: a single key that can freeze users is a censorship vector. If you choose to ship one, name it as such.
+CROPS — Censorship Resistance, Open Source, Privacy, Security — is the Ethereum Foundation's shorthand for what makes Ethereum trustworthy. A single key that can freeze users is a censorship vector under this framing. If you ship one, name it as such.
 
 ## Hyperstructure Self-Test
 
