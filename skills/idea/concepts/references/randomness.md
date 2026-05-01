@@ -51,8 +51,8 @@ contract CommitRevealLottery {
     }
     mapping(address => Entry) public entries;
 
-    uint256 constant MIN_REVEAL_DELAY = 1;        // blocks
-    uint256 constant MAX_REVEAL_WINDOW = 256;      // blockhash horizon
+    uint256 constant MIN_REVEAL_DELAY = 1;        // must wait at least MIN_REVEAL_DELAY blocks before revealing
+    uint256 constant MAX_REVEAL_WINDOW = 256;      // 256-block blockhash horizon is measured from the referenced block (commitBlock + MIN_REVEAL_DELAY), not from commitBlock itself
 
     error AlreadyCommitted();
     error TooEarly();
@@ -69,7 +69,7 @@ contract CommitRevealLottery {
     function reveal(bytes32 secret) external returns (uint256 random) {
         Entry storage e = entries[msg.sender];
         uint256 elapsed = block.number - e.commitBlock;
-        if (elapsed < MIN_REVEAL_DELAY) revert TooEarly();
+        if (elapsed <= MIN_REVEAL_DELAY) revert TooEarly();
         if (elapsed > MAX_REVEAL_WINDOW) revert TooLate();
 
         bytes32 expected = keccak256(abi.encode(secret, msg.sender));
@@ -96,6 +96,8 @@ Forfeit is most common because it preserves the protocol's bookkeeping. Make it 
 ```solidity
 function forfeit(address user) external {
     Entry storage e = entries[user];
+    require(e.commitment != bytes32(0), "no commitment");
+    require(!e.revealed, "already revealed");
     if (block.number - e.commitBlock <= MAX_REVEAL_WINDOW) revert();
     delete entries[user];
     // burn or redirect their stake

@@ -114,6 +114,7 @@ contract Vesting {
     }
 
     function claim() external {
+        require(msg.sender == beneficiary, "not beneficiary");
         uint256 amount = vested() - claimed;
         claimed += amount;
         token.transfer(beneficiary, amount);
@@ -151,7 +152,7 @@ function withdraw(uint256 amount) external {
 }
 ```
 
-For multi-contract flows where reentrancy guards are insufficient, use OpenZeppelin's `ReentrancyGuard` or the transient-storage variant in newer releases. Verify the latest API against https://docs.openzeppelin.com/contracts.
+For multi-contract flows where reentrancy guards are insufficient, use OpenZeppelin's `ReentrancyGuard` or the transient-storage variant `ReentrancyGuardTransient` (OpenZeppelin v5.1+). Verify the latest API against https://docs.openzeppelin.com/contracts.
 
 ## Invariants — What Cannot Change
 

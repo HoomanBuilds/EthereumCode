@@ -200,7 +200,7 @@ Lead with liquidation incentives: *"If your loan gets risky, anyone in the world
 *"How does a token stay worth $1 with nobody controlling it? Arbitrage. If it drops to $0.99, people buy it because they can redeem it for $1 of collateral. If it goes to $1.01, people mint more and sell. Self-interest maintains the peg."*
 
 ### Oracles
-*"Smart contracts can't Google things. If your contract needs a price, someone has to put it onchain. Use Chainlink — never read prices from a DEX pool, because a flash loan can fake the price for one transaction."*
+*"Smart contracts can't Google things. If your contract needs a price, someone has to put it onchain. Use Chainlink — never read **spot** prices from a DEX pool, because a flash loan can fake the price for one transaction."*
 
 Read [references/oracles.md](references/oracles.md) before reading any external price, status, or value in a contract — it has the four guarantees every read must enforce, Chainlink staleness checks, L2 sequencer-uptime feeds, Uniswap V3 TWAP construction, pull oracles (Pyth, RedStone), cross-checking, and oracle-failure fallbacks.
 
