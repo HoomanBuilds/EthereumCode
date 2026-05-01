@@ -37,6 +37,8 @@ Read [references/agent-standards.md](references/agent-standards.md) before integ
 - **IdentityRegistry:** `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
 - **ReputationRegistry:** `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`
 
+(verify against https://github.com/erc-8004/erc-8004-contracts).
+
 **Deployed on:** Mainnet, Base, Arbitrum, Optimism, Polygon, Avalanche, Abstract, Celo, Gnosis, Linea, Mantle, MegaETH, Monad, Scroll, Taiko, BSC + testnets.
 
 **Agent Identifier Format:**
@@ -215,6 +217,7 @@ agent receives service → posts feedback (ERC-8004)
 ### x402 Server Setup (Express — Complete Example)
 
 ```typescript
+// SDK packages are young — verify current package names at https://github.com/coinbase/x402.
 import express from 'express';
 import { paymentMiddleware } from '@x402/express';
 
@@ -276,7 +279,7 @@ const weather = await response.json();
 - GPU compute: pay per second of runtime
 - Database queries: pay per row returned
 
-With `upto`, the client signs authorization for a max amount. The server settles only what was consumed. Client never overpays.
+With `upto`, the client signs authorization for a max amount. Server settles only what was consumed (note: stock USDC EIP-3009 fixes `value` at sign time, so `upto` schemes require either a wrapper contract or two-signature flow — see references/agent-standards.md).
 
 ### Facilitator Architecture
 
@@ -327,6 +330,7 @@ The full cycle: **autonomous agents discovering, trusting, paying, and rating ea
 ```
 
 ```typescript
+// Mixes ethers + viem styles for clarity; pick one library in production.
 import { x402Fetch } from '@x402/fetch';
 import { createWallet } from '@x402/evm';
 import { ethers } from 'ethers';
@@ -387,14 +391,14 @@ EOAs can authorize delegated smart-contract code execution without migrating to 
 
 | Standard | What | Status |
 |----------|------|--------|
-| ERC-8004 | Agent identity + reputation | ✅ Live Jan 2026 |
-| x402 | HTTP payments protocol | ✅ Production Q1 2026 |
-| EIP-3009 | Gasless token transfers | ✅ Live (USDC) |
-| EIP-7702 | Smart EOAs | ✅ Live May 2025 |
-| ERC-4337 | Account abstraction | ✅ Growing adoption |
-| ERC-2612 | Gasless approvals (Permit) | ✅ Widely adopted |
-| ERC-4626 | Tokenized vaults | ✅ Standard for yield |
-| ERC-6551 | Token-bound accounts (NFT wallets) | ✅ Niche adoption |
+| ERC-8004 | Agent identity + reputation | Live since Jan 2026 |
+| x402 | HTTP payments protocol | Production since Q1 2026 |
+| EIP-3009 | Gasless token transfers | Live (USDC) |
+| EIP-7702 | Smart EOAs | Live since May 2025 |
+| ERC-4337 | Account abstraction | Growing adoption |
+| ERC-2612 | Gasless approvals (Permit) | Widely adopted |
+| ERC-4626 | Tokenized vaults | Standard for yield |
+| ERC-6551 | Token-bound accounts (NFT wallets) | Niche adoption |
 
 **These are all LIVE and being used in production. Not "coming soon."**
 

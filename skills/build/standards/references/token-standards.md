@@ -182,8 +182,8 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 contract MyNFT is ERC721, ERC721URIStorage, ERC2981, Ownable {
     uint256 private _nextId = 1;
 
-    constructor(address owner) ERC721("MyNFT", "MNFT") Ownable(owner) {
-        _setDefaultRoyalty(owner, 500); // 5% — basis points
+    constructor(address initialOwner) ERC721("MyNFT", "MNFT") Ownable(initialOwner) {
+        _setDefaultRoyalty(initialOwner, 500); // 5% — basis points
     }
 
     function mint(address to, string calldata uri) external onlyOwner returns (uint256 id) {
@@ -304,8 +304,11 @@ contract YieldVault is ERC4626 {
     constructor(IERC20 asset_) ERC4626(asset_) ERC20("Yield Vault", "yvUSDC") {}
 
     // Override _decimalsOffset() to set virtual share offset (default 0)
-    function _decimalsOffset() internal pure override returns (uint8) {
-        return 6; // recommended >= 6 for inflation attack resistance
+    function _decimalsOffset() internal view override returns (uint8) {
+        // OZ default is 0 because the virtual-asset offset of 1 already neutralizes
+        // the inflation vector for most cases; raise the offset only if you have
+        // specific UX/precision concerns.
+        return 6;
     }
 }
 ```
@@ -314,7 +317,7 @@ contract YieldVault is ERC4626 {
 
 The classic ERC-4626 vulnerability. A first depositor mints 1 wei of shares, then donates assets directly to the vault (transfer to the vault address, bypassing `deposit`). Now `totalSupply = 1` and `totalAssets = 1e18`. The next depositor's shares round to zero. Their assets are stolen.
 
-**OpenZeppelin v5 mitigation:** virtual shares + virtual assets via `_decimalsOffset()`. Set offset >= 6. The vault behaves as if it had `10**offset` extra dead shares, making the attack require an economically infeasible donation. This replaces the older "burn the first 1000 shares" hack.
+**OpenZeppelin v5 mitigation:** virtual shares + virtual assets via `_decimalsOffset()`. The OZ default is 0 because the virtual-asset offset of 1 already neutralizes the inflation vector for most cases; raise the offset only if you have specific UX/precision concerns. The vault behaves as if it had `10**offset` extra dead shares, making the attack require an economically infeasible donation. This replaces the older "burn the first 1000 shares" hack.
 
 ### Rounding Direction (Standard)
 

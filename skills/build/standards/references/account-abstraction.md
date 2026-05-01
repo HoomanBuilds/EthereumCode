@@ -94,8 +94,8 @@ contract BatchExecutor {
     }
 
     function execute(Call[] calldata calls) external payable {
-        // When delegated via 7702, address(this) == EOA, msg.sender == caller of EOA.
-        // For self-sent txs, msg.sender == EOA itself.
+        // Self-call only: when the EOA invokes its own delegated code via 7702,
+        // msg.sender == EOA == address(this). External callers are rejected.
         if (msg.sender != address(this)) revert Unauthorized();
         for (uint256 i; i < calls.length; ++i) {
             (bool ok, bytes memory ret) =
@@ -118,6 +118,7 @@ contract BatchExecutor {
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+// ILLUSTRATIVE — DO NOT DEPLOY. Sig verification, nonce/replay protection, and key-expiry checks omitted for brevity.
 contract SessionKeyDelegate {
     // session-key contracts MUST be audited; this is illustrative
     struct Session {
@@ -170,6 +171,8 @@ User        Bundler         EntryPoint        Smart Account     Target
 
 Verify against https://github.com/eth-infinitism/account-abstraction. The EntryPoint is the only contract every 4337 wallet calls into. Newer versions (v0.8+) deploy at different addresses; pin the version your stack supports. Bundlers, paymasters, factories all reference this address.
 
+v0.8 is the Pectra-era default released in 2025; v0.7 is still common for legacy bundlers. Verify your bundler's supported EntryPoint at https://github.com/eth-infinitism/account-abstraction/releases.
+
 ### UserOperation (v0.7)
 
 ```solidity
@@ -178,9 +181,9 @@ struct PackedUserOperation {
     uint256 nonce;             // EntryPoint-managed nonce
     bytes initCode;            // factory + factory calldata for first-time deploy
     bytes callData;            // what the smart account should execute
-    bytes32 accountGasLimits;  // packed: verificationGasLimit (16) | callGasLimit (16)
+    bytes32 accountGasLimits;  // packed: verificationGasLimit (uint128) | callGasLimit (uint128)
     uint256 preVerificationGas;
-    bytes32 gasFees;           // packed: maxPriorityFeePerGas (16) | maxFeePerGas (16)
+    bytes32 gasFees;           // packed: maxPriorityFeePerGas (uint128) | maxFeePerGas (uint128)
     bytes paymasterAndData;    // empty if user pays gas
     bytes signature;           // smart account validates this
 }
@@ -205,7 +208,7 @@ A paymaster contract that pays gas for the UserOp. The EntryPoint refunds the bu
 - Charge in ERC-20 (user pays USDC, paymaster swaps to ETH for gas).
 - Run policy logic (whitelist contracts, rate-limit).
 
-`paymasterAndData` packs `paymaster_address || paymasterVerificationGasLimit || paymasterPostOpGasLimit || extraData`.
+`paymasterAndData` packs `address (20 bytes) | verificationGasLimit (uint128) | postOpGasLimit (uint128) | data`.
 
 ### SimpleAccount Factory
 

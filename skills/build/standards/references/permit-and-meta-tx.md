@@ -158,9 +158,10 @@ const ROUTER = "0xRouter" as const;
 const value  = 1_000_000n;                 // 1 USDC if 6 decimals
 
 // 1. Read nonce + name + version.
-const { name, version } = await publicClient.readContract({
+const result = await publicClient.readContract({
   address: TOKEN, abi: eip712DomainAbi, functionName: "eip712Domain",
-}) as unknown as { name: string; version: string };
+}) as readonly [`0x${string}`, string, string, bigint, `0x${string}`, `0x${string}`, readonly bigint[]];
+const [, name, version] = result;
 const nonce = await publicClient.readContract({
   address: TOKEN, abi: noncesAbi, functionName: "nonces", args: [account.address],
 });
@@ -189,15 +190,16 @@ const signature = await wallet.signTypedData({
 });
 
 // 3. Split sig.
-import { hexToSignature } from "viem";
-const { v, r, s } = hexToSignature(signature);
+import { parseSignature } from "viem";
+const { r, s, yParity } = parseSignature(signature);
+const v = yParity === 0 ? 27 : 28;
 
 // 4. Submit.
 await wallet.writeContract({
   address: ROUTER,
   abi: routerAbi,
   functionName: "depositWithPermit",
-  args: [TOKEN, account.address, value, deadline, Number(v), r, s],
+  args: [TOKEN, account.address, value, deadline, v, r, s],
 });
 ```
 
@@ -247,7 +249,7 @@ interface ISignatureTransfer {
 }
 
 contract Swap {
-    ISignatureTransfer constant PERMIT2 = ISignatureTransfer(0x000000000022D473030F116dDEE9F6B43aC78BA3);
+    ISignatureTransfer constant PERMIT2 = ISignatureTransfer(0x000000000022D473030F116dDEE9F6B43aC78BA3); // verify against https://github.com/Uniswap/permit2
 
     function swap(
         ISignatureTransfer.PermitTransferFrom calldata permit,
@@ -351,7 +353,7 @@ const sig = await wallet.signTypedData({
 });
 ```
 
-viem v2 returns the canonical 65-byte hex; split with `hexToSignature` for `v/r/s`.
+viem v2 returns the canonical 65-byte hex; split with `parseSignature` to get `r`, `s`, and `yParity` (derive `v` as `yParity === 0 ? 27 : 28`).
 
 ## ERC-2771 Trusted Forwarder
 

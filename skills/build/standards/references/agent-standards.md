@@ -58,7 +58,21 @@ The string in `agentURI` is interpreted by clients in priority order:
 | `https://`   | Standard HTTPS GET. Server SHOULD return `application/json`.             |
 | ENS name     | Resolve `contenthash` text record to IPFS/Arweave/HTTPS.                |
 
-The fetched JSON conforms to the ERC-8004 registration shape (see the parent flow chart in the spec). Clients SHOULD fail closed if the JSON's `type` field doesn't match `https://eips.ethereum.org/EIPS/eip-8004#registration-v1`.
+The fetched JSON conforms to the ERC-8004 registration shape — see the inlined example below. Clients SHOULD fail closed if the JSON's `type` field doesn't match `https://eips.ethereum.org/EIPS/eip-8004#registration-v1`.
+
+```json
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "WeatherBot",
+  "description": "Provides real-time weather data via x402 micropayments",
+  "services": [
+    { "name": "A2A", "endpoint": "https://weather.example.com/.well-known/agent-card.json", "version": "0.3.0" }
+  ],
+  "x402Support": true,
+  "active": true,
+  "supportedTrust": ["reputation"]
+}
+```
 
 ### Domain Verification (.well-known)
 
@@ -194,6 +208,7 @@ x402 transports payment metadata in HTTP headers. All headers are JSON-encoded.
     }
   ],
   "facilitator": "https://facilitator.x402.org",
+  "_facilitatorNote": "example only — get the live Coinbase facilitator URL from https://www.x402.org",
   "description": "Current weather data"
 }
 ```
@@ -282,7 +297,7 @@ The `nonce` is a *32-byte arbitrary value*, not a sequential counter. Clients pi
 
 ### Replay Protection
 
-Achieved by the `(authorizer, nonce)` mapping plus the `validBefore` deadline. There is no chain-id replay risk *if* the EIP-712 domain includes `chainId` (it does, per EIP-712 spec) — same signature on a different chain hashes differently, fails recovery.
+Achieved by the `(authorizer, nonce)` mapping plus the `validBefore` deadline. EIP-712 leaves `chainId` optional in the domain (per EIP-5267's fields bitmap), but USDC's domain DOES include it, so cross-chain replay is blocked for USDC. Verify per token.
 
 ## Client: Signing an EIP-3009 Authorization with viem v2
 
@@ -298,7 +313,8 @@ const wallet  = createWalletClient({ account, chain: base, transport: http() });
 const USDC = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913" as const;
 
 // 1. Random 32-byte nonce.
-const nonce = ("0x" + Buffer.from(crypto.getRandomValues(new Uint8Array(32))).toString("hex")) as `0x${string}`;
+import { toHex } from "viem";
+const nonce = toHex(crypto.getRandomValues(new Uint8Array(32))) as `0x${string}`;
 
 // 2. Build the typed data.
 const validAfter  = 0n;
@@ -359,6 +375,7 @@ For real apps, use `@x402/fetch` which handles the 402 retry loop automatically.
 ```typescript
 import { recoverTypedDataAddress, isAddressEqual, type Hex } from "viem";
 
+// ILLUSTRATIVE — production verifiers MUST resolve name/version via eip712Domain() at startup, see permit-and-meta-tx.md.
 const USDC_DOMAIN = { name: "USD Coin", version: "2", chainId: 8453,
   verifyingContract: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913" as Hex };
 
