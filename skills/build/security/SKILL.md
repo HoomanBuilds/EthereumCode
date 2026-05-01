@@ -115,7 +115,7 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 using SafeERC20 for IERC20;
 
 token.safeTransfer(to, amount);
-token.safeApprove(spender, amount);
+token.forceApprove(spender, amount); // OZ v5: safeApprove was removed; use forceApprove or safeIncreaseAllowance/safeDecreaseAllowance
 ```
 
 **Other token quirks to watch for:**
@@ -390,6 +390,7 @@ function permit(
         "\x19\x01", DOMAIN_SEPARATOR(), structHash
     ));
 
+    // In production use OZ's ECDSA.recover (rejects high-s malleability); shown raw for didactic purposes.
     address recovered = ecrecover(digest, v, r, s);
     require(recovered == owner, "Invalid signature");
 

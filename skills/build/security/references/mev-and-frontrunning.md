@@ -179,6 +179,7 @@ Uniswap's Permit2 is now the standard cross-protocol allowance manager. Users si
 Pattern for a protocol pulling tokens via Permit2:
 
 ```solidity
+// Illustrative — assume permit2 is set in a constructor.
 import {ISignatureTransfer} from "permit2/src/interfaces/ISignatureTransfer.sol";
 
 ISignatureTransfer immutable public permit2;
@@ -202,7 +203,7 @@ function deposit(
 
 Notes:
 
-- The signer is `msg.sender` only because `permitTransferFrom` checks the recovered signer matches the third argument.
+- The third argument is the `owner` (signer) of the permit. Permit2 recovers the signer from `signature` and reverts unless it equals `owner`. Pass `msg.sender` only when your protocol's design requires the caller to also be the signer; in relayer/meta-tx flows the `owner` may differ from `msg.sender`.
 - Use `SignatureTransfer` (single-shot) over `AllowanceTransfer` for one-off deposits — eliminates the standing-allowance footgun.
 
 ## L2 vs L1 MEV

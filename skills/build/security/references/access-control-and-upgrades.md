@@ -16,7 +16,8 @@ OpenZeppelin offers two patterns. Pick by use case, not by habit.
 Always prefer `AccessControl` once a protocol has more than one operational role. Combining everything under a single owner concentrates power and increases blast radius if that key is compromised.
 
 ```solidity
-import {Ownable, Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 contract Treasury is Ownable2Step {
     constructor(address initialOwner) Ownable(initialOwner) {}
@@ -158,7 +159,7 @@ contract MyV1 is Initializable, UUPSUpgradeable, Ownable2StepUpgradeable {
 
 ### `_authorizeUpgrade` must be implemented
 
-UUPSUpgradeable declares `_authorizeUpgrade` as `internal virtual`. If you forget to override it, the contract will not compile in OpenZeppelin v5 (unlike older versions where misconfigurations were permissive). Check that the override gates the call: an empty body is the bug, `onlyOwner` (or equivalent) is correct.
+UUPSUpgradeable declares `_authorizeUpgrade` as `internal virtual`. You MUST override `_authorizeUpgrade`. Forgetting it makes upgrades permissionless or impossible depending on inheritance — verify before deploying. Check that the override gates the call: an empty body is the bug, `onlyOwner` (or equivalent) is correct.
 
 ### `initializer` and `reinitializer`
 
@@ -223,9 +224,10 @@ contract Protocol is Initializable {
         mapping(address => uint256) balances;
     }
 
-    // keccak256(abi.encode(uint256(keccak256("myprotocol.main")) - 1)) & ~bytes32(uint256(0xff))
+    // PLACEHOLDER — derive YOUR slot, do not copy this expression verbatim into production without re-namespacing.
+    // ERC-7201: keccak256(abi.encode(uint256(keccak256("myprotocol.main")) - 1)) & ~bytes32(uint256(0xff))
     bytes32 private constant MAIN_STORAGE_SLOT =
-        0x0e9c4a4f7c5b4f6f4ddc6f4d52d96b5e9c0e6e7d6c5b4f6f4ddc6f4d52d96b00;
+        keccak256(abi.encode(uint256(keccak256("myprotocol.main")) - 1)) & ~bytes32(uint256(0xff));
 
     function _s() private pure returns (MainStorage storage s) {
         bytes32 slot = MAIN_STORAGE_SLOT;
@@ -240,7 +242,7 @@ contract Protocol is Initializable {
 }
 ```
 
-The namespaced slot is derived deterministically from a string identifier and the OpenZeppelin upgrades plugin verifies layout compatibility on every upgrade. Compute the slot constant from the namespace string (the example above is illustrative — derive yours, do not copy).
+The namespaced slot is derived deterministically from a string identifier and the OpenZeppelin upgrades plugin verifies layout compatibility on every upgrade. Compute the slot constant from the namespace string — the placeholder warning above applies, always re-namespace per protocol.
 
 ### Layout rules, regardless of pattern
 
@@ -260,7 +262,7 @@ Mitigations:
 
 - Split pause into "pause new entries" and "pause withdrawals". Never let the admin pause withdrawals indefinitely.
 - Make the pauser a separate role from the admin. Pause should be fast; unpause can be slower (e.g., timelocked).
-- Add an automatic unpause after N days unless extended by governance.
+- Add an automatic unblock of withdrawals after `MAX_PAUSE_WINDOW` so users can never be permanently locked out.
 - Consider not adding pause at all for genuinely-immutable contracts. Once a protocol is large enough, "we can't pause" is a feature.
 
 ```solidity
@@ -310,7 +312,7 @@ Pattern: every entry above is "missing or wrong access check / initializer guard
 - [ ] On UUPS proxies, `_authorizeUpgrade` is overridden and gated.
 - [ ] On UUPS proxies, the implementation constructor calls `_disableInitializers()`.
 - [ ] `initialize` uses `initializer`; subsequent migrations use `reinitializer(N)`.
-- [ ] `__SelfMultiCall_init` and other parent initializers are called in the right order.
+- [ ] All inherited `__X_init` parent initializers (e.g. `__Ownable_init`, `__ReentrancyGuard_init`, `__Pausable_init`, `__UUPSUpgradeable_init`) are invoked in the correct order inside the child `initialize`.
 - [ ] Storage layout uses ERC-7201 namespaced slots (or storage gaps with the OZ upgrade plugin verifying layout).
 - [ ] `forge upgrade` / Hardhat upgrades plugin is run before every upgrade and reports no layout violations.
 - [ ] Pause is split into pause-deposit and pause-withdraw, or auto-expires, or is absent.

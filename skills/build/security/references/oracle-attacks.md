@@ -36,6 +36,7 @@ contract ChainlinkReader {
     error StalePrice();
     error NegativePrice();
     error IncompleteRound();
+    error InvalidRound();
 
     constructor(address _feed, uint256 _maxStaleness) {
         feed = AggregatorV3Interface(_feed);
@@ -44,6 +45,7 @@ contract ChainlinkReader {
 
     function price() public view returns (uint256) {
         (uint80 roundId, int256 answer,, uint256 updatedAt, uint80 answeredInRound) = feed.latestRoundData();
+        if (roundId == 0) revert InvalidRound();
         if (updatedAt == 0) revert IncompleteRound();
         if (answeredInRound < roundId) revert IncompleteRound();
         if (block.timestamp - updatedAt > maxStaleness) revert StalePrice();
@@ -54,6 +56,8 @@ contract ChainlinkReader {
 ```
 
 Pick `maxStaleness` per feed. Rule of thumb: `1.5 * heartbeat`. ETH/USD on mainnet has a 1-hour heartbeat, so 5400 seconds. Verify the heartbeat for the specific feed at https://data.chain.link/ before deploying — it varies by chain and asset.
+
+On modern OCR2 aggregators (the standard since 2022), `answeredInRound == roundId` always, so this check is defense-in-depth for any legacy feed. The explicit `roundId > 0` check catches invalid rounds.
 
 ### Common mistakes
 
@@ -73,15 +77,17 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 contract L2PriceReader {
     AggregatorV3Interface public immutable sequencerUptime;
     AggregatorV3Interface public immutable priceFeed;
-    uint256 public constant GRACE_PERIOD = 3600; // 1h after sequencer comes back
+    uint256 public constant GRACE_PERIOD = 3600; // 1h is a common choice; verify recommended grace per chain at https://docs.chain.link.
 
     error SequencerDown();
     error GracePeriodNotOver();
+    error InvalidRound();
 
     function price() external view returns (uint256) {
         (, int256 answer, uint256 startedAt,,) = sequencerUptime.latestRoundData();
         // 0 = up, 1 = down
         if (answer == 1) revert SequencerDown();
+        if (startedAt == 0) revert InvalidRound();
         if (block.timestamp - startedAt < GRACE_PERIOD) revert GracePeriodNotOver();
 
         (, int256 p,, uint256 updatedAt,) = priceFeed.latestRoundData();
@@ -202,10 +208,24 @@ contract PythReader {
 }
 ```
 
+Two-step pattern: separate update from read.
+
+```solidity
+function updatePrices(bytes[] calldata updateData) external payable {
+    uint256 fee = pyth.getUpdateFee(updateData);
+    pyth.updatePriceFeeds{value: fee}(updateData);
+    if (msg.value > fee) payable(msg.sender).transfer(msg.value - fee);
+}
+
+function currentPrice(bytes32 id) external view returns (PythStructs.Price memory) {
+    return pyth.getPriceNoOlderThan(id, MAX_PRICE_AGE);
+}
+```
+
 Gotchas:
 
 - **Verify signature freshness.** `getPriceNoOlderThan` enforces the publish-time bound; never use `getPriceUnsafe`.
-- **Pay the fee.** Pyth charges per update; users must include `msg.value`.
+- **Pay the fee.** Pyth refunds excess `msg.value` only above `getUpdateFee(updateData)`; passing duplicate updates does not refund. Always compute the fee from `getUpdateFee(updateData)` and forward exactly that.
 - **Cache the update.** Multiple reads in the same transaction share the freshly-pushed value; do not call `updatePriceFeeds` twice.
 - **Replay risk.** A signed update can be submitted by anyone — that is fine because it is a price, not a transfer — but watch for griefers who submit slightly-stale updates to lock in worse prices for users; combine with a max-age check at the consumer.
 
@@ -235,7 +255,7 @@ uint256 collateralUsd = usdcAmount * 1e12; // also wrong: decimal handling
 
 // RIGHT — read the actual market price of USDC/USD
 uint256 usdcPrice = chainlinkUsdcUsd.price(); // scaled by 1e8
-uint256 collateralUsd = (usdcAmount * usdcPrice * 1e10) / 1e6; // 6 decimals * 1e10 = 1e16, / 1e6 base, scale to 18 as needed
+uint256 collateralUsd = (usdcAmount * usdcPrice * 1e10) / 1e6; // USDC amount (6 decimals) × Chainlink price (8) = 14 decimals; multiply by 1e10 to reach 24; divide by 1e6 to land at 18.
 ```
 
 Add depeg circuit breakers: if the stablecoin price drops below a threshold (e.g., 0.97), pause new borrows or refuse to mark it as $1 collateral.

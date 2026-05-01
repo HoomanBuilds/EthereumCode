@@ -144,7 +144,7 @@ Three ways to send ETH:
 
 | Method | Forwarded gas | Reverts on failure | Notes |
 |---|---|---|---|
-| `transfer(amount)` | 2300 (stipend) | Yes | Broken for proxies/Safes after EIP-1884 raised SLOAD costs. Avoid. |
+| `transfer(amount)` | 2300 (stipend) | Yes | Broken for proxies/Safes after EIP-1884 raised SLOAD costs. Berlin (EIP-2929) further raised cold-storage costs, making the 2300-gas stipend even less reliable for any non-trivial fallback. Avoid. |
 | `send(amount)` | 2300 | No (returns bool) | Same problem as transfer. Avoid. |
 | `call{value: amount}("")` | All remaining (or specified) | No (returns bool) | Use this. Always check the bool. |
 
@@ -235,22 +235,21 @@ The hot path no longer makes external calls, so reentrancy cannot disrupt it. Us
 
 ## Multicall and Reentrancy
 
-Batching helpers (Uniswap-style `multicall`) can become reentrancy vectors if a sub-call re-enters the multicall itself or shares state. Apply `nonReentrant` to the multicall entry point only; do not apply it to inner functions or all sub-calls revert with `ReentrancyGuardReentrantCall`.
+Batching helpers (Uniswap-style `multicall`) can become reentrancy vectors if a sub-call re-enters the multicall itself or shares state. OZ's pattern is `multicall` is NOT `nonReentrant`; each subfunction carries its own guard. The same lock cannot be reacquired in delegatecalled subfunctions.
 
 ```solidity
 // PATTERN
-function multicall(bytes[] calldata data) external nonReentrant returns (bytes[] memory) {
-    bytes[] memory results = new bytes[](data.length);
+function multicall(bytes[] calldata data) external returns (bytes[] memory results) {
+    results = new bytes[](data.length);
     for (uint256 i = 0; i < data.length; i++) {
         (bool ok, bytes memory ret) = address(this).delegatecall(data[i]);
         require(ok, "multicall: sub-call failed");
         results[i] = ret;
     }
-    return results;
 }
 ```
 
-Inner functions must not re-acquire the guard. In OpenZeppelin v5, only the entry point should carry `nonReentrant`.
+Inner functions carry their own `nonReentrant` modifier as needed. In OpenZeppelin v5, the entry point must not hold the same lock that subcalls require, otherwise sub-calls revert with `ReentrancyGuardReentrantCall`.
 
 ## Real Exploits, Bug Class Summary
 
@@ -261,7 +260,7 @@ Inner functions must not re-acquire the guard. In OpenZeppelin v5, only the entr
 | 2020 | imBTC Uniswap pool | ERC-777 hook re-entering swap | Same class; pool was drained ~25M USD |
 | 2021 | Cream Finance | Reentrancy via AMP token (ERC-777) | Auditors must check token standards on integration |
 | 2022 | Fei Rari | Cross-contract read-only reentrancy on cTokens | Read-only views can be stale during a call |
-| 2023 | Curve stable pools (vyper compiler bug) | Reentrancy lock corrupted by compiler | Audit covers *compiled* output, not just source |
+| 2023 | Curve stable pools (vyper compiler bug) | Reentrancy lock corrupted by compiler | Compiler-version pinning matters; integrate compiler-level CVE feeds (Vyper, solc) into dependency review, not just library updates. |
 
 Patterns repeat. Most reentrancy losses are not novel bug classes; they are old ones surfacing through a new token, a new compiler version, or a new integration.
 
