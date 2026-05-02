@@ -1,0 +1,882 @@
+[
+  {
+    "slug": "uniswap-v4-core",
+    "name": "Uniswap V4 Core",
+    "repo": "Uniswap/v4-core",
+    "description": "Core smart contracts of Uniswap v4 with hooks and singleton pool manager",
+    "category": "defi-primitives",
+    "tags": ["amm", "dex", "hooks", "v4"],
+    "stack": ["solidity", "foundry"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "uniswap-v3-core",
+    "name": "Uniswap V3 Core",
+    "repo": "Uniswap/v3-core",
+    "description": "Concentrated liquidity AMM core contracts with ranged positions",
+    "category": "defi-primitives",
+    "tags": ["amm", "dex", "concentrated-liquidity"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "uniswap-v2-core",
+    "name": "Uniswap V2 Core",
+    "repo": "Uniswap/uniswap-v2-core",
+    "description": "Classic constant product AMM pair contracts",
+    "category": "defi-primitives",
+    "tags": ["amm", "dex", "constant-product"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "aave-v4",
+    "name": "Aave V4",
+    "repo": "aave/aave-v4",
+    "description": "Aave V4 unified liquidity layer with modular hub-and-spoke architecture",
+    "category": "defi-primitives",
+    "tags": ["lending", "borrowing", "liquidity"],
+    "stack": ["solidity", "foundry"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "aave-v3-origin",
+    "name": "Aave V3 Origin",
+    "repo": "aave-dao/aave-v3-origin",
+    "description": "Aave v3.6 protocol complete codebase, Foundry-based",
+    "category": "defi-primitives",
+    "tags": ["lending", "borrowing", "flash-loans"],
+    "stack": ["solidity", "foundry"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "compound-protocol",
+    "name": "Compound Protocol",
+    "repo": "compound-finance/compound-protocol",
+    "description": "Algorithmic money market protocol for supplying and borrowing assets",
+    "category": "defi-primitives",
+    "tags": ["lending", "borrowing", "governance"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "lido-core",
+    "name": "Lido Core",
+    "repo": "lidofinance/lido-dao",
+    "description": "Liquid staking protocol core contracts for Ethereum",
+    "category": "defi-primitives",
+    "tags": ["liquid-staking", "staking", "ethereum"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "curve-contracts",
+    "name": "Curve Finance",
+    "repo": "curvefi/curve-contract",
+    "description": "Stableswap AMM contracts optimized for pegged assets",
+    "category": "defi-primitives",
+    "tags": ["amm", "stableswap", "dex"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "makerdao-mcd",
+    "name": "MakerDAO MCD",
+    "repo": "makerdao/dss",
+    "description": "Multi-Collateral Dai smart contract system",
+    "category": "defi-primitives",
+    "tags": ["cdp", "stablecoin", "dai"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "openzeppelin-contracts",
+    "name": "OpenZeppelin Contracts",
+    "repo": "OpenZeppelin/openzeppelin-contracts",
+    "description": "Battle-tested library of reusable smart contract components",
+    "category": "defi-primitives",
+    "tags": ["erc20", "erc721", "access-control", "library"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "erc4626",
+    "name": "ERC-4626 Tokenized Vault",
+    "repo": "OpenZeppelin/openzeppelin-contracts",
+    "description": "Standardized yield-bearing vault interface for DeFi composability",
+    "category": "defi-primitives",
+    "tags": ["vault", "yield", "token-standard"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "yearn-v3",
+    "name": "Yearn V3 Vaults",
+    "repo": "yearn/yearn-vaults-v3",
+    "description": "Yearn Finance V3 vault system with strategies and risk management",
+    "category": "defi-primitives",
+    "tags": ["yield", "vault", "strategies"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "balancer-v2",
+    "name": "Balancer V2",
+    "repo": "balancer/balancer-v2-monorepo",
+    "description": "Programmable liquidity protocol with weighted and stable pools",
+    "category": "defi-primitives",
+    "tags": ["amm", "dex", "weighted-pools"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "safe-contracts",
+    "name": "Safe Smart Account",
+    "repo": "safe-global/safe-smart-account",
+    "description": "Multisignature smart contract wallet with threshold signing",
+    "category": "accounts-aa",
+    "tags": ["multisig", "wallet", "safe"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "erc4337-account-abstraction",
+    "name": "ERC-4337 Account Abstraction",
+    "repo": "eth-infinitism/account-abstraction",
+    "description": "ERC-4337 account abstraction without Ethereum consensus changes",
+    "category": "accounts-aa",
+    "tags": ["erc4337", "userop", "bundler", "paymaster"],
+    "stack": ["solidity", "foundry"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "alchemy-account-kit",
+    "name": "Alchemy Account Kit",
+    "repo": "alchemyplatform/account-kit",
+    "description": "Full stack toolkit for implementing ERC-4337 account abstraction",
+    "category": "accounts-aa",
+    "tags": ["erc4337", "smart-account", "sdk"],
+    "stack": ["scaffold-eth", "wagmi", "viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "biconomy-aa-sdk",
+    "name": "Biconomy AA SDK",
+    "repo": "bcnmy/scw-contracts",
+    "description": "Account abstraction infrastructure with smart contract wallets",
+    "category": "accounts-aa",
+    "tags": ["smart-account", "gasless", "sdk"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "particle-network-aa",
+    "name": "Particle Network AA",
+    "repo": "Particle-Network/aa-connect",
+    "description": "Account abstraction wallet-as-a-service with social login",
+    "category": "accounts-aa",
+    "tags": ["smart-account", "social-login", "wallet"],
+    "stack": ["scaffold-eth", "wagmi"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "pimlico-bundler",
+    "name": "Pimlico Bundler (Alto)",
+    "repo": "pimlicolabs/alto",
+    "description": "Performant, type-safe ERC-4337 bundler in TypeScript",
+    "category": "accounts-aa",
+    "tags": ["bundler", "erc4337", "userop"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "zero-dev",
+    "name": "ZeroDev Smart Account",
+    "repo": "zerodevapp/zero-dev",
+    "description": "Developer toolkit for building with account abstraction",
+    "category": "accounts-aa",
+    "tags": ["smart-account", "sdk", "erc4337"],
+    "stack": ["solidity", "viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "op-stack",
+    "name": "OP Stack",
+    "repo": "ethereum-optimism/optimism",
+    "description": "Modular L2 stack powering Optimism and the Superchain",
+    "category": "l2-frameworks",
+    "tags": ["rollup", "superchain", "op-stack"],
+    "stack": ["solidity"],
+    "chains": ["optimism", "base", "any-evm"]
+  },
+  {
+    "slug": "arbitrum-nitro",
+    "name": "Arbitrum Nitro",
+    "repo": "OffchainLabs/arbitrum",
+    "description": "Arbitrum Nitro rollup stack with WASM fraud proofs",
+    "category": "l2-frameworks",
+    "tags": ["rollup", "nitro", "fraud-proofs"],
+    "stack": ["solidity"],
+    "chains": ["arbitrum", "any-evm"]
+  },
+  {
+    "slug": "zksync-era",
+    "name": "zkSync Era",
+    "repo": "matter-labs/zksync-era",
+    "description": "zkSync Era L2 with ZK validity proofs",
+    "category": "l2-frameworks",
+    "tags": ["zk-rollup", "zkevm", "validity-proofs"],
+    "stack": ["solidity"],
+    "chains": ["zksync", "any-evm"]
+  },
+  {
+    "slug": "polygon-cdk",
+    "name": "Polygon CDK",
+    "repo": "0xPolygon/cdk",
+    "description": "Polygon Chain Development Kit for building ZK-powered L2s",
+    "category": "l2-frameworks",
+    "tags": ["cdk", "zk-rollup", "validium"],
+    "stack": ["solidity"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "caldera-rollup",
+    "name": "Caldera Rollup-as-a-Service",
+    "repo": "calderachainxyz/caldera",
+    "description": "Launch custom L2 rollups with OP Stack or Arbitrum Orbit",
+    "category": "l2-frameworks",
+    "tags": ["rass", "l2", "rollup"],
+    "stack": ["solidity"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "scroll-zkevm",
+    "name": "Scroll zkEVM",
+    "repo": "scroll-tech/scroll",
+    "description": "zkEVM-based Layer 2 scaling solution for Ethereum",
+    "category": "l2-frameworks",
+    "tags": ["zkevm", "rollup", "snark"],
+    "stack": ["solidity"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "base-contracts",
+    "name": "Base Contracts",
+    "repo": "base-org/contracts",
+    "description": "Coinbase Base L2 contracts and development resources",
+    "category": "l2-frameworks",
+    "tags": ["base", "coinbase", "superchain"],
+    "stack": ["solidity"],
+    "chains": ["base"]
+  },
+  {
+    "slug": "zk-kit-noir",
+    "name": "ZK-Kit Noir",
+    "repo": "zk-kit/zk-kit.noir",
+    "description": "Reusable Noir ZK circuit library with merkle trees and ECDH",
+    "category": "zk",
+    "tags": ["noir", "circuits", "zk-snark"],
+    "stack": ["noir"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "zk-kit-circom",
+    "name": "ZK-Kit Circom",
+    "repo": "zk-kit/zk-kit.circom",
+    "description": "Reusable Circom circuit library for zero-knowledge protocols",
+    "category": "zk",
+    "tags": ["circom", "circuits", "zk-snark"],
+    "stack": ["solidity"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "circom-compiler",
+    "name": "Circom zkSNARK Compiler",
+    "repo": "iden3/circom",
+    "description": "Domain-specific language and compiler for arithmetic ZK circuits",
+    "category": "zk",
+    "tags": ["circom", "compiler", "r1cs", "snarkjs"],
+    "stack": ["solidity"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "halo2",
+    "name": "Halo2 ZK Proving System",
+    "repo": "zcash/halo2",
+    "description": "Halo2 zero-knowledge proving system in Rust with PLONKish arithmetization",
+    "category": "zk",
+    "tags": ["halo2", "plonk", "rust", "proving-system"],
+    "stack": ["noir"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "zk-regex",
+    "name": "ZK Regex",
+    "repo": "zkemail/zk-regex",
+    "description": "Regex verification library for Circom, Halo2, and Noir",
+    "category": "zk",
+    "tags": ["zk-email", "regex", "circom", "halo2"],
+    "stack": ["solidity", "noir"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "snarkjs",
+    "name": "snarkJS",
+    "repo": "iden3/snarkjs",
+    "description": "JavaScript and WASM library for zkSNARKs (Groth16, PLONK)",
+    "category": "zk",
+    "tags": ["snarkjs", "groth16", "plonk", "wasm"],
+    "stack": ["solidity"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "noir-lang",
+    "name": "Noir Programming Language",
+    "repo": "noir-lang/noir",
+    "description": "Domain-specific language for zkSNARKs backed by Aztec",
+    "category": "zk",
+    "tags": ["noir", "dsl", "zk-programs"],
+    "stack": ["noir"],
+    "chains": ["any-evm"]
+  },
+  {
+    "slug": "ponder",
+    "name": "Ponder",
+    "repo": "ponder-sh/ponder",
+    "description": "TypeScript framework for fast EVM data indexing with Postgres + GraphQL",
+    "category": "indexing",
+    "tags": ["indexing", "typescript", "graphql", "postgres"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "envio-hyperindex",
+    "name": "Envio HyperIndex",
+    "repo": "enviodev/hyperindex",
+    "description": "Multi-chain indexer with HyperSync for fast historical indexing",
+    "category": "indexing",
+    "tags": ["indexing", "hypersync", "multi-chain"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "goldsky-docs",
+    "name": "Goldsky Documentation & Examples",
+    "repo": "goldsky-io/documentation-examples",
+    "description": "Example implementations of Goldsky Mirror Pipelines and Subgraphs",
+    "category": "indexing",
+    "tags": ["subgraph", "mirror", "pipeline"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "the-graph-indexer",
+    "name": "The Graph Indexer",
+    "repo": "graphprotocol/indexer",
+    "description": "Graph Protocol indexer agent and CLI for The Graph Network",
+    "category": "indexing",
+    "tags": ["subgraph", "graphql", "indexer"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "subquery",
+    "name": "SubQuery Network",
+    "repo": "subquery/subql",
+    "description": "Data indexer for multi-chain Web3 apps with GraphQL",
+    "category": "indexing",
+    "tags": ["subquery", "graphql", "indexer"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "mev-boost",
+    "name": "MEV-Boost",
+    "repo": "flashbots/mev-boost",
+    "description": "Proposer-builder separation middleware for PoS Ethereum validators",
+    "category": "mev",
+    "tags": ["mev", "proposer-builder-separation", "relay"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "mev-template-rs",
+    "name": "MEV Template",
+    "repo": "paradigmxyz/mev-template-rs",
+    "description": "Rust template for building MEV bots and searchers",
+    "category": "mev",
+    "tags": ["mev", "searcher", "rust"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "go-boost-utils",
+    "name": "Go Boost Utils",
+    "repo": "flashbots/go-boost-utils",
+    "description": "Go utilities for MEV-Boost builder and relay implementations",
+    "category": "mev",
+    "tags": ["mev", "builder", "relay", "go"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "etherspot-premian",
+    "name": "Etherspot MEV Protection",
+    "repo": "etherspot/etherspot-premium",
+    "description": "MEV protection and transaction optimization service",
+    "category": "mev",
+    "tags": ["mev-protection", "transaction-ordering"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "foundry",
+    "name": "Foundry",
+    "repo": "foundry-rs/foundry",
+    "description": "Blazing fast, portable and modular toolkit for Ethereum development",
+    "category": "tooling",
+    "tags": ["forge", "cast", "anvil", "chisel", "testing"],
+    "stack": ["solidity", "foundry"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "hardhat",
+    "name": "Hardhat",
+    "repo": "NomicFoundation/hardhat",
+    "description": "Ethereum development environment with debugging and testing",
+    "category": "tooling",
+    "tags": ["hardhat", "testing", "debugging", "typescript"],
+    "stack": ["hardhat"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "wagmi",
+    "name": "Wagmi",
+    "repo": "wevm/wagmi",
+    "description": "Reactive TypeScript primitives for Ethereum dApp frontends",
+    "category": "tooling",
+    "tags": ["react", "hooks", "frontend", "web3"],
+    "stack": ["wagmi", "viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "viem",
+    "name": "Viem",
+    "repo": "wevm/viem",
+    "description": "TypeScript interface for Ethereum with low-level primitives",
+    "category": "tooling",
+    "tags": ["typescript", "ethers", "rpc", "abi"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "scaffold-eth-2",
+    "name": "Scaffold-ETH 2",
+    "repo": "scaffold-eth/scaffold-eth-2",
+    "description": "Open-source forkable Ethereum dApp dev stack with NextJS and RainbowKit",
+    "category": "tooling",
+    "tags": ["dapp", "nextjs", "rainbowkit", "starter-kit"],
+    "stack": ["scaffold-eth", "wagmi", "viem", "foundry", "hardhat"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "ethers-js",
+    "name": "Ethers.js",
+    "repo": "ethers-io/ethers.js",
+    "description": "Complete Ethereum wallet and utilities library in JavaScript",
+    "category": "tooling",
+    "tags": ["javascript", "wallet", "rpc", "abi"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "openzeppelin-foundry-upgrades",
+    "name": "OpenZeppelin Foundry Upgrades",
+    "repo": "OpenZeppelin/openzeppelin-foundry-upgrades",
+    "description": "Foundry plugin for deploying upgradeable contracts",
+    "category": "tooling",
+    "tags": ["upgradeable", "proxy", "foundry"],
+    "stack": ["solidity", "foundry"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "chainlink-contracts",
+    "name": "Chainlink Contracts",
+    "repo": "smartcontractkit/chainlink",
+    "description": "Chainlink oracle network contracts and data feeds",
+    "category": "infra",
+    "tags": ["oracle", "data-feeds", "vrf", "automation"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "pyth-network",
+    "name": "Pyth Network",
+    "repo": "pyth-network/pyth-sdk-solidity",
+    "description": "High-frequency oracle price feeds for EVM chains",
+    "category": "infra",
+    "tags": ["oracle", "price-feeds", "defi"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "ens-contracts",
+    "name": "ENS Contracts",
+    "repo": "ensdomains/ens-contracts",
+    "description": "Ethereum Name Service smart contracts for on-chain naming",
+    "category": "infra",
+    "tags": ["ens", "naming", "identity"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "ipfs-kubo",
+    "name": "IPFS Kubo",
+    "repo": "ipfs/kubo",
+    "description": "Reference implementation of the IPFS protocol for decentralized storage",
+    "category": "infra",
+    "tags": ["ipfs", "storage", "cid"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "the-witness-machine",
+    "name": "Witness Machine",
+    "repo": "a16z/witness-machine",
+    "description": "Infrastructure tooling for Ethereum consensus and validator operations",
+    "category": "infra",
+    "tags": ["consensus", "validator", "beacon-chain"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "ethereum-list-chains",
+    "name": "EVM Chain List",
+    "repo": "ethereum-lists/chains",
+    "description": "Canonical registry of EVM chain IDs with RPC, explorer, and native currency info",
+    "category": "infra",
+    "tags": ["chain-registry", "evm", "rpc"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "ethereum-verify-contract-source",
+    "name": "Sourcify",
+    "repo": "ethereum/sourcify",
+    "description": "Source code verification service for Ethereum smart contracts",
+    "category": "infra",
+    "tags": ["verification", "sourcify", "abi"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "rainbowkit",
+    "name": "RainbowKit",
+    "repo": "rainbow-me/rainbowkit",
+    "description": "Best-in-class wallet connection toolkit for React dApps",
+    "category": "tooling",
+    "tags": ["wallet", "connect", "react", "ui"],
+    "stack": ["wagmi", "viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "etherscan-verify",
+    "name": "Etherscan Contract Verification",
+    "repo": "etherscan/etherscan-sourcecode-verifier",
+    "description": "Official Etherscan contract verification tools and APIs",
+    "category": "tooling",
+    "tags": ["etherscan", "verification", "explorer"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "alchemy-sdk",
+    "name": "Alchemy SDK",
+    "repo": "alchemyplatform/alchemy-sdk-js",
+    "description": "JavaScript SDK for Alchemy's enhanced Ethereum APIs",
+    "category": "infra",
+    "tags": ["alchemy", "enhanced-api", "nft-api"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "gelato-automation",
+    "name": "Gelato Automation",
+    "repo": "gelatodigital/gelato-sdk",
+    "description": "Decentralized automation infrastructure for smart contracts",
+    "category": "infra",
+    "tags": ["automation", "keepers", "scheduled-tx"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "umbrella-network",
+    "name": "Umbrella Network",
+    "repo": "umbr-network/contracts",
+    "description": "Scalable oracle infrastructure with Layer 2 data aggregation",
+    "category": "infra",
+    "tags": ["oracle", "data-aggregation", "price-feeds"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "redstone-oracles",
+    "name": "Redstone Oracles",
+    "repo": "redstone-finance/redstone-oracles-monorepo",
+    "description": "Push-based oracle for rollups with gasless price updates",
+    "category": "infra",
+    "tags": ["oracle", "push-model", "rollup"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "tenderly-cli",
+    "name": "Tenderly CLI",
+    "repo": "Tenderly/tenderly-cli",
+    "description": "CLI for Tenderly's smart contract observability and debugging platform",
+    "category": "tooling",
+    "tags": ["debugging", "observability", "simulation"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "slither",
+    "name": "Slither Static Analyzer",
+    "repo": "crytic/slither",
+    "description": "Solidity static analysis framework for security auditing",
+    "category": "tooling",
+    "tags": ["security", "static-analysis", "auditing"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "solady",
+    "name": "Solady",
+    "repo": "Vectorized/solady",
+    "description": "Highly optimized Solidity contract library with gas-efficient primitives",
+    "category": "tooling",
+    "tags": ["library", "gas-optimization", "erc20", "erc721"],
+    "stack": ["solidity", "foundry"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "solmate",
+    "name": "Solmate",
+    "repo": "transmissions11/solmate",
+    "description": "Gas-optimized Solidity contracts from Paradigm",
+    "category": "tooling",
+    "tags": ["library", "gas-optimization", "erc20", "erc721"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "create-eth",
+    "name": "create-eth",
+    "repo": "scaffold-eth/create-eth",
+    "description": "CLI for scaffolding Scaffold-ETH 2 projects with extensions",
+    "category": "tooling",
+    "tags": ["cli", "scaffolding", "dapp"],
+    "stack": ["scaffold-eth", "wagmi", "viem", "foundry", "hardhat"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "hardhat-foundry",
+    "name": "Hardhat Ignition",
+    "repo": "NomicFoundation/hardhat-ignition",
+    "description": "Declarative deployment system for Hardhat",
+    "category": "tooling",
+    "tags": ["deployment", "hardhat", "ignition"],
+    "stack": ["hardhat"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "openzeppelin-wizard",
+    "name": "OpenZeppelin Wizard",
+    "repo": "OpenZeppelin/contracts-wizard",
+    "description": "Interactive smart contract generator for upgradeable and non-upgradeable contracts",
+    "category": "tooling",
+    "tags": ["wizard", "codegen", "upgradeable"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "etherscan-etherscan-api",
+    "name": "Etherscan API",
+    "repo": "etherscan/api",
+    "description": "Official Etherscan API documentation and SDK for blockchain data",
+    "category": "infra",
+    "tags": ["explorer", "api", "blockchain-data"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "etherscan-blockscout",
+    "name": "Blockscout",
+    "repo": "blockscout/blockscout",
+    "description": "Open-source block explorer for EVM chains",
+    "category": "infra",
+    "tags": ["explorer", "blockchain-data", "open-source"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "chainstack-rpc",
+    "name": "Chainstack Node Infrastructure",
+    "repo": "chainstack/docs",
+    "description": "Managed Ethereum node infrastructure with archive and trace APIs",
+    "category": "infra",
+    "tags": ["node", "rpc", "archive", "infrastructure"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "zksync", "any-evm"]
+  },
+  {
+    "slug": "alchemy-mev-protect",
+    "name": "Alchemy MEV Protect",
+    "repo": "alchemyplatform/mev-guarded-tx",
+    "description": "MEV-protected transaction submission via Alchemy infrastructure",
+    "category": "mev",
+    "tags": ["mev-protection", "rpc", "private-tx"],
+    "stack": ["viem"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "flashbots-protect",
+    "name": "Flashbots Protect RPC",
+    "repo": "flashbots/flashbots-protect-rpc",
+    "description": "MEV-protected transaction RPC for frontrunning protection",
+    "category": "mev",
+    "tags": ["mev-protection", "rpc", "private-mempool"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "flashbots-mev-inspect",
+    "name": "Flashbots MEV-Inspect",
+    "repo": "flashbots/mev-inspect-py",
+    "description": "MEV data pipeline for analyzing on-chain MEV activity",
+    "category": "mev",
+    "tags": ["mev", "analytics", "data-pipeline"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "cow-protocol",
+    "name": "CoW Protocol",
+    "repo": "cowprotocol/contracts",
+    "description": "MEV-protected intent-based DEX with batch auctions",
+    "category": "defi-primitives",
+    "tags": ["dex", "intents", "batch-auction", "mev-protection"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "gnosis"]
+  },
+  {
+    "slug": "uniswap-permit2",
+    "name": "Uniswap Permit2",
+    "repo": "Uniswap/permit2",
+    "description": "Gas-optimized token approval and batched signature-based transfers",
+    "category": "defi-primitives",
+    "tags": ["permit", "erc20", "approval", "signature"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "morpho-blue",
+    "name": "Morpho Blue",
+    "repo": "morpho-org/morpho-blue",
+    "description": "Permissionless lending market with isolated risk compartments",
+    "category": "defi-primitives",
+    "tags": ["lending", "isolated-risk", "permissionless"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base"]
+  },
+  {
+    "slug": "eigenlayer-contracts",
+    "name": "EigenLayer",
+    "repo": "Layr-Layer/eigenlayer-contracts",
+    "description": "Restaking protocol for extending Ethereum trust to additional services",
+    "category": "infra",
+    "tags": ["restaking", "avs", "slashing"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "layerzero-protocol",
+    "name": "LayerZero V2",
+    "repo": "LayerZero-Labs/LayerZero-v2",
+    "description": "Omnichain interoperability protocol for cross-chain messaging",
+    "category": "infra",
+    "tags": ["cross-chain", "messaging", "omnichain"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "hyperlane",
+    "name": "Hyperlane",
+    "repo": "hyperlane-xyz/hyperlane-monorepo",
+    "description": "Permissionless interoperability protocol for cross-chain communication",
+    "category": "infra",
+    "tags": ["cross-chain", "messaging", "interop"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "axelar-core",
+    "name": "Axelar Core",
+    "repo": "axelarnetwork/axelar-cgp-solidity",
+    "description": "Cross-chain communication and asset transfer protocol contracts",
+    "category": "infra",
+    "tags": ["cross-chain", "interoperability", "asset-transfer"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "etherscan-address-metadata",
+    "name": "Ethereum Lists Token Lists",
+    "repo": "ethereum-lists/tokens",
+    "description": "Community-maintained token list with verified metadata for ERC-20 tokens",
+    "category": "infra",
+    "tags": ["token-list", "erc20", "metadata"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "reth",
+    "name": "Reth (Rust Ethereum)",
+    "repo": "paradigmxyz/reth",
+    "description": "Modular, contributor-friendly Ethereum execution client in Rust",
+    "category": "infra",
+    "tags": ["execution-client", "rust", "node"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism"]
+  },
+  {
+    "slug": "lighthouse",
+    "name": "Lighthouse Consensus Client",
+    "repo": "sigp/lighthouse",
+    "description": "Rust-based Ethereum consensus client focused on performance and security",
+    "category": "infra",
+    "tags": ["consensus-client", "beacon-chain", "rust"],
+    "stack": ["solidity"],
+    "chains": ["mainnet"]
+  },
+  {
+    "slug": "etherscan-multicall",
+    "name": "Multicall",
+    "repo": "makerdao/multicall",
+    "description": "Aggregate multiple contract calls in a single transaction",
+    "category": "tooling",
+    "tags": ["multicall", "batch", "rpc"],
+    "stack": ["solidity"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  },
+  {
+    "slug": "etherscan-cannon",
+    "name": "Cannon",
+    "repo": "usecannon/cannon",
+    "description": "Deterministic deployment and package management for Ethereum smart contracts",
+    "category": "tooling",
+    "tags": ["deployment", "package-manager", "deterministic"],
+    "stack": ["solidity", "foundry"],
+    "chains": ["mainnet", "base", "arbitrum", "optimism", "any-evm"]
+  }
+]

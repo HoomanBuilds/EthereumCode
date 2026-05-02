@@ -1,0 +1,219 @@
+[
+  {
+    "name": "foundry-mcp",
+    "repo": "g130139/foundry-mcp-server",
+    "description": "Foundry MCP server for forge build, test, deploy, cast calls, and anvil management",
+    "transport": "stdio",
+    "tools": ["forge_build", "forge_test", "forge_deploy", "cast_call", "cast_send", "anvil_start", "forge_inspect"]
+  },
+  {
+    "name": "alchemy-mcp",
+    "repo": "alchemyplatform/alchemy-mcp",
+    "description": "Alchemy enhanced API access — NFT metadata, token balances, transact API, and webhook management",
+    "transport": "stdio",
+    "tools": ["get_token_balances", "get_nft_metadata", "send_transaction", "get_asset_transfers", "create_webhook"]
+  },
+  {
+    "name": "etherscan-mcp",
+    "repo": "tomguluson92/etherscan-mcp-server",
+    "description": "Etherscan API integration for contract verification, source code retrieval, and transaction lookup",
+    "transport": "stdio",
+    "tools": ["get_source_code", "verify_contract", "get_transaction", "get_block", "get_account_balance", "get_logs"]
+  },
+  {
+    "name": "ethereum-mcp",
+    "repo": "kumikoder/ethereum-mcp",
+    "description": "Ethereum consensus specs, EIP search, and protocol documentation via MCP",
+    "transport": "stdio",
+    "tools": ["search_eips", "get_eip", "get_consensus_spec", "search_glossary"]
+  },
+  {
+    "name": "viem-mcp",
+    "repo": "paraspickle/viem-mcp",
+    "description": "Viem-based MCP for reading blockchain state, calling contracts, and sending transactions",
+    "transport": "stdio",
+    "tools": ["read_contract", "write_contract", "get_balance", "get_block_number", "get_transaction_receipt"]
+  },
+  {
+    "name": "tenderly-mcp",
+    "repo": "Tenderly/tenderly-mcp",
+    "description": "Tenderly simulation, debugging, and transaction tracing via MCP",
+    "transport": "http",
+    "tools": ["simulate_transaction", "trace_transaction", "decode_transaction", "get_error_trace", "create_alert"]
+  },
+  {
+    "name": "dune-mcp",
+    "repo": "Cofearabis/dune-mcp-server",
+    "description": "Dune Analytics query execution and dashboard data access via MCP",
+    "transport": "stdio",
+    "tools": ["execute_query", "get_query_result", "list_queries", "create_query"]
+  },
+  {
+    "name": "the-graph-mcp",
+    "repo": "graphprotocol/graph-mcp",
+    "description": "Query The Graph subgraphs for indexed blockchain data via GraphQL",
+    "transport": "http",
+    "tools": ["query_subgraph", "list_subgraphs", "get_subgraph_schema"]
+  },
+  {
+    "name": "ens-mcp",
+    "repo": "scaffold-eth/ens-mcp-server",
+    "description": "ENS name resolution, reverse resolution, and text record management",
+    "transport": "stdio",
+    "tools": ["resolve_name", "lookup_address", "get_text_record", "set_text_record"]
+  },
+  {
+    "name": "opensea-mcp",
+    "repo": "ProjectOpenSea/opensea-mcp-server",
+    "description": "OpenSea API for NFT metadata, collection stats, listing data, and trait analysis",
+    "transport": "http",
+    "tools": ["get_nft_metadata", "get_collection_stats", "get_listings", "get_offers", "get_traits"]
+  },
+  {
+    "name": "infura-mcp",
+    "repo": "Consensys/infura-mcp-server",
+    "description": "Infura RPC access for Ethereum network data, IPFS pinning, and Truffle debugging",
+    "transport": "http",
+    "tools": ["get_block", "get_transaction", "call_contract", "pin_to_ipfs", "get_receipt"]
+  },
+  {
+    "name": "chainlink-mcp",
+    "repo": "smartcontractkit/chainlink-mcp",
+    "description": "Chainlink price feed data, VRF requests, and automation status via MCP",
+    "transport": "stdio",
+    "tools": ["get_price_feed", "get_vrf_status", "get_automation_jobs", "get_feed_history"]
+  },
+  {
+    "name": "uniswap-mcp",
+    "repo": "Uniswap/uniswap-mcp-server",
+    "description": "Uniswap V3/V4 pool data, quote calculations, and liquidity analysis",
+    "transport": "stdio",
+    "tools": ["get_pool_state", "get_quote", "get_positions", "calculate_liquidity", "get_fees"]
+  },
+  {
+    "name": "aave-mcp",
+    "repo": "aave/aave-mcp-server",
+    "description": "Aave V3 protocol data — reserves, positions, rates, and liquidation calculations",
+    "transport": "stdio",
+    "tools": ["get_reserve_data", "get_user_position", "get_rates", "calculate_liquidation_price"]
+  },
+  {
+    "name": "blockscout-mcp",
+    "repo": "blockscout/mcp-server",
+    "description": "Blockscout explorer API for contract verification, transactions, and addresses",
+    "transport": "http",
+    "tools": ["get_address", "get_transaction", "get_contract", "search", "get_block"]
+  },
+  {
+    "name": "covalent-mcp",
+    "repo": "covalenthq/covalent-mcp-server",
+    "description": "Covalent unified API for historical balances, token transfers, and NFT data across chains",
+    "transport": "http",
+    "tools": ["get_balances", "get_transfers", "get_transactions", "get_nft_metadata", "get_token_holders"]
+  },
+  {
+    "name": "moralis-mcp",
+    "repo": "MoralisWeb3/moralis-mcp-server",
+    "description": "Moralis Web3 API for wallet portfolios, NFTs, token prices, and defi positions",
+    "transport": "http",
+    "tools": ["get_wallet_portfolio", "get_nft_transfers", "get_token_price", "get_defi_positions"]
+  },
+  {
+    "name": "debank-mcp",
+    "repo": "debank-openapi/debank-mcp",
+    "description": "DeBank Open API for wallet portfolio, transaction history, and protocol breakdown",
+    "transport": "http",
+    "tools": ["get_portfolio", "get_history", "get_protocol_balance", "get_user_tokens"]
+  },
+  {
+    "name": "slither-mcp",
+    "repo": "crytic/slither-mcp",
+    "description": "Slither static analysis integration for smart contract security scanning via MCP",
+    "transport": "stdio",
+    "tools": ["analyze_contract", "get_findings", "get_detectors", "get_severity"]
+  },
+  {
+    "name": "hardhat-mcp",
+    "repo": "NomicFoundation/hardhat-mcp",
+    "description": "Hardhat development server management — compile, test, deploy, and console via MCP",
+    "transport": "stdio",
+    "tools": ["compile", "test", "deploy", "run_script", "console_log", "network_fork"]
+  },
+  {
+    "name": "ankr-mcp",
+    "repo": "ankr-network/ankr-mcp-server",
+    "description": "Ankr Multi-Chain API for wallet data, NFTs, token metadata, and raw RPC access",
+    "transport": "http",
+    "tools": ["get_wallet_balance", "get_nft_collection", "get_token_metadata", "get_raw_blockchain_data"]
+  },
+  {
+    "name": "defillama-mcp",
+    "repo": "DefiLlama/defillama-mcp",
+    "description": "DefiLlama API access for TVL data, yield farming rates, and protocol metrics",
+    "transport": "http",
+    "tools": ["get_protocol_tvl", "get_chains_tvl", "get_yields", "get_forks", "get_historical_tvl"]
+  },
+  {
+    "name": "sourcify-mcp",
+    "repo": "ethereum/sourcify-mcp",
+    "description": "Sourcify verified contract source retrieval and metadata verification",
+    "transport": "http",
+    "tools": ["get_verified_source", "get_metadata", "check_verification", "list_verified_contracts"]
+  },
+  {
+    "name": "openzeppelin-mcp",
+    "repo": "OpenZeppelin/openzeppelin-mcp",
+    "description": "OpenZeppelin contract wizard and library access for generating verified smart contracts",
+    "transport": "stdio",
+    "tools": ["generate_erc20", "generate_erc721", "generate_governor", "generate_proxy", "get_upgradeable_template"]
+  },
+  {
+    "name": "pimlico-mcp",
+    "repo": "pimlicolabs/pimlico-mcp",
+    "description": "Pimlico bundler and paymaster API for ERC-4337 account abstraction operations",
+    "transport": "http",
+    "tools": ["send_user_operation", "estimate_gas", "get_paymaster_data", "get_bundler_status"]
+  },
+  {
+    "name": "gasnow-mcp",
+    "repo": "ethgasstation/gasnow-mcp",
+    "description": "Real-time Ethereum gas price estimation and historical gas data",
+    "transport": "http",
+    "tools": ["get_gas_prices", "get_historical_gas", "estimate_tx_cost"]
+  },
+  {
+    "name": "gelato-mcp",
+    "repo": "gelatodigital/gelato-mcp",
+    "description": "Gelato automation API for scheduling smart contract executions and resolver patterns",
+    "transport": "http",
+    "tools": ["create_task", "list_tasks", "get_task_status", "cancel_task"]
+  },
+  {
+    "name": "snapshot-mcp",
+    "repo": "snapshot-labs/snapshot-mcp",
+    "description": "Snapshot governance API for proposal creation, voting data, and space management",
+    "transport": "http",
+    "tools": ["get_proposals", "get_votes", "create_proposal", "get_space_info"]
+  },
+  {
+    "name": "safe-mcp",
+    "repo": "safe-global/safe-mcp",
+    "description": "Safe{Wallet} API for multisig transaction proposal, signing, and execution",
+    "transport": "http",
+    "tools": ["propose_transaction", "get_pending_transactions", "sign_transaction", "get_safe_balance"]
+  },
+  {
+    "name": "ponder-mcp",
+    "repo": "ponder-sh/ponder-mcp",
+    "description": "Ponder indexing framework integration for building and deploying custom indexers",
+    "transport": "stdio",
+    "tools": ["create_indexer", "deploy_indexer", "query_indexer", "get_indexer_status"]
+  },
+  {
+    "name": "eigenlayer-mcp",
+    "repo": "Layr-Layer/eigenlayer-mcp",
+    "description": "EigenLayer restaking API for operator registration, delegation, and AVS management",
+    "transport": "http",
+    "tools": ["get_operator_info", "get_delegation_status", "get_avs_list", "calculate_rewards"]
+  }
+]
