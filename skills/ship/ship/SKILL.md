@@ -5,6 +5,8 @@ description: End-to-end guide for AI agents — from a dApp idea to deployed pro
 
 # Ship a dApp
 
+Read [references/archetype-blueprints.md](references/archetype-blueprints.md) before writing contracts, [references/launch-runbook.md](references/launch-runbook.md) before deploying to production, and [references/post-mvp-iteration.md](references/post-mvp-iteration.md) after launch.
+
 ## What You Probably Got Wrong
 
 **You jump to code without a plan.** Before writing a single line of Solidity, you need to know: what goes onchain, what stays offchain, which chain, how many contracts, and who calls every function. Skip this and you'll rewrite everything.
