@@ -5,6 +5,8 @@ description: The complete build-to-production pipeline for Ethereum dApps. Fork 
 
 # Frontend Playbook
 
+Read [references/ipfs-deploy.md](references/ipfs-deploy.md) before running an IPFS build, [references/ens-and-domains.md](references/ens-and-domains.md) before pointing a name at a CID, and [references/vercel-and-monorepo.md](references/vercel-and-monorepo.md) when the target is Vercel or a monorepo deploy.
+
 ## What You Probably Got Wrong
 
 **"I'll use `yarn chain`."** Wrong. `yarn chain` gives you an empty local chain with no protocols, no tokens, no state. `yarn fork --network base` gives you a copy of real Base with Uniswap, Aave, USDC, real whale balances — everything (verified addresses: `addresses/SKILL.md`). Always fork.
