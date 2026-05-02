@@ -5,6 +5,8 @@ description: How to create, manage, and use Ethereum wallets. Covers EOAs, smart
 
 # Wallets on Ethereum
 
+Read [references/safe-multisig.md](references/safe-multisig.md) before installing modules or guards on a Safe, [references/aa-and-7702.md](references/aa-and-7702.md) before picking between ERC-4337 and EIP-7702, and [references/key-management.md](references/key-management.md) before deciding where any production key lives.
+
 ## What You Probably Got Wrong
 
 **EIP-7702 is live.** Since Pectra (May 7, 2025), regular EOAs can delegate execution to smart-contract code without migrating wallets. This enables batching, gas sponsorship, and session-key-style UX. This is NOT "coming soon." It shipped. 
