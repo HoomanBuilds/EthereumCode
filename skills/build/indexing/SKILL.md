@@ -5,6 +5,8 @@ description: How to read and query onchain data — events, The Graph, indexing 
 
 # Onchain Data & Indexing
 
+Read [references/event-design.md](references/event-design.md) before adding events to a contract or running raw `eth_getLogs`, [references/subgraph-recipes.md](references/subgraph-recipes.md) before authoring schemas or factory data sources for The Graph, and [references/ponder-and-alternatives.md](references/ponder-and-alternatives.md) before choosing between Ponder, Goldsky, Envio, or rolling your own indexer.
+
 ## What You Probably Got Wrong
 
 **You try to query historical state via RPC calls.** You can't cheaply read past state. `eth_call` reads current state. Reading state at a historical block requires an archive node (expensive, slow). For historical data, you need an indexer.
