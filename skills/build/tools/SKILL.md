@@ -15,6 +15,16 @@ description: Current Ethereum development tools, frameworks, libraries, RPCs, an
 
 **Foundry is the default for new projects in 2026.** Not Hardhat. 10-100x faster tests, Solidity-native testing, built-in fuzzing.
 
+Read [references/foundry-deep-dive.md](references/foundry-deep-dive.md) before configuring `foundry.toml`, writing tests, or running `forge script` — it covers profiles, optimizer/IR tradeoffs, every cheatcode you'll actually use, deploy/verify flows, and CREATE2 prediction.
+
+Read [references/anvil-and-forking.md](references/anvil-and-forking.md) before writing fork tests or running a local node — it covers `vm.createSelectFork`, time travel, persistent contracts, state dumps, archive-vs-full requirements, and L2-specific gotchas.
+
+Read [references/viem-and-wagmi.md](references/viem-and-wagmi.md) before writing TypeScript clients — it covers viem v2 client setup, multicall batching, simulate-then-write, EIP-712 / EIP-7702, and migration from ethers v6.
+
+Read [references/rpc-and-explorers.md](references/rpc-and-explorers.md) before picking an RPC provider or running `forge verify-contract` — it covers archive vs full, compute-unit pricing, Etherscan v2 unified API, Blockscout, Sourcify, and verification debugging.
+
+Read [references/agent-tooling.md](references/agent-tooling.md) before integrating Blockscout MCP, building your own MCP server, or wiring x402 into an agent — it covers MCP server config, the x402 SDKs (TS/Python/Go), `upto` scheme caveats, and ERC-8004 + x402 composition.
+
 ## Tool Discovery Pattern for AI Agents
 
 When an agent needs to interact with Ethereum:
