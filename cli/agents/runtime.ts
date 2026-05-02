@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { loadSkillsFor, packSkills } from "../skills/loader.js";
 import type { TaskKey } from "../skills/registry.js";
 import { loadConfig } from "../util/env.js";
+import { readContext, serialize } from "../handoff/context.js";
 
 // The single chokepoint for every Claude invocation.
 // Rules enforced here:
@@ -10,6 +11,8 @@ import { loadConfig } from "../util/env.js";
 //   2. If no API key is configured, we degrade gracefully to a local stub so the CLI
 //      still demos the shape of the flow without hallucinating code.
 //   3. Opus 4.6 for architecture-grade tasks, Sonnet for iteration.
+//   4. When `withContext` is true, the current .ethereum.new/idea-context.md is
+//      prepended to the system prompt so agents see prior phase output.
 
 export type Tier = "architect" | "iterate";
 
@@ -24,6 +27,7 @@ export interface AgentCall {
   system: string;
   prompt: string;
   maxTokens?: number;
+  withContext?: boolean;
 }
 
 export interface AgentResult {
@@ -44,9 +48,16 @@ async function client(): Promise<Anthropic | null> {
 }
 
 export async function invoke(call: AgentCall): Promise<AgentResult> {
+  let system = call.system;
+  if (call.withContext) {
+    const ctx = await readContext();
+    if (ctx) {
+      system = `# Project context (read-only)\n\n${serialize(ctx)}\n\n---\n\n${system}`;
+    }
+  }
   const skills = await loadSkillsFor(call.task);
   const grounding = packSkills(skills);
-  const system = `${grounding}\n\n---\n\n${call.system}`;
+  const fullSystem = `${grounding}\n\n---\n\n${system}`;
   const skillSlugs = skills.map((s) => s.slug);
   const api = await client();
   if (!api) {
@@ -60,7 +71,7 @@ export async function invoke(call: AgentCall): Promise<AgentResult> {
   const res = await api.messages.create({
     model: MODEL[call.tier],
     max_tokens: call.maxTokens ?? 4096,
-    system,
+    system: fullSystem,
     messages: [{ role: "user", content: call.prompt }],
   });
   const text = res.content
