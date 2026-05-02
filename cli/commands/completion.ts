@@ -19,6 +19,8 @@ const COMMANDS: Record<string, string> = {
   telemetry: "manage telemetry data",
   uninstall: "remove skills and config",
   completion: "generate shell completions",
+  config: "manage cli configuration",
+  journey: "interactive developer journey",
 };
 
 const GLOBAL_FLAGS = "--help --version --agent";
@@ -99,6 +101,9 @@ function zshScript(): string {
     "          ;;",
     "        telemetry)",
     "          _arguments '1:action:_values action show clear disable enable'",
+    "          ;;",
+    "        config)",
+    "          _arguments '1:action:_values action show set unset' '--agent[Machine-readable output]'",
     "          ;;",
     "        copilot)",
     "          _arguments '--agent[Machine-readable output]' '*:topic:'",

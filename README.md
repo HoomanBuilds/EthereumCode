@@ -29,6 +29,7 @@ eth new
 - [developer guide](#developer-guide)
 - [roadmap](#roadmap)
 - [contributing](#contributing)
+- [telemetry](#telemetry)
 - [credits](#credits)
 
 ---
@@ -61,6 +62,7 @@ Every surface of this tool reflects obsession with craft. These rules are non-ne
 ## the five engines
 
 ```
+eth new       guided flow: idea → build → ship
 eth idea      generate a fundable ethereum idea
 eth build     contracts + frontend from a brief
 eth audit     security pass before you ship
@@ -70,11 +72,36 @@ eth raise     deck + investor map for your round
 
 Or just run `eth new` and answer one question.
 
+### discovery commands
+
+Beyond the five core engines, `eth` ships with discovery and quality-of-life commands:
+
+```
+eth search      search repos, skills, and mcp servers
+eth repos       browse and clone ethereum repos by category
+eth skills      list or show bundled skills
+eth mcps        list or install mcp servers
+eth copilot     freeform ethereum dev assistant
+eth feedback    send feedback to the team
+```
+
+### ops commands
+
+```
+eth doctor      verify your toolchain
+eth init        install skills into ~/.claude and ~/.codex
+eth config      manage cli configuration
+eth completion  generate shell completions
+eth journey     interactive phase navigator (idea → raise)
+eth telemetry   manage telemetry data
+eth uninstall   remove skills and config
+```
+
 ### 1. `eth idea`
 
 Two modes:
 
-- **curated** — ranks a corpus of 50+ Ethereum-native ideas (growing to 500+) against your brief and has Claude flesh out the top match as a one-pager.
+- **curated** — ranks a corpus of 52 Ethereum-native ideas (growing to 500+) against your brief and has Claude flesh out the top match as a one-pager.
 - **first-principles** — three sharp founder questions → non-obvious synthesis.
 
 Output: `idea.md` (idea · why now · why Ethereum · who for · GTM · risks · first-24h plan).
@@ -176,19 +203,24 @@ ethereum.new/
 ├── SKILL.md                    self-describing for other AI agents
 ├── docs/
 │   └── cli.svg                 terminal screenshot for the README
-├── skills/                     bundled ethskills snapshot (20 SKILL.md files, MIT)
+├── skills/                     bundled ethskills snapshot (31 SKILL.md files, MIT)
 │   ├── SKILL_ROUTER.md         routing table for self-correcting skill switches
-│   ├── idea/                   why · concepts · l2s
+│   ├── idea/                   why · concepts · l2s · eth-beginner · validate-idea
 │   ├── build/                  standards · security · tools · addresses · gas ·
 │   │                           testing · building-blocks · frontend-ux ·
 │   │                           frontend-playbook · wallets · orchestration ·
-│   │                           indexing · noir · protocol
+│   │                           indexing · noir · protocol · debug-contract ·
+│   │                           design-taste · frontend-design-guidelines ·
+│   │                           number-formatting · page-load-animations ·
+│   │                           roast-my-product
 │   ├── audit/                  audit · qa
 │   ├── ship/                   ship
+│   ├── launch/                 apply-grant · create-pitch-deck · submit-to-hackathon
 │   └── README.md               attribution + refresh instructions
 │   (each leaf is <phase>/<slug>/SKILL.md with name+description frontmatter)
 ├── cli/
-│   ├── index.ts                dispatcher
+│   ├── index.ts                dispatcher (16 commands registered)
+│   ├── telemetry.ts            local JSONL logging + rotation
 │   ├── ui/
 │   │   ├── theme.ts            palette + glyphs
 │   │   ├── banner.ts           wordmark
@@ -202,7 +234,18 @@ ethereum.new/
 │   │   ├── ship.ts
 │   │   ├── raise.ts
 │   │   ├── doctor.ts
-│   │   └── init.ts             install skills into ~/.claude and ~/.codex
+│   │   ├── init.ts             install skills into ~/.claude and ~/.codex
+│   │   ├── search.ts           search repos, skills, mcps
+│   │   ├── repos.ts            browse and clone ethereum repos
+│   │   ├── skills.ts           list or show bundled skills
+│   │   ├── mcps.ts             list or install mcp servers
+│   │   ├── copilot.ts          freeform ethereum dev assistant
+│   │   ├── feedback.ts         send feedback to the team
+│   │   ├── telemetry.ts        manage telemetry data
+│   │   ├── uninstall.ts        remove skills and config
+│   │   ├── completion.ts       generate shell completions
+│   │   ├── config.ts           manage cli configuration
+│   │   └── journey.ts          interactive phase navigator
 │   ├── agents/
 │   │   ├── runtime.ts          the single Claude chokepoint
 │   │   ├── architect.ts        Opus 4.6 · returns a Plan JSON
@@ -212,12 +255,21 @@ ethereum.new/
 │   │   └── raise.ts            deck + investors + landscape
 │   ├── skills/
 │   │   ├── registry.ts         task → skill slug routing table
-│   │   └── loader.ts           walks ../../skills/<phase>/<slug>/SKILL.md, memoised
+│   │   └── loader.ts           walks skills/<phase>/<slug>/SKILL.md, memoised
 │   ├── chains/
 │   │   ├── registry.ts         mainnet · base · arbitrum · op · zksync
 │   │   └── recommend.ts        heuristic use-case → chain hint
+│   ├── data/
+│   │   ├── clonable-repos.json  curated repo catalog (88 entries)
+│   │   ├── eth-mcps.json        mcp server catalog (29 entries)
+│   │   ├── eth-skills.json      skill metadata catalog (76 entries)
+│   │   ├── loader.ts            JSON data loader with caching
+│   │   └── types.ts             Repo, SkillEntry, Mcp type definitions
+│   ├── handoff/
+│   │   ├── context.ts           phase context read/write between commands
+│   │   └── types.ts             HandoffContext type definitions
 │   ├── ideas/
-│   │   ├── corpus.json         50 tagged ideas (seed)
+│   │   ├── corpus.json         52 tagged ideas (seed)
 │   │   └── engine.ts           curated + first-principles modes
 │   ├── templates/
 │   │   └── copy.ts             copyTemplate(name, { chain }) → ./<slug>
@@ -225,9 +277,11 @@ ethereum.new/
 │   │   └── deploy.ts           chain-aware forge script wrapper
 │   └── util/
 │       ├── args.ts             dependency-free arg parser
-│       ├── fs.ts               writeProjectFile (runs secret scanner)
+│       ├── env.ts              ~/.ethereum.new/config.toml + scanForSecrets
 │       ├── exec.ts             spawn wrapper + which()
-│       └── env.ts              ~/.ethereum.new/config.toml + scanForSecrets
+│       ├── fs.ts               writeProjectFile (runs secret scanner)
+│       ├── output.ts           --agent flag support + emit() pattern
+│       └── update-check.ts     version nudge on command completion
 └── templates/
     └── defi-vault/             reference template (see below)
         ├── foundry.toml
@@ -251,14 +305,22 @@ Every call to Claude passes through `cli/agents/runtime.ts`, which:
 
 Task → skill routing table:
 
-| task              | skills                                                          |
-| ----------------- | --------------------------------------------------------------- |
-| `architect`       | ship, concepts, l2s, standards, why                             |
-| `build.contracts` | security, tools, addresses, standards, gas, testing, building-blocks |
-| `build.frontend`  | frontend-ux, frontend-playbook, wallets, orchestration          |
-| `audit`           | audit, security                                                 |
-| `ship`            | qa, ship, l2s                                                   |
-| `idea`            | why, concepts, l2s                                              |
+| task                  | skills                                                          |
+| --------------------- | --------------------------------------------------------------- |
+| `architect`           | ship, concepts, l2s, standards, why                             |
+| `build.contracts`     | security, tools, addresses, standards, gas, testing, building-blocks |
+| `build.frontend`      | frontend-ux, frontend-playbook, wallets, orchestration          |
+| `build.review`        | roast-my-product, design-taste, frontend-ux                     |
+| `build.debug`         | debug-contract, tools, testing                                  |
+| `build.frontend.design` | frontend-design-guidelines, frontend-ux, design-taste         |
+| `audit`               | audit, security                                                 |
+| `ship`                | qa, ship, l2s                                                   |
+| `idea`                | why, concepts, l2s                                              |
+| `idea.validate`       | validate-idea, why, concepts                                    |
+| `idea.beginner`       | eth-beginner, concepts, l2s                                     |
+| `launch.deck`         | create-pitch-deck, why                                          |
+| `launch.hackathon`    | submit-to-hackathon, ship                                       |
+| `launch.grant`        | apply-grant, why                                                |
 
 Miss any of these and you're not grounding — you're guessing.
 
@@ -332,10 +394,12 @@ Then add relevance rules to `cli/chains/recommend.ts` — your chain must answer
 
 ### add a new skill from ethskills
 
-1. Fetch it into `skills/<slug>.md`:
+1. Create the directory under the appropriate phase:
    ```bash
-   curl -sSf -o skills/<slug>.md https://ethskills.com/<slug>/SKILL.md
+   mkdir -p skills/<phase>/<slug>
+   curl -sSf -o skills/<phase>/<slug>/SKILL.md https://ethskills.com/<slug>/SKILL.md
    ```
+   Phases: `idea`, `build`, `audit`, `ship`, `launch`.
 2. Add `<slug>` to the `SkillSlug` union in `cli/skills/registry.ts`.
 3. Add it to the skills list for any task that needs it.
 4. Keep the cost in mind — every skill added to a task inflates that agent's context.
@@ -375,24 +439,28 @@ A proper vitest suite is on the roadmap. See [roadmap](#roadmap).
 
 ## roadmap
 
-**v0.1 (now)** — CLI skeleton, five engines wired, defi-vault reference template, bundled skills snapshot.
+**v0.1 (done)** — CLI skeleton, five engines wired, defi-vault reference template, bundled skills snapshot.
 
-**v0.2** — fill in the remaining five templates:
+**v0.2 (done)** — discovery layer: `eth search`, `eth repos` (88 curated repos across 8 categories), `eth skills` catalog (76 skills), `eth mcps` server directory (29 MCPs), `eth copilot` freeform assistant, `eth feedback` command.
+
+**v0.3 (done)** — phase handoff system (`cli/handoff/`) for passing context between commands, local telemetry with JSONL logging and rotation, `eth uninstall`, `eth doctor` toolchain verification, `eth init` skill installer, `eth config` CLI config manager, `eth completion` shell completions, `eth journey` interactive TUI navigator.
+
+**v0.4** — fill in the remaining five templates:
 - `nft-drop/` — ERC-721A with allowlist signing and the Farcaster frame flow
 - `dao-governance/` — OpenZeppelin Governor + Tally integration
 - `agent-wallet/` — ERC-4337 smart account with session keys
 - `rwa-issuance/` — permissioned T-bill vault with allowlist NFTs
 - `zk-privacy/` — Noir circuit + on-chain verifier + shielded payroll UI
 
-**v0.3** — proper vitest suite, e2e smoke test that runs `eth new → idea → build → audit` against a stub Anthropic server and diff-checks the output.
+**v0.5** — proper vitest suite, e2e smoke test that runs `eth new → idea → build → audit` against a stub Anthropic server and diff-checks the output.
 
-**v0.4** — grow the idea corpus from 50 to 500, add `eth ideas refresh` to pull from YC, Alliance, Superteam, SendAI.
+**v0.6** — grow the idea corpus from 52 to 500, add `eth ideas refresh` to pull from YC, Alliance, Superteam, SendAI.
 
-**v0.5** — `eth skills refresh` command that pulls newer versions of the bundled ethskills files from upstream and shows a diff.
+**v0.7** — `eth skills refresh` command that pulls newer versions of the bundled ethskills files from upstream and shows a diff.
 
-**v0.6** — landing page at ethereum.new (Next.js) that mirrors the CLI's taste — only after the CLI earns it.
+**v0.8** — landing page at ethereum.new (Next.js) that mirrors the CLI's taste — only after the CLI earns it.
 
-**v0.7** — `@ethereum.new/sdk` — programmatic access so other tools can call the engines without going through the CLI.
+**v0.9** — `@ethereum.new/sdk` — programmatic access so other tools can call the engines without going through the CLI.
 
 ## contributing
 

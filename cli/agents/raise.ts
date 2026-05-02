@@ -10,7 +10,7 @@ export interface RaiseResult {
 export async function runRaise(input: { brief: string }): Promise<RaiseResult> {
   const [deck, investors, landscape] = await Promise.all([
     invoke({
-      task: "architect",
+      task: "launch.deck",
       tier: "architect",
       system:
         "You are a founder writing a seed deck. Ten slides. Problem, solution, why now, why Ethereum, " +
