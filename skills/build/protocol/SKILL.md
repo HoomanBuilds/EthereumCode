@@ -5,6 +5,8 @@ description: How Ethereum evolves — EIP lifecycle, fork process, where decisio
 
 # Ethereum Protocol
 
+Read [references/checking-fork-status.md](references/checking-fork-status.md) before claiming a feature is shipping, [references/proposing-changes.md](references/proposing-changes.md) before drafting an EIP, and [references/feature-detection.md](references/feature-detection.md) before using fork-gated features in contracts.
+
 ## What You Probably Got Wrong
 
 **"Ethereum is a static platform."** No. Ethereum upgrades roughly every 6-12 months via hard forks. Features you read about in old tutorials may have changed. Features your human wants may be shipping next fork.
