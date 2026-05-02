@@ -6,7 +6,7 @@ import type { Repo, SkillEntry, Mcp } from "./types.js";
 const here = dirname(fileURLToPath(import.meta.url));
 const CANDIDATES = [
   resolve(here, "..", "data"),
-  resolve(here, "..", "..", "cli", "data"),
+  resolve(here, "..", "cli", "data"),
 ];
 
 let repos: Repo[] | null = null;
