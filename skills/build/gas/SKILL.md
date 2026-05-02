@@ -5,6 +5,8 @@ description: Current Ethereum gas prices, transaction costs, and the real econom
 
 # Gas & Costs on Ethereum
 
+Read [references/optimization-patterns.md](references/optimization-patterns.md) before optimizing Solidity for gas. Read [references/l2-economics.md](references/l2-economics.md) before estimating L2 fees, and [references/profiling-and-tooling.md](references/profiling-and-tooling.md) before claiming any change saved gas.
+
 ## What You Probably Got Wrong
 
 **Your gas estimate is 100-600x too high.** Most LLMs confidently state gas is 10-30 gwei. Post-Fusaka (Dec 2025), typical base fee is **under 1 gwei** — usually 0.1-0.5 gwei. Verify: `cast base-fee --rpc-url https://eth.llamarpc.com`
