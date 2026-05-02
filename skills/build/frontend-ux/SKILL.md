@@ -5,6 +5,8 @@ description: Frontend UX rules for Ethereum dApps that prevent the most common A
 
 # Frontend UX Rules
 
+Read [references/tx-state-machines.md](references/tx-state-machines.md) before wiring approval/action buttons, [references/error-translation.md](references/error-translation.md) before catching wallet/contract errors, and [references/address-and-name-ux.md](references/address-and-name-ux.md) before building address inputs or display.
+
 ## What You Probably Got Wrong
 
 **"The button works."** A clickable button is not enough. It must disable immediately, show a clear pending state, and stay locked until onchain confirmation.
