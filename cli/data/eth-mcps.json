@@ -1,7 +1,7 @@
 [
   {
     "name": "foundry-mcp",
-    "repo": "g130139/foundry-mcp-server",
+    "repo": "PraneshASP/foundry-mcp-server",
     "description": "Foundry MCP server for forge build, test, deploy, cast calls, and anvil management",
     "transport": "stdio",
     "tools": ["forge_build", "forge_test", "forge_deploy", "cast_call", "cast_send", "anvil_start", "forge_inspect"]
@@ -15,24 +15,24 @@
   },
   {
     "name": "etherscan-mcp",
-    "repo": "tomguluson92/etherscan-mcp-server",
-    "description": "Etherscan API integration for contract verification, source code retrieval, and transaction lookup",
+    "repo": "dennisonbertram/mcp-etherscan-server",
+    "description": "Etherscan V2 API integration for 72+ chains — contract verification, source code, transactions, gas prices",
     "transport": "stdio",
-    "tools": ["get_source_code", "verify_contract", "get_transaction", "get_block", "get_account_balance", "get_logs"]
+    "tools": ["get_source_code", "verify_contract", "get_transaction", "get_block", "get_account_balance", "get_logs", "get_gas_prices"]
   },
   {
     "name": "ethereum-mcp",
-    "repo": "kumikoder/ethereum-mcp",
-    "description": "Ethereum consensus specs, EIP search, and protocol documentation via MCP",
+    "repo": "b17z/ethereum-mcp",
+    "description": "RAG-powered Ethereum consensus specs, EIP search, and client source code via MCP",
     "transport": "stdio",
-    "tools": ["search_eips", "get_eip", "get_consensus_spec", "search_glossary"]
+    "tools": ["eth_search", "eth_search_eip", "get_consensus_spec", "eth_analyze_function", "eth_list_forks"]
   },
   {
     "name": "viem-mcp",
-    "repo": "paraspickle/viem-mcp",
-    "description": "Viem-based MCP for reading blockchain state, calling contracts, and sending transactions",
+    "repo": "mcpdotdirect/evm-mcp-server",
+    "description": "EVM MCP server for 60+ chains — read state, call contracts, transfer tokens, ENS resolution",
     "transport": "stdio",
-    "tools": ["read_contract", "write_contract", "get_balance", "get_block_number", "get_transaction_receipt"]
+    "tools": ["read_contract", "write_contract", "get_balance", "get_block_number", "resolve_ens", "get_transaction_receipt", "multicall"]
   },
   {
     "name": "tenderly-mcp",
@@ -43,10 +43,10 @@
   },
   {
     "name": "dune-mcp",
-    "repo": "Cofearabis/dune-mcp-server",
-    "description": "Dune Analytics query execution and dashboard data access via MCP",
+    "repo": "ekailabs/dune-mcp-server",
+    "description": "Dune Analytics query execution — DEX metrics, EigenLayer stats, and Solana balances via MCP",
     "transport": "stdio",
-    "tools": ["execute_query", "get_query_result", "list_queries", "create_query"]
+    "tools": ["get_dex_pair_metrics", "get_token_pairs_liquidity", "get_eigenlayer_avs_metrics", "get_eigenlayer_operator_metrics"]
   },
   {
     "name": "the-graph-mcp",
@@ -57,10 +57,10 @@
   },
   {
     "name": "ens-mcp",
-    "repo": "scaffold-eth/ens-mcp-server",
-    "description": "ENS name resolution, reverse resolution, and text record management",
-    "transport": "stdio",
-    "tools": ["resolve_name", "lookup_address", "get_text_record", "set_text_record"]
+    "repo": "thenamespace/ens-mcp",
+    "description": "ENS name lookups, profile info, availability checks, pricing, and onchain records via MCP",
+    "transport": "http",
+    "tools": ["resolve_name", "lookup_address", "get_text_record", "is_name_available", "get_name_price", "get_profile_details"]
   },
   {
     "name": "opensea-mcp",
@@ -78,10 +78,10 @@
   },
   {
     "name": "chainlink-mcp",
-    "repo": "smartcontractkit/chainlink-mcp",
-    "description": "Chainlink price feed data, VRF requests, and automation status via MCP",
+    "repo": "goldk3y/chainlink-mcp-server",
+    "description": "Chainlink oracle network — data feeds, VRF, automation, CCIP, and proof of reserve via MCP",
     "transport": "stdio",
-    "tools": ["get_price_feed", "get_vrf_status", "get_automation_jobs", "get_feed_history"]
+    "tools": ["get_price_feed", "create_automation", "get_vrf_status", "get_ccip_status", "list_automations"]
   },
   {
     "name": "uniswap-mcp",
@@ -92,10 +92,10 @@
   },
   {
     "name": "aave-mcp",
-    "repo": "aave/aave-mcp-server",
-    "description": "Aave V3 protocol data — reserves, positions, rates, and liquidation calculations",
+    "repo": "PaulieB14/graph-aave-mcp",
+    "description": "Aave V2/V3 lending data via The Graph — reserves, positions, liquidations, flash loans, governance across 7 chains",
     "transport": "stdio",
-    "tools": ["get_reserve_data", "get_user_position", "get_rates", "calculate_liquidation_price"]
+    "tools": ["get_aave_reserves", "get_aave_user_position", "get_liquidations", "get_flash_loans", "get_governance_proposals"]
   },
   {
     "name": "blockscout-mcp",
@@ -127,10 +127,10 @@
   },
   {
     "name": "slither-mcp",
-    "repo": "crytic/slither-mcp",
-    "description": "Slither static analysis integration for smart contract security scanning via MCP",
+    "repo": "trailofbits/slither-mcp",
+    "description": "Trail of Bits Slither static analysis for Solidity — vulnerability detection, contract metadata, call graphs",
     "transport": "stdio",
-    "tools": ["analyze_contract", "get_findings", "get_detectors", "get_severity"]
+    "tools": ["analyze_contract", "run_detectors", "list_detectors", "get_contract_dependencies", "export_call_graph"]
   },
   {
     "name": "hardhat-mcp",
@@ -169,24 +169,17 @@
   },
   {
     "name": "pimlico-mcp",
-    "repo": "pimlicolabs/pimlico-mcp",
-    "description": "Pimlico bundler and paymaster API for ERC-4337 account abstraction operations",
-    "transport": "http",
-    "tools": ["send_user_operation", "estimate_gas", "get_paymaster_data", "get_bundler_status"]
+    "repo": "pimlicolabs/pimlico-docs-mcp",
+    "description": "Pimlico documentation MCP — ERC-4337 account abstraction docs, bundler API, and paymaster reference",
+    "transport": "stdio",
+    "tools": ["search_docs", "get_bundler_api", "get_paymaster_api", "get_aa_guides"]
   },
   {
     "name": "gasnow-mcp",
-    "repo": "ethgasstation/gasnow-mcp",
-    "description": "Real-time Ethereum gas price estimation and historical gas data",
-    "transport": "http",
-    "tools": ["get_gas_prices", "get_historical_gas", "estimate_tx_cost"]
-  },
-  {
-    "name": "gelato-mcp",
-    "repo": "gelatodigital/gelato-mcp",
-    "description": "Gelato automation API for scheduling smart contract executions and resolver patterns",
-    "transport": "http",
-    "tools": ["create_task", "list_tasks", "get_task_status", "cancel_task"]
+    "repo": "kukapay/blocknative-mcp",
+    "description": "Blocknative gas price predictions — real-time base fee, max priority fee, and tx cost estimation across chains",
+    "transport": "stdio",
+    "tools": ["predict_gas_price", "estimate_gas_cost", "get_supported_chains"]
   },
   {
     "name": "snapshot-mcp",
@@ -208,12 +201,5 @@
     "description": "Ponder indexing framework integration for building and deploying custom indexers",
     "transport": "stdio",
     "tools": ["create_indexer", "deploy_indexer", "query_indexer", "get_indexer_status"]
-  },
-  {
-    "name": "eigenlayer-mcp",
-    "repo": "Layr-Layer/eigenlayer-mcp",
-    "description": "EigenLayer restaking API for operator registration, delegation, and AVS management",
-    "transport": "http",
-    "tools": ["get_operator_info", "get_delegation_status", "get_avs_list", "calculate_rewards"]
   }
 ]
