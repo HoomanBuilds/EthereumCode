@@ -5,6 +5,8 @@ description: Building privacy-preserving EVM apps with Noir — toolchain, patte
 
 # Privacy Apps with Noir
 
+Read [references/circuit-patterns.md](references/circuit-patterns.md) before writing a circuit, [references/prover-and-verifier-ops.md](references/prover-and-verifier-ops.md) before deploying the Solidity verifier, and [references/tree-state-and-events.md](references/tree-state-and-events.md) before wiring the offchain tree mirror.
+
 ## What You Probably Got Wrong
 
 **"Use `nargo prove` and `nargo verify`."** Those commands were removed. Nargo only compiles and executes. Proving and verification use `bb` (Barretenberg CLI) directly. If you generate `nargo prove` commands, they will fail.
