@@ -3,6 +3,8 @@ import { c } from "../ui/theme.js";
 import { parseArgs } from "../util/args.js";
 import { generateIdea, firstPrinciples } from "../ideas/engine.js";
 import { writeProjectFile } from "../util/fs.js";
+import { appendSection } from "../handoff/context.js";
+import { isAgent } from "../util/output.js";
 
 export async function cmdIdea(argv: string[]): Promise<void> {
   const args = parseArgs(argv);
@@ -23,6 +25,14 @@ export async function cmdIdea(argv: string[]): Promise<void> {
 
   await writeProjectFile("idea.md", idea.markdown);
   done(`wrote ${c.bold("idea.md")}`);
+
+  const ideaBody = `**Brief:** ${brief}\n**Mode:** ${mode}\n\n${idea.markdown}`;
+  await appendSection("Idea", ideaBody);
+  await appendSection("Open questions", "- What is the unique insight?\n- What are the key technical risks?\n- What is the go-to-market?");
+
+  if (isAgent()) {
+    console.log(`  context_loaded: true`);
+  }
 
   outro(`${c.faint("next")}  ${c.bold("eth build")}`);
 }
