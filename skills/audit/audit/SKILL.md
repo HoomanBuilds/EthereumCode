@@ -5,6 +5,8 @@ description: Deep EVM smart contract security audit system. Use when asked to au
 
 # EVM Smart Contract Audit
 
+Read [references/scoping-and-intake.md](references/scoping-and-intake.md) before starting an audit, [references/manual-review.md](references/manual-review.md) for the human review pass alongside the parallel checklists, and [references/finding-writeup.md](references/finding-writeup.md) for severity rubric and finding format.
+
 A full audit system for any EVM contract. Runs parallel specialist agents against domain-specific checklists, synthesizes findings, and files GitHub issues.
 
 ## The Checklists
