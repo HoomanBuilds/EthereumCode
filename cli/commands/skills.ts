@@ -10,8 +10,13 @@ export async function cmdSkills(argv: string[]): Promise<void> {
     return;
   }
   if (argv[0] === "show" && argv[1]) {
-    const md = await loadSkill(argv[1] as SkillSlug);
-    console.log(md.markdown);
+    try {
+      const md = await loadSkill(argv[1] as SkillSlug);
+      console.log(md.markdown);
+    } catch {
+      console.error(c.bad(`  unknown skill: ${c.bold(argv[1])}`));
+      process.exit(1);
+    }
     return;
   }
   const skills = await getSkills();
