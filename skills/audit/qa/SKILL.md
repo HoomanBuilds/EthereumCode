@@ -5,6 +5,8 @@ description: Pre-ship audit checklist for Ethereum dApps built with Scaffold-ETH
 
 # dApp QA — Pre-Ship Audit For Scaffold-ETH 2 Builds
 
+Read [references/error-handling-and-toasts.md](references/error-handling-and-toasts.md) before reviewing error UX, [references/mobile-and-pwa.md](references/mobile-and-pwa.md) before testing mobile flows, and [references/post-launch-monitoring.md](references/post-launch-monitoring.md) before going live.
+
 ## What You Probably Got Wrong
 
 **"The app deployed, so we are done."** For SE2 builds, shipping includes UX correctness, metadata, RPC reliability, contract verification, and branding cleanup.
