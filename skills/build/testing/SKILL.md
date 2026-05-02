@@ -5,6 +5,8 @@ description: Smart contract testing with Foundry — unit tests, fuzz testing, f
 
 # Smart Contract Testing
 
+Read [references/foundry-cheatcodes.md](references/foundry-cheatcodes.md) for the cheatcode reference, [references/fuzz-and-invariants.md](references/fuzz-and-invariants.md) for fuzz/invariant patterns and the Handler design, [references/fork-testing.md](references/fork-testing.md) for fork workflows and token-quirk tests, and [references/security-test-cases.md](references/security-test-cases.md) for attack-class test patterns (reentrancy, oracle, signature replay, inflation, etc.).
+
 ## What You Probably Got Wrong
 
 **You test getters and trivial functions.** Testing that `name()` returns the name is worthless. Test edge cases, failure modes, and economic invariants — the things that lose money when they break.
