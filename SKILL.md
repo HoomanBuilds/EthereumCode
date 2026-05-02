@@ -1,10 +1,10 @@
 ---
-name: ethereum.new
+name: ethereum-code
 description: Take a founder from raw idea to deployed Ethereum dApp. Grounded in ethskills.
 version: 0.1.0
 ---
 
-# ethereum.new
+# ethereum-code
 
 AI-native framework for shipping on Ethereum and its L2s (Base, Arbitrum, Optimism, zkSync, mainnet). Five engines: **Idea → Build → Ship → Audit → Raise**.
 
@@ -56,7 +56,7 @@ Three hard rules enforced at runtime:
 
 ## stack
 
-- Node 20+ TypeScript CLI, published as `npm i -g ethereum.new`, binary `eth`.
+- Node 20+ TypeScript CLI, published as `npm i -g ethereum-code`, binary `eth`.
 - Foundry for contracts (Forge, Cast, Anvil). No Hardhat.
 - Scaffold-ETH 2 for frontends (Next.js + wagmi + viem).
 - Claude (Opus 4.6 for architecture, Sonnet for iteration) via `@anthropic-ai/sdk`.
@@ -65,7 +65,7 @@ Three hard rules enforced at runtime:
 ## install
 
 ```bash
-curl -fsSL https://ethereum.new/setup.sh | bash
+curl -fsSL https://ethereum-code/setup.sh | bash
 eth doctor
 eth new
 ```

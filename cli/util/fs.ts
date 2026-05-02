@@ -7,7 +7,7 @@ export async function writeProjectFile(relPath: string, content: string): Promis
   const abs = resolve(process.cwd(), relPath);
   const hit = scanForSecrets(content);
   if (hit) {
-    throw new Error(`refusing to write ${relPath}: possible secret leak (${hit}). move it to ~/.ethereum.new/config.toml.`);
+    throw new Error(`refusing to write ${relPath}: possible secret leak (${hit}). move it to ~/.ethereum-code/config.toml.`);
   }
   await mkdir(dirname(abs), { recursive: true });
   await writeFile(abs, content, "utf8");

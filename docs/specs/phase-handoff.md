@@ -1,6 +1,6 @@
 # Phase Handoff Spec
 
-Schema for `.ethereum.new/idea-context.md`, the cross-command memory file.
+Schema for `.ethereum-code/idea-context.md`, the cross-command memory file.
 
 ## Format
 

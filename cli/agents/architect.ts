@@ -19,7 +19,7 @@ export async function runArchitect(input: { brief: string; chain: ChainId }): Pr
     task: "architect",
     tier: "architect",
     system:
-      "You are the architect for ethereum.new. Decide the minimum contract set (1-3), the template to fork, " +
+      "You are the architect for ethereum-code. Decide the minimum contract set (1-3), the template to fork, " +
       "and the integrations. Be specific to the chosen chain. No generic advice. No filler. Output JSON only.",
     prompt: [
       `brief: ${input.brief}`,

@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { c } from "../ui/theme.js";
 import { emit } from "../util/output.js";
 
-const CONFIG_DIR = resolve(homedir(), ".ethereum.new");
+const CONFIG_DIR = resolve(homedir(), ".ethereum-code");
 const FEEDBACK_FILE = resolve(CONFIG_DIR, "feedback.jsonl");
 const CONFIG_FILE = resolve(CONFIG_DIR, "config.toml");
 const __dirname = dirname(fileURLToPath(import.meta.url));

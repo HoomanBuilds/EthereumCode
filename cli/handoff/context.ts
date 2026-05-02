@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import type { IdeaContext, Phase } from "./types.js";
 
-const CONTEXT_PATH = resolve(process.cwd(), ".ethereum.new", "idea-context.md");
+const CONTEXT_PATH = resolve(process.cwd(), ".ethereum-code", "idea-context.md");
 
 function parse(md: string): IdeaContext | null {
   const m = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -55,7 +55,7 @@ export async function readContext(): Promise<IdeaContext | null> {
 }
 
 export async function writeContext(ctx: IdeaContext): Promise<void> {
-  await mkdir(resolve(process.cwd(), ".ethereum.new"), { recursive: true });
+  await mkdir(resolve(process.cwd(), ".ethereum-code"), { recursive: true });
   ctx.updated = new Date().toISOString().slice(0, 10);
   await writeFile(CONTEXT_PATH, serialize(ctx));
 }

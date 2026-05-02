@@ -11,10 +11,10 @@ export interface Config {
   etherscanKey?: string;
 }
 
-// Global config lives at ~/.ethereum.new/config.toml. Never inside a project.
+// Global config lives at ~/.ethereum-code/config.toml. Never inside a project.
 // Minimal TOML — key = "value" only. We don't need sections for v1.
 export async function loadConfig(): Promise<Config> {
-  const path = resolve(homedir(), ".ethereum.new", "config.toml");
+  const path = resolve(homedir(), ".ethereum-code", "config.toml");
   let raw = "";
   try {
     raw = await readFile(path, "utf8");

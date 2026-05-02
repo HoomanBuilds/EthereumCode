@@ -10,7 +10,7 @@ interface CacheEntry { checkedAt: number; latest: string }
 export async function maybeNudge(currentVersion: string): Promise<void> {
   if (isAgent()) return;
   if (process.env.ETH_TELEMETRY === "0") return;
-  const dir = resolve(homedir(), ".ethereum.new");
+  const dir = resolve(homedir(), ".ethereum-code");
   const cacheFile = resolve(dir, "update-check.json");
   let cache: CacheEntry | null = null;
   try { cache = JSON.parse(await readFile(cacheFile, "utf8")); } catch { /* fresh */ }
@@ -18,7 +18,7 @@ export async function maybeNudge(currentVersion: string): Promise<void> {
   let latest: string | null = cache?.latest ?? null;
   if (!cache || now - cache.checkedAt > TTL_MS) {
     try {
-      const res = await fetch("https://registry.npmjs.org/ethereum.new/latest", { signal: AbortSignal.timeout(2000) });
+      const res = await fetch("https://registry.npmjs.org/ethereum-code/latest", { signal: AbortSignal.timeout(2000) });
       if (res.ok) {
         const j = await res.json() as { version: string };
         latest = j.version;
@@ -28,6 +28,6 @@ export async function maybeNudge(currentVersion: string): Promise<void> {
     } catch { /* offline; skip silently */ }
   }
   if (latest && latest !== currentVersion) {
-    process.stderr.write(`\n  update available: ${currentVersion} → ${latest}  ·  npm i -g ethereum.new\n`);
+    process.stderr.write(`\n  update available: ${currentVersion} → ${latest}  ·  npm i -g ethereum-code\n`);
   }
 }

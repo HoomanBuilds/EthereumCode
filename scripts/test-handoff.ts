@@ -38,7 +38,7 @@ async function main(): Promise<void> {
   ctx = await readContext();
   if (!ctx.sections["Ship status"]) throw new Error("Ship status section missing");
 
-  const raw = await readFile(join(dir, ".ethereum.new", "idea-context.md"), "utf8");
+  const raw = await readFile(join(dir, ".ethereum-code", "idea-context.md"), "utf8");
   if (!raw.includes("---")) throw new Error("frontmatter missing");
   if (!raw.includes("slug:")) throw new Error("slug frontmatter missing");
   if (!raw.includes("chain:")) throw new Error("chain frontmatter missing");

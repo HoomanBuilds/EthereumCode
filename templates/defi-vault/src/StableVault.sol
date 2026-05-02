@@ -9,7 +9,7 @@ import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-/// @title StableVault — ERC-4626 vault skeleton shipped by ethereum.new
+/// @title StableVault — ERC-4626 vault skeleton shipped by ethereum-code
 /// @notice Deposit a stablecoin, receive shares, accrue yield from a strategy hook.
 ///         The strategy is an external address that can be set once by the owner and
 ///         rotated via a 48h timelock to protect depositors.

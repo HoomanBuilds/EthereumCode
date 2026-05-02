@@ -27,7 +27,7 @@ async function findSkillsRoot(): Promise<string> {
       // try next
     }
   }
-  throw new Error("skills bundle missing. reinstall ethereum.new.");
+  throw new Error("skills bundle missing. reinstall ethereum-code.");
 }
 
 async function discoverSkills(root: string): Promise<Skill[]> {

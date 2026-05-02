@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# ethereum.new installer — idempotent. Target: first command to running dApp < 2 minutes.
-# usage:  curl -fsSL https://ethereum.new/setup.sh | bash
+# ethereum-code installer — idempotent. Target: first command to running dApp < 2 minutes.
+# usage:  curl -fsSL https://ethereum-code/setup.sh | bash
 
 set -euo pipefail
 
@@ -18,7 +18,7 @@ warn()  { printf "  ${WARN}✗${END} %s\n" "$*"; }
 bail()  { printf "  ${BAD}✗${END} %s\n" "$*" >&2; exit 1; }
 head()  { printf "\n${BOLD}%s${END}  ${DIM}%s${END}\n" "$1" "$2"; }
 
-head "ethereum.new" "idea → build → ship → audit → raise"
+head "ethereum-code" "idea → build → ship → audit → raise"
 
 # --- 1. node -----------------------------------------------------------------
 if command -v node >/dev/null 2>&1; then
@@ -54,24 +54,24 @@ else
   warn "slither not installed (optional). install with: pip install slither-analyzer"
 fi
 
-# --- 4. ethereum.new global --------------------------------------------------
-say "installing ethereum.new (npm global)"
+# --- 4. ethereum-code global --------------------------------------------------
+say "installing ethereum-code (npm global)"
 if command -v pnpm >/dev/null 2>&1; then
-  pnpm add -g ethereum.new >/dev/null
+  pnpm add -g ethereum-code >/dev/null
 elif command -v npm >/dev/null 2>&1; then
-  npm i -g ethereum.new >/dev/null
+  npm i -g ethereum-code >/dev/null
 else
   bail "no npm or pnpm found."
 fi
 ok "eth CLI installed"
 
 # --- 5. config ---------------------------------------------------------------
-CFG_DIR="$HOME/.ethereum.new"
+CFG_DIR="$HOME/.ethereum-code"
 CFG_FILE="$CFG_DIR/config.toml"
 mkdir -p "$CFG_DIR"
 if [ ! -f "$CFG_FILE" ]; then
   cat > "$CFG_FILE" <<'TOML'
-# ethereum.new config — edit to taste.
+# ethereum-code config — edit to taste.
 # Never commit this file.
 chain            = "base"
 rpc              = ""

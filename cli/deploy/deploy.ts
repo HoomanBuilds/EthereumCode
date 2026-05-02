@@ -39,7 +39,7 @@ export async function deploy(opts: { target: "testnet" | "mainnet"; chain?: Chai
       args.push("--password-file", cfg.walletPasswordFile);
     }
   } else {
-    throw new Error("no wallet configured. run `cast wallet new` then set wallet_key_path in ~/.ethereum.new/config.toml");
+    throw new Error("no wallet configured. run `cast wallet new` then set wallet_key_path in ~/.ethereum-code/config.toml");
   }
   if (cfg.etherscanKey) {
     args.push("--verify", "--etherscan-api-key", cfg.etherscanKey);
@@ -76,7 +76,7 @@ function extractTxHash(out: string): string {
 }
 
 function tweetCopy(address: string, chainName: string): string {
-  return `shipping on ${chainName}.\n\n${address}\n\nbuilt with ethereum.new`;
+  return `shipping on ${chainName}.\n\n${address}\n\nbuilt with ethereum-code`;
 }
 
 function phCopy(chainName: string): string {

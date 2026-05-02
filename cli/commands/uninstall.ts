@@ -39,7 +39,7 @@ export async function cmdUninstall(argv: string[]): Promise<void> {
   const expected = discoverExpectedSkills();
   const claudeSkillsDir = join(homedir(), ".claude", "skills");
   const codexSkillsDir = join(homedir(), ".codex", "skills");
-  const configDir = join(homedir(), ".ethereum.new");
+  const configDir = join(homedir(), ".ethereum-code");
   const removedClaude: string[] = [];
   const removedCodex: string[] = [];
   const removedAny = new Set<string>();

@@ -4,7 +4,7 @@ import { homedir } from "node:os";
 import { createHash } from "node:crypto";
 import { isAgent } from "./util/output.js";
 
-const CONFIG_DIR = resolve(homedir(), ".ethereum.new");
+const CONFIG_DIR = resolve(homedir(), ".ethereum-code");
 const TELEMETRY_FILE = resolve(CONFIG_DIR, "telemetry.jsonl");
 const CONFIG_FILE = resolve(CONFIG_DIR, "config.toml");
 const MAX_BYTES = 10 * 1024 * 1024;

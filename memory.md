@@ -1,6 +1,6 @@
 # memory.md
 
-Handoff notes for anyone (human or agent) picking up `ethereum.new` after the v0.1 scaffold session.
+Handoff notes for anyone (human or agent) picking up `ethereum-code` after the v0.1 scaffold session.
 
 ## what this repo is
 
@@ -40,7 +40,7 @@ Local: `/Users/panther/Desktop/ethagent`
 - **tsconfig rootDir is `cli`**: anything outside `cli/` (e.g. `scripts/`, `templates/`) is not compiled. This is why `deploy.ts` lives at `cli/deploy/deploy.ts`, not `scripts/deploy.ts`. An earlier draft had it in `scripts/` and broke the build.
 - **`@clack/prompts` has a quirk**: `p.isCancel` must be called on the result of each prompt before casting. Our wrapper in `cli/ui/prompt.ts` handles this — don't call `p.text` / `p.select` / `p.confirm` directly from commands.
 - **Stub mode**: if `ANTHROPIC_API_KEY` is not set, `invoke()` returns a deterministic stub so the CLI still demos the shape of each flow. Stubs are not magical — they tell the user "set your key and re-run". Don't try to make them fake real output.
-- **The `eth doctor` RPC check** reads from `~/.ethereum.new/config.toml`. There's no `eth doctor --init` yet — the `setup.sh` installer writes a placeholder, users edit by hand. On the roadmap.
+- **The `eth doctor` RPC check** reads from `~/.ethereum-code/config.toml`. There's no `eth doctor --init` yet — the `setup.sh` installer writes a placeholder, users edit by hand. On the roadmap.
 - **The build command currently references a `scripts/deploy.ts`**  path that doesn't exist — fixed to `cli/deploy/deploy.ts`. If anyone re-introduces a top-level `scripts/` directory, verify the import.
 - **`cli/ideas/corpus.json` is imported with `with { type: "json" }`** — needs node 20.10+ and `resolveJsonModule: true` in tsconfig. Both are already set; don't downgrade.
 
@@ -57,7 +57,7 @@ Roadmap sections in `README.md` are authoritative. Highest-priority items:
 2. **Vitest suite**: the repo has no JS tests yet. Smoke test that runs `eth new` end-to-end against a stub Anthropic server and diff-checks the output.
 3. **Grow the idea corpus** from 50 to 500+ tagged ideas.
 4. **`eth skills refresh`** command: pull newer versions of bundled ethskills files from upstream and show a diff.
-5. **`eth doctor --init`**: interactive first-run config that writes `~/.ethereum.new/config.toml` based on answers.
+5. **`eth doctor --init`**: interactive first-run config that writes `~/.ethereum-code/config.toml` based on answers.
 
 ## known risks (read before shipping)
 

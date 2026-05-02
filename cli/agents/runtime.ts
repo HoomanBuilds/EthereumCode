@@ -11,7 +11,7 @@ import { readContext, serialize } from "../handoff/context.js";
 //   2. If no API key is configured, we degrade gracefully to a local stub so the CLI
 //      still demos the shape of the flow without hallucinating code.
 //   3. Opus 4.6 for architecture-grade tasks, Sonnet for iteration.
-//   4. When `withContext` is true, the current .ethereum.new/idea-context.md is
+//   4. When `withContext` is true, the current .ethereum-code/idea-context.md is
 //      prepended to the system prompt so agents see prior phase output.
 
 export type Tier = "architect" | "iterate";

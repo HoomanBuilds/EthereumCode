@@ -1,15 +1,15 @@
-# ethereum.new
+# ethereum-code
 
 **idea → build → ship → audit → raise**
 
 An AI-native CLI framework that takes a founder from raw idea to deployed Ethereum dApp in hours, not weeks. Chain-aware by default. Grounded in a bundled snapshot of [ethskills](https://github.com/ethskills/ethskills) — no runtime URL fetches, no hallucinated addresses. Opinionated so you don't have to be.
 
 <p align="center">
-  <img src="./docs/cli.svg" alt="ethereum.new CLI" width="820"/>
+  <img src="./docs/cli.svg" alt="ethereum-code CLI" width="820"/>
 </p>
 
 ```bash
-curl -fsSL https://ethereum.new/setup.sh | bash
+curl -fsSL https://ethereum-code/setup.sh | bash
 eth new
 ```
 
@@ -37,7 +37,7 @@ eth new
 
 ## what it is
 
-`ethereum.new` is the Ethereum answer to [solana.new](https://www.solana.new) — but sharper, deeper, and more opinionated. It's a single TypeScript CLI (`eth`) that orchestrates a crew of Claude-powered sub-agents through the five phases every founder hits on the way from a napkin sketch to a deployed, audited, funded product on Ethereum or one of its L2s.
+`ethereum-code` is the Ethereum answer to [solana.new](https://www.solana.new) — but sharper, deeper, and more opinionated. It's a single TypeScript CLI (`eth`) that orchestrates a crew of Claude-powered sub-agents through the five phases every founder hits on the way from a napkin sketch to a deployed, audited, funded product on Ethereum or one of its L2s.
 
 The wedge is **grounding**. Every agent invocation loads the relevant ethskills markdown — **bundled locally in `./skills/`, never fetched at runtime** — into context *before* it writes a line of code. No hallucinated contract addresses. No stale gas costs. No generic "deploy on mainnet" advice when the use case obviously belongs on Base. What ships in the repo is what every agent sees.
 
@@ -84,7 +84,7 @@ claude "/validate-idea Should I build a yield aggregator on Base?"
 2. **Eliminate the classic AI-on-Ethereum failure modes**: hallucinated contract addresses, stale gas cost assumptions, infinite approvals, mocked-database tests that pass but break on migration, the agent that audits its own code.
 3. **Be chain-aware, never generic.** The CLI should speak about *your* chain, *your* stack, *your* integrations — not "Ethereum" as a monolith.
 4. **Ship one reference template that actually works end-to-end** (`templates/defi-vault/`) before cloning it to the other use cases, so every downstream template is measured against something real.
-5. **Be self-describing.** A `SKILL.md` at the repo root lets any other AI agent discover `ethereum.new` and use it as a tool.
+5. **Be self-describing.** A `SKILL.md` at the repo root lets any other AI agent discover `ethereum-code` and use it as a tool.
 
 ## design philosophy
 
@@ -186,7 +186,7 @@ Competitive landscape mapped to your niche. Investor-grade seed deck. Smart-mone
 
 ```bash
 # 1. install (idempotent; installs node check, foundry, eth global, writes config.toml)
-curl -fsSL https://ethereum.new/setup.sh | bash
+curl -fsSL https://ethereum-code/setup.sh | bash
 
 # 2. verify the toolchain
 eth doctor
@@ -203,8 +203,8 @@ claude "/find-next-crypto-idea What should I build on Ethereum?"
 ### local development (if you're hacking on the framework itself)
 
 ```bash
-git clone https://github.com/yourname/ethereum.new.git
-cd ethereum.new
+git clone https://github.com/yourname/ethereum-code.git
+cd ethereum-code
 npm install
 npm run build            # tsup -> dist/index.js
 node dist/index.js --help
@@ -245,7 +245,7 @@ node dist/index.js doctor
 ## project structure
 
 ```
-ethereum.new/
+ethereum-code/
 ├── setup.sh                    curl installer
 ├── package.json                bin: eth → dist/index.js
 ├── tsconfig.json               strict TS, rootDir: cli
@@ -334,7 +334,7 @@ ethereum.new/
 │   │   └── deploy.ts           chain-aware forge script wrapper
 │   └── util/
 │       ├── args.ts             dependency-free arg parser
-│       ├── env.ts              ~/.ethereum.new/config.toml + scanForSecrets
+│       ├── env.ts              ~/.ethereum-code/config.toml + scanForSecrets
 │       ├── exec.ts             spawn wrapper + which()
 │       ├── fs.ts               writeProjectFile (runs secret scanner)
 │       ├── output.ts           --agent flag support + emit() pattern
@@ -410,8 +410,8 @@ forge test
 ### day-one workflow
 
 ```bash
-git clone https://github.com/yourname/ethereum.new.git
-cd ethereum.new
+git clone https://github.com/yourname/ethereum-code.git
+cd ethereum-code
 npm install
 npx tsc --noEmit         # typecheck
 npm run build            # tsup bundle → dist/index.js
@@ -515,9 +515,9 @@ A proper vitest suite is on the roadmap. See [roadmap](#roadmap).
 
 **v0.7** — `eth skills refresh` command that pulls newer versions of the bundled ethskills files from upstream and shows a diff.
 
-**v0.8** — landing page at ethereum.new (Next.js) that mirrors the CLI's taste — only after the CLI earns it.
+**v0.8** — landing page at ethereum-code (Next.js) that mirrors the CLI's taste — only after the CLI earns it.
 
-**v0.9** — `@ethereum.new/sdk` — programmatic access so other tools can call the engines without going through the CLI.
+**v0.9** — `@ethereum-code/sdk` — programmatic access so other tools can call the engines without going through the CLI.
 
 ## contributing
 
@@ -525,7 +525,7 @@ Open a PR. Keep changes tight. Match the existing voice. If you're adding a temp
 
 ## telemetry
 
-Telemetry is local-only by default — no data leaves your machine. Each command appends one line to `~/.ethereum.new/telemetry.jsonl` containing: command name, truncated args hash, exit code, duration, version, timestamp. No source code, secrets, file paths, or brief text is ever recorded.
+Telemetry is local-only by default — no data leaves your machine. Each command appends one line to `~/.ethereum-code/telemetry.jsonl` containing: command name, truncated args hash, exit code, duration, version, timestamp. No source code, secrets, file paths, or brief text is ever recorded.
 
 Disable: `ETH_TELEMETRY=0 eth doctor` or `eth telemetry disable`. Clear: `eth telemetry clear`. Under `--agent` mode telemetry is always suppressed.
 

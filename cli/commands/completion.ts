@@ -28,7 +28,7 @@ const GLOBAL_FLAGS = "--help --version --agent";
 function bashScript(): string {
   const cmds = Object.keys(COMMANDS).join(" ");
   return [
-    "# ethereum.new bash completion",
+    "# ethereum-code bash completion",
     "_eth() {",
     '  local cur="${COMP_WORDS[COMP_CWORD]}"',
     '  local prev="${COMP_WORDS[COMP_CWORD-1]}"',
@@ -73,7 +73,7 @@ function zshScript(): string {
     .map(([k, v]) => `    '${k}:${v}'`)
     .join("\n");
   return [
-    "# ethereum.new zsh completion",
+    "# ethereum-code zsh completion",
     "_eth() {",
     "  local -a commands",
     "  commands=(",
@@ -131,7 +131,7 @@ export async function cmdCompletion(argv: string[]): Promise<void> {
 
   emit(
     () => {
-      console.log(c.faint(`  # ethereum.new ${shell} completion`));
+      console.log(c.faint(`  # ethereum-code ${shell} completion`));
       console.log(c.faint(`  # save with: eth completion ${shell} > _eth`));
       console.log(output);
       console.log("");

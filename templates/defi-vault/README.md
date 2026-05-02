@@ -1,6 +1,6 @@
 # defi-vault
 
-ERC-4626 stablecoin vault shipped by `ethereum.new`.
+ERC-4626 stablecoin vault shipped by `ethereum-code`.
 
 ## what you get
 

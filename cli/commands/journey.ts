@@ -42,7 +42,7 @@ interface JourneySkill {
 
 function detectPhase(): number {
   const cwd = process.cwd();
-  const contextDir = `${cwd}/.ethereum.new`;
+  const contextDir = `${cwd}/.ethereum-code`;
 
   if (existsSync(`${contextDir}/idea-context.md`)) {
     try {
@@ -125,7 +125,7 @@ function buildScreen(selectedPhase: number, selectedSkill: number, rows: number)
   const lines: string[] = [];
 
   lines.push("");
-  lines.push(`  ${c.accent("ethereum.new")}  ${c.bold("Developer Journey")}  ${c.faint("idea → build → audit → ship → raise")}`);
+  lines.push(`  ${c.accent("ethereum-code")}  ${c.bold("Developer Journey")}  ${c.faint("idea → build → audit → ship → raise")}`);
   lines.push("");
   lines.push(`  ${c.faint("navigate with ↑↓, press enter to run command, q/esc to quit")}`);
   lines.push("");

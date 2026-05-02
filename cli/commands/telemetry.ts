@@ -5,7 +5,7 @@ import { c } from "../ui/theme.js";
 import { emit } from "../util/output.js";
 import { readFileSync, existsSync } from "node:fs";
 
-const CONFIG_DIR = resolve(homedir(), ".ethereum.new");
+const CONFIG_DIR = resolve(homedir(), ".ethereum-code");
 const CONFIG_FILE = resolve(CONFIG_DIR, "config.toml");
 
 function readConfigRaw(): string | null {
