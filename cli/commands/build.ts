@@ -6,10 +6,17 @@ import { runArchitect } from "../agents/architect.js";
 import { runBuilder } from "../agents/builder.js";
 import { recommendChain } from "../chains/recommend.js";
 import type { ChainId } from "../chains/registry.js";
+import { appendSection, readContext } from "../handoff/context.js";
+import { isAgent } from "../util/output.js";
 
 export async function cmdBuild(argv: string[]): Promise<void> {
   const args = parseArgs(argv);
   intro("build");
+
+  const ctx = await readContext();
+  if (isAgent()) {
+    console.log(`  context_loaded: ${ctx !== null}`);
+  }
 
   const brief = args.brief ?? (await text("brief", "a yield vault on Base"));
 
@@ -40,6 +47,9 @@ export async function cmdBuild(argv: string[]): Promise<void> {
   lanes.update("contracts", { status: "done", detail: `${build.contracts.length} files` });
   lanes.update("tests", { status: "done", detail: `${build.tests} foundry tests` });
   lanes.update("frontend", { status: "done", detail: `scaffold-eth 2 · ${build.pages} pages` });
+
+  await appendSection("Architecture", `**Chain:** ${chain}\n**Brief:** ${brief}\n**Contracts:** ${plan.contracts}\n\n${JSON.stringify(plan, null, 2)}`);
+  await appendSection("Open questions", `- Does the architecture handle edge cases?\n- Are there gas optimization opportunities?\n- What are the integration dependencies?`);
 
   done("project scaffolded");
   outro(`${c.faint("next")}  ${c.bold("eth audit")}  ${c.faint("then")}  ${c.bold("eth ship")}`);
