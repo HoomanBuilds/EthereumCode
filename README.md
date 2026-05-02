@@ -398,6 +398,12 @@ A proper vitest suite is on the roadmap. See [roadmap](#roadmap).
 
 Open a PR. Keep changes tight. Match the existing voice. If you're adding a template or a chain, read the [developer guide](#developer-guide) first.
 
+## telemetry
+
+Telemetry is local-only by default — no data leaves your machine. Each command appends one line to `~/.ethereum.new/telemetry.jsonl` containing: command name, truncated args hash, exit code, duration, version, timestamp. No source code, secrets, file paths, or brief text is ever recorded.
+
+Disable: `ETH_TELEMETRY=0 eth doctor` or `eth telemetry disable`. Clear: `eth telemetry clear`. Under `--agent` mode telemetry is always suppressed.
+
 ## credits
 
 Inspired by [solana.new](https://www.solana.new).

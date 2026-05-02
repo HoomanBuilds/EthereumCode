@@ -10,7 +10,7 @@ export async function cmdMcps(argv: string[]): Promise<void> {
   const mcps = await getMcps();
   if (argv[0] === "install" && argv[1]) {
     const m = mcps.find(x => x.name === argv[1]);
-    if (!m) { console.error(`unknown mcp: ${argv[1]}`); process.exit(1); }
+    if (!m) { throw new Error(`unknown mcp: ${argv[1]}`); }
     const snippet = {
       mcpServers: {
         [m.name]: m.transport === "stdio"

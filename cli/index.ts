@@ -14,6 +14,8 @@ import { cmdSkills } from "./commands/skills.js";
 import { cmdMcps } from "./commands/mcps.js";
 import { cmdCopilot } from "./commands/copilot.js";
 import { cmdFeedback } from "./commands/feedback.js";
+import { cmdTelemetry } from "./commands/telemetry.js";
+import { cmdUninstall } from "./commands/uninstall.js";
 import { maybeNudge } from "./util/update-check.js";
 
 type Cmd = (argv: string[]) => Promise<void>;
@@ -33,6 +35,8 @@ const commands: Record<string, { run: Cmd; summary: string }> = {
   mcps: { run: cmdMcps, summary: "list or install mcp servers" },
   copilot: { run: cmdCopilot, summary: "freeform ethereum dev assistant" },
   feedback: { run: cmdFeedback, summary: "send feedback to the team" },
+  telemetry: { run: cmdTelemetry, summary: "manage telemetry data" },
+  uninstall: { run: cmdUninstall, summary: "remove skills and config" },
 };
 
 function help(): void {
@@ -43,7 +47,7 @@ function help(): void {
   lines.push(`    ${c.bold("eth")} ${c.accent("<command>")} ${c.faint("[options]")}`);
   lines.push("");
   lines.push(c.faint("  commands"));
-  const pad = 8;
+  const pad = 10;
   for (const [name, meta] of Object.entries(commands)) {
     lines.push(`    ${c.bold(name.padEnd(pad))} ${c.faint(meta.summary)}`);
   }
@@ -51,6 +55,19 @@ function help(): void {
   lines.push(c.faint(`  run ${c.bold("eth new")} to start.`));
   lines.push("");
   console.log(lines.join("\n"));
+}
+
+async function getVersion(): Promise<string> {
+  const { readFile } = await import("node:fs/promises");
+  const { fileURLToPath } = await import("node:url");
+  const { dirname, resolve } = await import("node:path");
+  const here = dirname(fileURLToPath(import.meta.url));
+  try {
+    const pkg = JSON.parse(await readFile(resolve(here, "../package.json"), "utf8"));
+    return (pkg.version as string) ?? "0.0.0";
+  } catch {
+    return "0.0.0";
+  }
 }
 
 async function main(): Promise<void> {
@@ -67,19 +84,8 @@ async function main(): Promise<void> {
     return;
   }
   if (cmd === "-v" || cmd === "--version") {
-    const { readFile } = await import("node:fs/promises");
-    const { fileURLToPath } = await import("node:url");
-    const { dirname, resolve } = await import("node:path");
-    const here = dirname(fileURLToPath(import.meta.url));
-    try {
-      const pkg = JSON.parse(await readFile(resolve(here, "../package.json"), "utf8"));
-      const version = pkg.version as string;
-      console.log(version);
-      return;
-    } catch {
-      console.log("0.0.0");
-      return;
-    }
+    console.log(await getVersion());
+    return;
   }
   const entry = commands[cmd];
   if (!entry) {
@@ -87,25 +93,22 @@ async function main(): Promise<void> {
     console.error(`  ${c.faint("run")} ${c.bold("eth --help")}`);
     process.exit(1);
   }
+
+  const start = Date.now();
+  let exitCode = 0;
   try {
     await entry.run(rest);
   } catch (err) {
+    exitCode = 1;
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`\n  ${c.bad(g.cross)} ${msg}\n`);
-    process.exit(1);
   }
-
-  const { readFile } = await import("node:fs/promises");
-  const { fileURLToPath } = await import("node:url");
-  const { dirname, resolve } = await import("node:path");
-  const here = dirname(fileURLToPath(import.meta.url));
-  try {
-    const pkg = JSON.parse(await readFile(resolve(here, "../package.json"), "utf8"));
-    const version = pkg.version as string;
-    setImmediate(() => maybeNudge(version).catch(() => {}));
-  } catch {
-    // skip nudge if version can't be resolved
-  }
+  const duration = Date.now() - start;
+  const version = await getVersion();
+  const { log } = await import("./telemetry.js");
+  await log({ command: cmd, args: rest, exit_code: exitCode, duration_ms: duration, version });
+  maybeNudge(version).catch(() => {});
+  if (exitCode !== 0) process.exit(1);
 }
 
 main();

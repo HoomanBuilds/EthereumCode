@@ -19,10 +19,7 @@ export async function cmdRepos(argv: string[]): Promise<void> {
   if (cloneIdx >= 0) {
     const slug = argv[cloneIdx + 1];
     const r = repos.find(x => x.slug === slug);
-    if (!r) {
-      console.error(c.bold(`unknown repo: ${slug}`));
-      process.exit(1);
-    }
+    if (!r) { throw new Error(`unknown repo: ${slug}`); }
     const url = `https://github.com/${r.repo}.git`;
     await new Promise<void>((res, rej) => {
       const p = spawn("git", ["clone", url], { stdio: "inherit" });

@@ -47,7 +47,7 @@ export async function cmdDoctor(_argv: string[]): Promise<void> {
   const blocked = checks.filter((ch) => !ch.ok && ch.name !== "slither");
   if (blocked.length > 0) {
     outro(c.warn(`${blocked.length} blocker(s). fix and re-run.`));
-    process.exit(1);
+    throw new Error("doctor checks failed");
   }
   outro(c.good("all green."));
 }

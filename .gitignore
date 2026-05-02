@@ -15,3 +15,7 @@ inspiration/
 templates/*/cache
 templates/*/out
 templates/*/foundry.lock
+templates/*/lib/
+
+# Internal docs (plans, specs, design docs)
+docs/
