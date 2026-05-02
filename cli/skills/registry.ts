@@ -8,7 +8,15 @@ export type TaskKey =
   | "build.frontend"
   | "audit"
   | "ship"
-  | "idea";
+  | "idea"
+  | "idea.validate"
+  | "idea.beginner"
+  | "build.review"
+  | "build.debug"
+  | "build.frontend.design"
+  | "launch.deck"
+  | "launch.hackathon"
+  | "launch.grant";
 
 // Bundled skill slugs. Must match a file `skills/<slug>.md` at the repo root.
 export type SkillSlug =
@@ -31,7 +39,18 @@ export type SkillSlug =
   | "building-blocks"
   | "indexing"
   | "noir"
-  | "protocol";
+  | "protocol"
+  | "eth-beginner"
+  | "validate-idea"
+  | "roast-my-product"
+  | "design-taste"
+  | "frontend-design-guidelines"
+  | "debug-contract"
+  | "page-load-animations"
+  | "number-formatting"
+  | "create-pitch-deck"
+  | "submit-to-hackathon"
+  | "apply-grant";
 
 export const SKILLS: Record<TaskKey, SkillSlug[]> = {
   architect: ["ship", "concepts", "l2s", "standards", "why"],
@@ -40,4 +59,12 @@ export const SKILLS: Record<TaskKey, SkillSlug[]> = {
   audit: ["audit", "security"],
   ship: ["qa", "ship", "l2s"],
   idea: ["why", "concepts", "l2s"],
+  "idea.validate": ["validate-idea", "why", "concepts"],
+  "idea.beginner": ["eth-beginner", "concepts", "l2s"],
+  "build.review": ["roast-my-product", "design-taste", "frontend-ux"],
+  "build.debug": ["debug-contract", "tools", "testing"],
+  "build.frontend.design": ["frontend-design-guidelines", "frontend-ux", "design-taste"],
+  "launch.deck": ["create-pitch-deck", "why"],
+  "launch.hackathon": ["submit-to-hackathon", "ship"],
+  "launch.grant": ["apply-grant", "why"],
 };
