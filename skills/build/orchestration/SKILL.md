@@ -5,6 +5,8 @@ description: How an AI agent plans, builds, and deploys a complete Ethereum dApp
 
 # dApp Orchestration
 
+Read [references/phase-gates.md](references/phase-gates.md) before transitioning between phases, [references/monorepo-layout.md](references/monorepo-layout.md) before adding files or rearranging directories, and [references/ci-and-deploy.md](references/ci-and-deploy.md) before wiring up GitHub Actions or any deploy automation.
+
 ## What You Probably Got Wrong
 
 **SE2 has specific patterns you must follow.** Generic "build a dApp" advice won't work. SE2 auto-generates `deployedContracts.ts` — DON'T edit it. Use Scaffold hooks, NOT raw wagmi. External contracts go in `externalContracts.ts` BEFORE building the frontend.
