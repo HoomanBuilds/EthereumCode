@@ -19,6 +19,13 @@ import { cmdUninstall } from "./commands/uninstall.js";
 import { cmdCompletion } from "./commands/completion.js";
 import { cmdConfig } from "./commands/config.js";
 import { interactiveJourney } from "./commands/journey.js";
+import { cmdBeginner } from "./commands/beginner.js";
+import { cmdHackathon } from "./commands/hackathon.js";
+import { cmdGrant } from "./commands/grant.js";
+import { cmdDesign } from "./commands/design.js";
+import { cmdValidate } from "./commands/validate.js";
+import { cmdReview } from "./commands/review.js";
+import { cmdDebug } from "./commands/debug.js";
 import { maybeNudge } from "./util/update-check.js";
 
 type Cmd = (argv: string[]) => Promise<void>;
@@ -43,6 +50,13 @@ const commands: Record<string, { run: Cmd; summary: string }> = {
   completion: { run: cmdCompletion, summary: "generate shell completions" },
   config: { run: cmdConfig, summary: "manage cli configuration" },
   journey: { run: interactiveJourney, summary: "interactive developer journey" },
+  beginner: { run: cmdBeginner, summary: "learn ethereum fundamentals" },
+  hackathon: { run: cmdHackathon, summary: "prepare a hackathon submission" },
+  grant: { run: cmdGrant, summary: "apply for a grant program" },
+  design: { run: cmdDesign, summary: "frontend design patterns for dapps" },
+  validate: { run: cmdValidate, summary: "validate an idea before building" },
+  review: { run: cmdReview, summary: "brutal product review" },
+  debug: { run: cmdDebug, summary: "debug failing contracts and tests" },
 };
 
 function help(): void {
