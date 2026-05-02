@@ -1,0 +1,6 @@
+[submodule "templates/defi-vault/lib/forge-std"]
+	path = templates/defi-vault/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "templates/defi-vault/lib/openzeppelin-contracts"]
+	path = templates/defi-vault/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts

@@ -36,7 +36,6 @@ function discoverExpectedSkills(): string[] {
 }
 
 export async function cmdUninstall(argv: string[]): Promise<void> {
-  const hasYes = argv.includes("--yes") || argv.includes("-y");
   const expected = discoverExpectedSkills();
   const claudeSkillsDir = join(homedir(), ".claude", "skills");
   const codexSkillsDir = join(homedir(), ".codex", "skills");

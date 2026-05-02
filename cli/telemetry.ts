@@ -1,7 +1,7 @@
 import { appendFile, mkdir, stat, rename, unlink } from "node:fs/promises";
 import { resolve } from "node:path";
 import { homedir } from "node:os";
-import { createHash, randomUUID } from "node:crypto";
+import { createHash } from "node:crypto";
 import { isAgent } from "./util/output.js";
 
 const CONFIG_DIR = resolve(homedir(), ".ethereum.new");
@@ -21,10 +21,6 @@ export interface TelemetryEvent {
 
 function disabled(): boolean {
   return process.env.ETH_TELEMETRY === "0" || isAgent();
-}
-
-function readTelemetryConfig(): { tier?: string; installation_id?: string } {
-  return {};
 }
 
 async function getInstallationId(): Promise<string | undefined> {
