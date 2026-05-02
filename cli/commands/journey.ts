@@ -12,7 +12,11 @@ const CURSOR_HIDE = "\x1b[?25l";
 const CURSOR_SHOW = "\x1b[?25h";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DIST_INDEX = join(__dirname, "../../dist/index.js");
+// In bundled mode __dirname = dist/, so resolve to the same index.js we're running from.
+// In source mode (ts-node), fall back to a relative dist/ path.
+const ENTRY = existsSync(join(__dirname, "index.js"))
+  ? join(__dirname, "index.js")
+  : join(__dirname, "..", "..", "dist", "index.js");
 
 const ICONS = {
   diamond: "◆",
@@ -43,6 +47,7 @@ function detectPhase(): number {
   if (existsSync(`${contextDir}/idea-context.md`)) {
     try {
       const ctx = readFileSync(`${contextDir}/idea-context.md`, "utf8");
+      if (ctx.includes("## Raise results")) return 4;
       if (ctx.includes("## Ship status")) return 3;
       if (ctx.includes("## Audit findings")) return 2;
       if (ctx.includes("## Architecture")) return 1;
@@ -199,7 +204,7 @@ export async function interactiveJourney(_argv: string[]): Promise<void> {
         const skill = PHASES[selectedPhase]!.skills[selectedSkill];
         if (!skill) return;
         cleanup();
-        const child = spawn("node", [DIST_INDEX, skill.command, ...skill.args], {
+        const child = spawn("node", [ENTRY, skill.command, ...skill.args], {
           stdio: "inherit",
         });
         child.on("close", () => resolve());

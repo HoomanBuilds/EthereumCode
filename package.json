@@ -9,6 +9,7 @@
   },
   "files": [
     "dist",
+    "cli/data",
     "templates",
     "skills",
     "SKILL.md",

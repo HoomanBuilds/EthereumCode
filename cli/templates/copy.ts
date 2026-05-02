@@ -7,9 +7,9 @@ import type { ChainId } from "../chains/registry.js";
 // Substitutes a few lightweight tokens (chain id, chain name).
 
 const here = dirname(fileURLToPath(import.meta.url));
-// Templates live at repo root, two levels up from dist/cli/templates at runtime,
-// so we resolve relative to module URL.
-const TEMPLATES_ROOT = resolve(here, "..", "..", "templates");
+// tsup bundles everything into dist/index.js, so import.meta.url always resolves
+// to the dist/ directory. Templates sit one level up at repo root (or npm dir).
+const TEMPLATES_ROOT = resolve(here, "..", "templates");
 
 export interface CopyResult {
   root: string;

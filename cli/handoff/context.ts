@@ -69,6 +69,15 @@ export async function appendSection(name: string, body: string): Promise<void> {
     updated: new Date().toISOString().slice(0, 10),
     sections: {},
   };
+  const phaseMap: Record<string, Phase> = {
+    Idea: "idea",
+    Architecture: "build",
+    "Audit findings": "audit",
+    "Ship status": "ship",
+    "Raise results": "raise",
+    "Open questions": existing.phase,
+  };
+  if (phaseMap[name]) existing.phase = phaseMap[name];
   const prev = existing.sections[name] ?? "";
   existing.sections[name] = prev ? `${prev}\n\n${body}` : body;
   await writeContext(existing);
