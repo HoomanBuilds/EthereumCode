@@ -8,6 +8,13 @@ import { cmdAudit } from "./commands/audit.js";
 import { cmdRaise } from "./commands/raise.js";
 import { cmdDoctor } from "./commands/doctor.js";
 import { cmdInit } from "./commands/init.js";
+import { cmdSearch } from "./commands/search.js";
+import { cmdRepos } from "./commands/repos.js";
+import { cmdSkills } from "./commands/skills.js";
+import { cmdMcps } from "./commands/mcps.js";
+import { cmdCopilot } from "./commands/copilot.js";
+import { cmdFeedback } from "./commands/feedback.js";
+import { maybeNudge } from "./util/update-check.js";
 
 type Cmd = (argv: string[]) => Promise<void>;
 
@@ -20,6 +27,12 @@ const commands: Record<string, { run: Cmd; summary: string }> = {
   raise: { run: cmdRaise, summary: "deck + investor map for your round" },
   doctor: { run: cmdDoctor, summary: "verify your toolchain" },
   init: { run: cmdInit, summary: "install skills into ~/.claude and ~/.codex" },
+  search: { run: cmdSearch, summary: "search repos, skills, mcps" },
+  repos: { run: cmdRepos, summary: "browse and clone ethereum repos" },
+  skills: { run: cmdSkills, summary: "list or show bundled skills" },
+  mcps: { run: cmdMcps, summary: "list or install mcp servers" },
+  copilot: { run: cmdCopilot, summary: "freeform ethereum dev assistant" },
+  feedback: { run: cmdFeedback, summary: "send feedback to the team" },
 };
 
 function help(): void {
@@ -41,24 +54,32 @@ function help(): void {
 }
 
 async function main(): Promise<void> {
-  const [, , cmd, ...rest] = process.argv;
+  const argv = process.argv.slice(2);
+  const agentIdx = argv.indexOf("--agent");
+  if (agentIdx >= 0) {
+    argv.splice(agentIdx, 1);
+    const { setAgentMode } = await import("./util/output.js");
+    setAgentMode(true);
+  }
+  const [cmd, ...rest] = argv;
   if (!cmd || cmd === "-h" || cmd === "--help" || cmd === "help") {
     help();
     return;
   }
   if (cmd === "-v" || cmd === "--version") {
-    // Version is the only place where we allow a plain number.
     const { readFile } = await import("node:fs/promises");
     const { fileURLToPath } = await import("node:url");
     const { dirname, resolve } = await import("node:path");
     const here = dirname(fileURLToPath(import.meta.url));
     try {
       const pkg = JSON.parse(await readFile(resolve(here, "../package.json"), "utf8"));
-      console.log(pkg.version);
+      const version = pkg.version as string;
+      console.log(version);
+      return;
     } catch {
       console.log("0.0.0");
+      return;
     }
-    return;
   }
   const entry = commands[cmd];
   if (!entry) {
@@ -72,6 +93,18 @@ async function main(): Promise<void> {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`\n  ${c.bad(g.cross)} ${msg}\n`);
     process.exit(1);
+  }
+
+  const { readFile } = await import("node:fs/promises");
+  const { fileURLToPath } = await import("node:url");
+  const { dirname, resolve } = await import("node:path");
+  const here = dirname(fileURLToPath(import.meta.url));
+  try {
+    const pkg = JSON.parse(await readFile(resolve(here, "../package.json"), "utf8"));
+    const version = pkg.version as string;
+    setImmediate(() => maybeNudge(version).catch(() => {}));
+  } catch {
+    // skip nudge if version can't be resolved
   }
 }
 
