@@ -104,8 +104,7 @@ export async function cmdConfig(argv: string[]): Promise<void> {
     const key = argv[1];
     const value = argv[2];
     if (!key || !value) {
-      console.error("usage: eth config set <key> <value>");
-      return;
+      throw new Error("usage: eth config set <key> <value>");
     }
     await writeConfigValue(key, value);
     const found = KNOWN_KEYS.find((e) => e.key === key);
@@ -120,8 +119,7 @@ export async function cmdConfig(argv: string[]): Promise<void> {
   if (sub === "unset") {
     const key = argv[1];
     if (!key) {
-      console.error("usage: eth config unset <key>");
-      return;
+      throw new Error("usage: eth config unset <key>");
     }
     const content = await readConfigRaw();
     const lines = content.split("\n").filter((line) => {

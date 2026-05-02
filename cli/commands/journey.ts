@@ -63,7 +63,7 @@ function detectPhase(): number {
     if (entries.length > 0) return 1;
   } catch { /* ignore */ }
 
-  return 4;
+  return 0;
 }
 
 const PHASES: JourneyPhase[] = [
@@ -116,7 +116,7 @@ function padFooter(lines: string[], footer: string[], rows: number): string[] {
   return lines.slice(0, rows);
 }
 
-function buildScreen(selectedPhase: number, selectedSkill: number, rows: number, phaseIdx: number): string[] {
+function buildScreen(selectedPhase: number, selectedSkill: number, rows: number): string[] {
   const lines: string[] = [];
 
   lines.push("");
@@ -172,7 +172,7 @@ export async function interactiveJourney(_argv: string[]): Promise<void> {
   function getRows(): number { return stdout.rows || 24; }
 
   function draw() {
-    const screen = buildScreen(selectedPhase, selectedSkill, getRows(), selectedPhase);
+    const screen = buildScreen(selectedPhase, selectedSkill, getRows());
     stdout.write(`${CLEAR_SCREEN}${screen.join("\n")}`);
   }
 
@@ -192,7 +192,7 @@ export async function interactiveJourney(_argv: string[]): Promise<void> {
     }
 
     function onData(key: string) {
-      if (key === "\x03") { cleanup(); process.exit(0); }
+      if (key === "\x03") { cleanup(); throw new Error("interrupted"); }
       if (key === "\x1b" || key === "q" || key === "Q") { cleanup(); resolve(); return; }
 
       if (key === "\r" || key === "\n") {
@@ -203,6 +203,7 @@ export async function interactiveJourney(_argv: string[]): Promise<void> {
           stdio: "inherit",
         });
         child.on("close", () => resolve());
+        child.on("error", () => { resolve(); });
         return;
       }
 
