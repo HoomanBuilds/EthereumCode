@@ -4,10 +4,17 @@ import { parseArgs } from "../util/args.js";
 import { runReviewer } from "../agents/reviewer.js";
 import { deploy } from "../deploy/deploy.js";
 import { writeProjectFile } from "../util/fs.js";
+import { appendSection, readContext } from "../handoff/context.js";
+import { isAgent } from "../util/output.js";
 
 export async function cmdShip(argv: string[]): Promise<void> {
   const args = parseArgs(argv);
   intro("ship");
+
+  const ctx = await readContext();
+  if (isAgent()) {
+    console.log(`  context_loaded: ${ctx !== null}`);
+  }
 
   const target = args.testnet
     ? "testnet"
@@ -34,6 +41,9 @@ export async function cmdShip(argv: string[]): Promise<void> {
   await writeProjectFile("launch/ph.md", result.ph);
   await writeProjectFile("launch/frame.md", result.frame);
   done("launch pack written to ./launch");
+
+  const shipBody = `**Target:** ${target}\n**Address:** ${result.address}\n**URL:** ${result.url}\n\nQA: ${review.ok ? "green" : review.reason}`;
+  await appendSection("Ship status", shipBody);
 
   outro(`${c.faint("shipped.")}  ${c.bold(result.url)}`);
 }

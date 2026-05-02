@@ -3,10 +3,17 @@ import { c } from "../ui/theme.js";
 import { parseArgs } from "../util/args.js";
 import { runAuditor } from "../agents/auditor.js";
 import { writeProjectFile } from "../util/fs.js";
+import { appendSection, readContext } from "../handoff/context.js";
+import { isAgent } from "../util/output.js";
 
 export async function cmdAudit(argv: string[]): Promise<void> {
   const _args = parseArgs(argv);
   intro("audit");
+
+  const ctx = await readContext();
+  if (isAgent()) {
+    console.log(`  context_loaded: ${ctx !== null}`);
+  }
 
   step("loading audit/ security/ skills");
   step("running slither");
@@ -15,6 +22,9 @@ export async function cmdAudit(argv: string[]): Promise<void> {
   const report = await runAuditor();
 
   await writeProjectFile("audit.md", report.markdown);
+
+  const auditBody = `**Highs:** ${report.highs}\n**Mediums:** ${report.mediums}\n**Lows:** ${report.lows}\n\n${report.markdown}`;
+  await appendSection("Audit findings", auditBody);
 
   if (report.highs > 0) {
     fail(`${report.highs} high-severity findings  ${c.faint("see audit.md")}`);
