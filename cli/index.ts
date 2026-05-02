@@ -16,6 +16,9 @@ import { cmdCopilot } from "./commands/copilot.js";
 import { cmdFeedback } from "./commands/feedback.js";
 import { cmdTelemetry } from "./commands/telemetry.js";
 import { cmdUninstall } from "./commands/uninstall.js";
+import { cmdCompletion } from "./commands/completion.js";
+import { cmdConfig } from "./commands/config.js";
+import { interactiveJourney } from "./commands/journey.js";
 import { maybeNudge } from "./util/update-check.js";
 
 type Cmd = (argv: string[]) => Promise<void>;
@@ -37,6 +40,9 @@ const commands: Record<string, { run: Cmd; summary: string }> = {
   feedback: { run: cmdFeedback, summary: "send feedback to the team" },
   telemetry: { run: cmdTelemetry, summary: "manage telemetry data" },
   uninstall: { run: cmdUninstall, summary: "remove skills and config" },
+  completion: { run: cmdCompletion, summary: "generate shell completions" },
+  config: { run: cmdConfig, summary: "manage cli configuration" },
+  journey: { run: interactiveJourney, summary: "interactive developer journey" },
 };
 
 function help(): void {
@@ -47,7 +53,7 @@ function help(): void {
   lines.push(`    ${c.bold("eth")} ${c.accent("<command>")} ${c.faint("[options]")}`);
   lines.push("");
   lines.push(c.faint("  commands"));
-  const pad = 10;
+  const pad = 11;
   for (const [name, meta] of Object.entries(commands)) {
     lines.push(`    ${c.bold(name.padEnd(pad))} ${c.faint(meta.summary)}`);
   }
