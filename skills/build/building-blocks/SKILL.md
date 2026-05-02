@@ -5,6 +5,8 @@ description: DeFi legos and protocol composability on Ethereum and L2s. Major pr
 
 # Building Blocks (DeFi Legos)
 
+Read [references/dex-mechanics.md](references/dex-mechanics.md) before picking a DEX, [references/uniswap-v4-hooks.md](references/uniswap-v4-hooks.md) before writing a hook, [references/aave-and-lending-flows.md](references/aave-and-lending-flows.md) before composing leverage / refinance / liquidation patterns, and [references/pendle-and-yield-tokens.md](references/pendle-and-yield-tokens.md) before integrating PT/YT or fixed-yield strategies.
+
 ## What You Probably Got Wrong
 
 **DeFi TVL:** Check [DeFi Llama](https://defillama.com/chain/Ethereum) for current Ethereum DeFi TVL. If you're quoting numbers from 2023-2024, they're stale.
