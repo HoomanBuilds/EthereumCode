@@ -18,6 +18,7 @@ eth new
 ## table of contents
 
 - [what it is](#what-it-is)
+- [two ways to use](#two-ways-to-use)
 - [goals](#goals)
 - [design philosophy](#design-philosophy)
 - [the five engines](#the-five-engines)
@@ -39,6 +40,43 @@ eth new
 `ethereum.new` is the Ethereum answer to [solana.new](https://www.solana.new) — but sharper, deeper, and more opinionated. It's a single TypeScript CLI (`eth`) that orchestrates a crew of Claude-powered sub-agents through the five phases every founder hits on the way from a napkin sketch to a deployed, audited, funded product on Ethereum or one of its L2s.
 
 The wedge is **grounding**. Every agent invocation loads the relevant ethskills markdown — **bundled locally in `./skills/`, never fetched at runtime** — into context *before* it writes a line of code. No hallucinated contract addresses. No stale gas costs. No generic "deploy on mainnet" advice when the use case obviously belongs on Base. What ships in the repo is what every agent sees.
+
+## two ways to use
+
+`eth` has two runtimes. Same skills, same grounding, different experience.
+
+### path A: the CLI (requires `ANTHROPIC_API_KEY`)
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+eth idea
+eth build
+```
+
+This is the full pipeline. You get orchestrated multi-agent workflows, phase handoff, template generation, chain recommendations, catalog search, deploy automation, and progress tracking. Each command chains multiple Claude agents automatically — `eth build` runs the architect, then the builder, in sequence.
+
+### path B: Claude Code (no API key needed)
+
+```bash
+eth init
+claude "/validate-idea Should I build a yield aggregator on Base?"
+```
+
+`eth init` installs all 31 skills into `~/.claude/skills/`. Claude Code handles its own auth via OAuth or subscriber login. You invoke skills as slash commands directly inside Claude Code or Codex.
+
+### which should you use?
+
+| | CLI (API key) | Claude Code (no key) |
+|---|---|---|
+| **Auth** | `ANTHROPIC_API_KEY` | Claude's own login |
+| **Multi-agent orchestration** | One command → 4 agents chained | One prompt → one response |
+| **Phase handoff** | Auto-accumulates context | Manual per-prompt |
+| **Template + deploy** | Auto-copies, `forge script` wrapper | You run forge yourself |
+| **Catalog search** | `eth search` across 193 entries | Not available |
+| **Interactive TUI** | Progress lanes, structured prompts | Claude Code's own TUI |
+| **Best for** | Shipping a full project end-to-end | Exploring ideas, learning, quick tasks |
+
+**Recommendation:** Use the CLI for the full build pipeline. Use Claude Code for learning, idea exploration, and quick skill lookups. Both paths use the same 31 skill files — one source of truth.
 
 ## goals
 
@@ -71,6 +109,28 @@ eth raise     deck + investor map for your round
 ```
 
 Or just run `eth new` and answer one question.
+
+### pre-build commands
+
+```
+eth beginner    learn ethereum fundamentals
+eth validate    validate an idea before building
+```
+
+### quality commands
+
+```
+eth review      brutal product review
+eth design      frontend design patterns for dapps
+eth debug       debug failing contracts and tests
+```
+
+### launch commands
+
+```
+eth hackathon   prepare a hackathon submission
+eth grant       apply for a grant program
+```
 
 ### discovery commands
 
@@ -131,24 +191,14 @@ curl -fsSL https://ethereum.new/setup.sh | bash
 # 2. verify the toolchain
 eth doctor
 
-# 3. set your key
+# 3a. CLI path — set your key
 export ANTHROPIC_API_KEY=sk-ant-...
-
-# 4. go
 eth new
-```
 
-### slash-command path (no API key needed)
-
-`eth init` installs the bundled skills into `~/.claude/skills/` and `~/.codex/skills/`. After that, anything an `eth` command can ground on is also available as a slash command inside [Claude Code](https://claude.ai/code) or [Codex](https://openai.com/index/codex/):
-
-```bash
+# 3b. Claude Code path — no key needed
 eth init
-claude "/why  Should I build my idea on Ethereum?"
-claude "/audit  Review my contracts before mainnet."
+claude "/find-next-crypto-idea What should I build on Ethereum?"
 ```
-
-The `eth` binary still uses the same files via the API path — one source of truth for both runtimes.
 
 ### local development (if you're hacking on the framework itself)
 
@@ -219,7 +269,7 @@ ethereum.new/
 │   └── README.md               attribution + refresh instructions
 │   (each leaf is <phase>/<slug>/SKILL.md with name+description frontmatter)
 ├── cli/
-│   ├── index.ts                dispatcher (16 commands registered)
+│   ├── index.ts                dispatcher (26 commands registered)
 │   ├── telemetry.ts            local JSONL logging + rotation
 │   ├── ui/
 │   │   ├── theme.ts            palette + glyphs
@@ -245,7 +295,14 @@ ethereum.new/
 │   │   ├── uninstall.ts        remove skills and config
 │   │   ├── completion.ts       generate shell completions
 │   │   ├── config.ts           manage cli configuration
-│   │   └── journey.ts          interactive phase navigator
+│   │   ├── journey.ts          interactive phase navigator
+│   │   ├── beginner.ts         learn ethereum fundamentals
+│   │   ├── validate.ts         validate an idea before building
+│   │   ├── review.ts           brutal product review
+│   │   ├── design.ts           frontend design patterns for dapps
+│   │   ├── debug.ts            debug failing contracts and tests
+│   │   ├── hackathon.ts        prepare a hackathon submission
+│   │   └── grant.ts            apply for a grant program
 │   ├── agents/
 │   │   ├── runtime.ts          the single Claude chokepoint
 │   │   ├── architect.ts        Opus 4.6 · returns a Plan JSON
@@ -443,7 +500,7 @@ A proper vitest suite is on the roadmap. See [roadmap](#roadmap).
 
 **v0.2 (done)** — discovery layer: `eth search`, `eth repos` (88 curated repos across 8 categories), `eth skills` catalog (76 skills), `eth mcps` server directory (29 MCPs), `eth copilot` freeform assistant, `eth feedback` command.
 
-**v0.3 (done)** — phase handoff system (`cli/handoff/`) for passing context between commands, local telemetry with JSONL logging and rotation, `eth uninstall`, `eth doctor` toolchain verification, `eth init` skill installer, `eth config` CLI config manager, `eth completion` shell completions, `eth journey` interactive TUI navigator.
+**v0.3 (done)** — phase handoff system (`cli/handoff/`) for passing context between commands, local telemetry with JSONL logging and rotation, `eth uninstall`, `eth doctor` toolchain verification, `eth init` skill installer, `eth config` CLI config manager, `eth completion` shell completions, `eth journey` interactive TUI navigator. 7 new launch commands: `eth beginner`, `eth validate`, `eth review`, `eth design`, `eth debug`, `eth hackathon`, `eth grant`. All 14 task keys now invoked — zero dead routing entries.
 
 **v0.4** — fill in the remaining five templates:
 - `nft-drop/` — ERC-721A with allowlist signing and the Farcaster frame flow
