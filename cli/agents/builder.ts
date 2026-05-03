@@ -41,8 +41,8 @@ export async function runBuilder(input: {
   if (forge.ok && git.ok) {
     await run("git", ["init"], { cwd: copy.root });
     await run("git", ["add", "-A"], { cwd: copy.root });
-    await run("forge", ["install", "foundry-rs/forge-std"], { cwd: copy.root });
-    await run("forge", ["install", "OpenZeppelin/openzeppelin-contracts"], { cwd: copy.root });
+    await run("forge", ["install", "foundry-rs/forge-std@v1.8.0"], { cwd: copy.root });
+    await run("forge", ["install", "OpenZeppelin/openzeppelin-contracts@v5.0.0"], { cwd: copy.root });
   }
 
   // Step 2: ask Claude to generate contract + test edits.
