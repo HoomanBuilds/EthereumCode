@@ -10,7 +10,7 @@ export async function warnApiKey(): Promise<void> {
   const cfg = await loadConfig();
   const hasKey = Boolean(process.env.ANTHROPIC_API_KEY ?? cfg.anthropicKey);
   if (!hasKey) {
-    process.stdout.write(`\n  ${c.warn(g.dot)} no anthropic api key — running in stub mode. set ${c.bold("ANTHROPIC_API_KEY")} or run ${c.bold("eth doctor --init")} to configure\n\n`);
+    process.stdout.write(`\n  ${c.warn(g.dot)} no anthropic api key — running in stub mode\n  → ${c.bold("export ANTHROPIC_API_KEY=sk-ant-...")} or run ${c.bold("eth doctor --init")}\n\n`);
   }
 }
 
