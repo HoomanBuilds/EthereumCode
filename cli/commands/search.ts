@@ -12,13 +12,13 @@ export async function cmdSearch(argv: string[]): Promise<void> {
 
   const matchRepo = repos.filter(r =>
     r.slug.includes(q) || r.name.toLowerCase().includes(q) ||
-    r.description.toLowerCase().includes(q) || r.tags.some(t => t.includes(q))
+    (r.description?.toLowerCase() ?? "").includes(q) || r.tags?.some(t => t.includes(q))
   );
   const matchSkill = skills.filter(s =>
-    s.slug.includes(q) || s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q)
+    s.slug.includes(q) || s.name.toLowerCase().includes(q) || (s.description?.toLowerCase() ?? "").includes(q)
   );
   const matchMcp = mcps.filter(m =>
-    m.name.toLowerCase().includes(q) || m.description.toLowerCase().includes(q)
+    m.name.toLowerCase().includes(q) || (m.description?.toLowerCase() ?? "").includes(q)
   );
 
   emit(

@@ -1,6 +1,8 @@
 import { run, which } from "../util/exec.js";
 import { loadConfig } from "../util/env.js";
 import { CHAINS, type ChainId } from "../chains/registry.js";
+import { existsSync, readdirSync, statSync } from "node:fs";
+import { join, resolve } from "node:path";
 
 export interface DeployResult {
   address: string;
@@ -11,9 +13,17 @@ export interface DeployResult {
   frame: string;
 }
 
+export interface DeployEnv {
+  vaultAsset?: string;
+  vaultName?: string;
+  vaultSymbol?: string;
+  vaultCap?: string;
+  vaultOwner?: string;
+}
+
 // Chain-aware deployer. Wraps `forge script` for the current project.
 // Safe by default: testnet is always the fallback if no explicit target.
-export async function deploy(opts: { target: "testnet" | "mainnet"; chain?: ChainId }): Promise<DeployResult> {
+export async function deploy(opts: { target: "testnet" | "mainnet"; chain?: ChainId; env?: DeployEnv }): Promise<DeployResult> {
   const cfg = await loadConfig();
   const chainId = (opts.chain ?? (cfg.chain as ChainId) ?? "base") as ChainId;
   const chain = CHAINS[chainId];
@@ -24,10 +34,15 @@ export async function deploy(opts: { target: "testnet" | "mainnet"; chain?: Chai
     throw new Error("foundry not installed. run `foundryup`.");
   }
 
+  const projectRoot = findProjectRoot(process.cwd());
+  if (!projectRoot) {
+    throw new Error("no foundry project found. run `eth build` first, or cd into your project directory.");
+  }
+
   const rpc = cfg.rpc ?? net.rpcDefault;
   const args = [
     "script",
-    "script/Deploy.s.sol",
+    "script/Deploy.s.sol:Deploy",
     "--rpc-url",
     rpc,
     "--broadcast",
@@ -45,7 +60,14 @@ export async function deploy(opts: { target: "testnet" | "mainnet"; chain?: Chai
     args.push("--verify", "--etherscan-api-key", cfg.etherscanKey);
   }
 
-  const r = await run("forge", args);
+  const envVals: NodeJS.ProcessEnv = { ...process.env };
+  if (opts.env?.vaultAsset) envVals.VAULT_ASSET = opts.env.vaultAsset;
+  if (opts.env?.vaultName) envVals.VAULT_NAME = opts.env.vaultName;
+  if (opts.env?.vaultSymbol) envVals.VAULT_SYMBOL = opts.env.vaultSymbol;
+  if (opts.env?.vaultCap) envVals.VAULT_CAP = opts.env.vaultCap;
+  if (opts.env?.vaultOwner) envVals.VAULT_OWNER = opts.env.vaultOwner;
+
+  const r = await run("forge", args, { cwd: projectRoot, env: envVals });
   if (r.code !== 0) {
     throw new Error(`forge script failed:\n${r.stderr.slice(0, 1200)}`);
   }
@@ -63,6 +85,20 @@ export async function deploy(opts: { target: "testnet" | "mainnet"; chain?: Chai
     ph: phCopy(chain.name),
     frame: frameCopy(address),
   };
+}
+
+export function findProjectRoot(from: string): string | null {
+  if (existsSync(join(from, "foundry.toml"))) return from;
+  const entries = readdirSync(from).filter((e) => !e.startsWith("."));
+  for (const entry of entries) {
+    const full = join(from, entry);
+    try {
+      if (statSync(full).isDirectory() && existsSync(join(full, "foundry.toml"))) {
+        return full;
+      }
+    } catch { /* skip */ }
+  }
+  return null;
 }
 
 function extractAddress(out: string): string {

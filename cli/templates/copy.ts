@@ -23,6 +23,14 @@ export async function copyTemplate(
   opts: { chain: ChainId; slug?: string },
 ): Promise<CopyResult> {
   const src = resolve(TEMPLATES_ROOT, template);
+
+  // Check template exists before walking.
+  try {
+    await stat(src);
+  } catch {
+    throw new Error(`template "${template}" not found. available: defi-vault`);
+  }
+
   const slug = opts.slug ?? template;
   const dst = resolve(process.cwd(), slug);
 

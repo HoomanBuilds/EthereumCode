@@ -43,7 +43,7 @@ function parseConfigValue(content: string, key: string): string | null {
   return null;
 }
 
-async function writeConfigValue(key: string, value: string): Promise<void> {
+export async function writeConfigValue(key: string, value: string): Promise<void> {
   await mkdir(CONFIG_DIR, { recursive: true });
   const content = await readConfigRaw();
   const lines = content.split("\n");

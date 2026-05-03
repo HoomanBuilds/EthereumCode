@@ -14,5 +14,5 @@ export async function cmdCopilot(argv: string[]): Promise<void> {
     prompt: `User asks: ${topic}\n\nGive a tight, actionable answer grounded in the loaded skills.`,
   });
   console.log(c.faint("\n  copilot\n"));
-  console.log(out);
+  console.log(out.text);
 }

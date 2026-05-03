@@ -1,7 +1,11 @@
-import { intro, outro } from "../ui/prompt.js";
+import { intro, outro, text, confirm, select } from "../ui/prompt.js";
 import { c, g } from "../ui/theme.js";
 import { which, run } from "../util/exec.js";
 import { loadConfig } from "../util/env.js";
+import { writeConfigValue } from "./config.js";
+import { existsSync, readdirSync } from "node:fs";
+import { join } from "node:path";
+import { homedir } from "node:os";
 
 interface Check {
   name: string;
@@ -9,8 +13,13 @@ interface Check {
   detail: string;
 }
 
-export async function cmdDoctor(_argv: string[]): Promise<void> {
+export async function cmdDoctor(argv: string[]): Promise<void> {
   intro("doctor");
+
+  if (argv.includes("--init")) {
+    await runSetup();
+    return;
+  }
 
   const checks: Check[] = [];
 
@@ -30,7 +39,12 @@ export async function cmdDoctor(_argv: string[]): Promise<void> {
   checks.push({
     name: "rpc",
     ok: Boolean(cfg.rpc),
-    detail: cfg.rpc ? `${cfg.chain} · ${mask(cfg.rpc)}` : "not configured · run eth doctor --init",
+    detail: cfg.rpc ? `${cfg.chain} · ${mask(cfg.rpc)}` : "not configured",
+  });
+  checks.push({
+    name: "wallet",
+    ok: Boolean(cfg.walletKeyPath),
+    detail: cfg.walletKeyPath ? cfg.walletKeyPath : "not configured",
   });
   checks.push({
     name: "anthropic",
@@ -50,6 +64,47 @@ export async function cmdDoctor(_argv: string[]): Promise<void> {
     throw new Error("doctor checks failed");
   }
   outro(c.good("all green."));
+}
+
+async function runSetup(): Promise<void> {
+  intro("setup");
+
+  const cfg = await loadConfig();
+
+  if (!process.env.ANTHROPIC_API_KEY && !cfg.anthropicKey) {
+    const key = await text("anthropic api key", "sk-ant-...");
+    await writeConfigValue("anthropic_key", key);
+  }
+
+  if (!cfg.rpc) {
+    const rpc = await text("rpc url", "https://mainnet.infura.io/v3/... or leave blank for default");
+    if (rpc) {
+      await writeConfigValue("rpc", rpc);
+    }
+  }
+
+  const keystoreDir = join(homedir(), ".foundry", "keystores");
+  if (!cfg.walletKeyPath) {
+    if (existsSync(keystoreDir)) {
+      const files = readdirSync(keystoreDir).filter((f) => !f.startsWith("."));
+      if (files.length > 0) {
+        const options = files.map((f) => ({ value: join(keystoreDir, f), label: f }));
+        const choice = await select<string>("pick a keystore", options);
+        await writeConfigValue("wallet_key_path", choice);
+      } else {
+        const wantNew = await confirm("create a new wallet?", true);
+        if (wantNew) {
+          const path = await text("wallet key path", "path to keystore file");
+          if (path) await writeConfigValue("wallet_key_path", path);
+        }
+      }
+    } else {
+      const path = await text("wallet key path", "path to keystore file");
+      if (path) await writeConfigValue("wallet_key_path", path);
+    }
+  }
+
+  outro(c.good("setup complete. run eth new to start."));
 }
 
 async function forgeVersion(): Promise<string> {

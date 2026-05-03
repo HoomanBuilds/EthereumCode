@@ -14,6 +14,18 @@ export interface BuildOutput {
   pages: number;
 }
 
+function parseGeneratedFiles(text: string): Array<{ path: string; content: string }> {
+  const files: Array<{ path: string; content: string }> = [];
+  const regex = /===\s*([^\n]+?)\s*===\s*\n([\s\S]*?)(?===\s*[^\n]+?\s*===\s*\n|$)/g;
+  let m: RegExpExecArray | null;
+  while ((m = regex.exec(text)) !== null) {
+    const path = m[1]?.trim();
+    const content = m[2]?.trimEnd();
+    if (path && content) files.push({ path, content });
+  }
+  return files;
+}
+
 export async function runBuilder(input: {
   brief: string;
   chain: ChainId;
@@ -22,25 +34,38 @@ export async function runBuilder(input: {
   // Step 1: copy the template skeleton to ./<project>.
   const copy = await copyTemplate(input.plan.template, { chain: input.chain });
 
-  // Step 2: ask Claude to generate contract + test edits grounded in security/addresses skills.
+  // Step 2: ask Claude to generate contract + test edits.
   const res = await invoke({
     task: "build.contracts",
     tier: "iterate",
     system:
       "You are the builder. Adapt the chosen template to match the brief. Use OpenZeppelin, Checks-Effects-Interactions, " +
-      "emit events, verified addresses only. Output a unified list of file writes as `=== path/to/file ===\\n<content>`.",
+      "emit events, verified addresses only. Output every file you change as `=== path/to/file ===\\n<content>` blocks. " +
+      "Use paths relative to the project root. Example: === src/StableVault.sol ===\\n<solidity code>",
     prompt: [
       `brief: ${input.brief}`,
       `chain: ${input.chain}`,
       `template: ${input.plan.template}`,
       `integrations: ${input.plan.integrations.join(", ") || "(none)"}`,
       "",
-      "List every file you need to change. Keep the diff small. No README edits.",
+      "Output ONLY file blocks. No explanations.",
     ].join("\n"),
     maxTokens: 8192,
   });
 
-  await writeProjectFile(`${copy.root}/BUILD_NOTES.md`, res.text);
+  const generatedFiles = parseGeneratedFiles(res.text);
+  const contracts: string[] = [];
+  let tests = 0;
+
+  for (const file of generatedFiles) {
+    await writeProjectFile(`${copy.root}/${file.path}`, file.content);
+    if (file.path.startsWith("src/") && file.path.endsWith(".sol")) contracts.push(file.path);
+    if ((file.path.startsWith("test/") || file.path.startsWith("script/")) && file.path.endsWith(".sol")) tests++;
+  }
+
+  if (generatedFiles.length === 0) {
+    await writeProjectFile(`${copy.root}/BUILD_NOTES.md`, res.text);
+  }
 
   // Step 3: scaffold-eth 2 frontend adaptation.
   await invoke({
@@ -48,13 +73,14 @@ export async function runBuilder(input: {
     tier: "iterate",
     system:
       "You are the frontend builder. Use Scaffold-ETH 2 hooks (useScaffoldReadContract, useScaffoldWriteContract). " +
-      "Follow the three-button flow: switch network → approve → execute. No infinite approvals. No placeholder branding.",
+      "Follow the three-button flow: switch network → approve → execute. No infinite approvals. No placeholder branding. " +
+      "Output every file as `=== path/to/file ===\\n<content>` blocks.",
     prompt: `adapt the ${input.plan.template} frontend to: ${input.brief}`,
   });
 
   return {
-    contracts: copy.contracts,
-    tests: copy.tests,
+    contracts: contracts.length > 0 ? contracts : copy.contracts,
+    tests: tests > 0 ? tests : copy.tests,
     pages: copy.pages,
   };
 }

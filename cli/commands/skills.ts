@@ -23,7 +23,7 @@ export async function cmdSkills(argv: string[]): Promise<void> {
     () => {
       for (const s of skills) {
         const tag = s.official ? c.bold("[official]") : c.faint("[community]");
-        console.log(`  ${tag} ${c.bold(s.slug.padEnd(32))} ${c.faint(s.description)}`);
+        console.log(`  ${tag} ${c.bold((s.slug ?? "unknown").padEnd(32))} ${c.faint(s.description ?? "")}`);
       }
     },
     { command: "skills", count: skills.length, skills }

@@ -18,6 +18,7 @@ export async function cmdRepos(argv: string[]): Promise<void> {
   const cloneIdx = argv.indexOf("--clone");
   if (cloneIdx >= 0) {
     const slug = argv[cloneIdx + 1];
+    if (!slug) { throw new Error("usage: eth repos --clone <slug>"); }
     const r = repos.find(x => x.slug === slug);
     if (!r) { throw new Error(`unknown repo: ${slug}`); }
     const url = `https://github.com/${r.repo}.git`;
@@ -30,7 +31,7 @@ export async function cmdRepos(argv: string[]): Promise<void> {
   emit(
     () => {
       for (const r of filtered) {
-        console.log(`  ${c.bold(r.slug.padEnd(28))} ${c.faint(r.category.padEnd(18))} ${r.description}`);
+        console.log(`  ${c.bold(r.slug.padEnd(28))} ${c.faint((r.category ?? "").padEnd(18))} ${r.description ?? ""}`);
       }
     },
     { command: "repos", count: filtered.length, repos: filtered }

@@ -24,7 +24,7 @@ export async function cmdMcps(argv: string[]): Promise<void> {
   emit(
     () => {
       for (const m of mcps) {
-        console.log(`  ${c.bold(m.name.padEnd(24))} ${c.faint(m.transport.padEnd(6))} ${m.description}`);
+        console.log(`  ${c.bold(m.name.padEnd(24))} ${c.faint((m.transport ?? "stdio").padEnd(6))} ${m.description ?? ""}`);
       }
     },
     { command: "mcps", count: mcps.length, mcps }

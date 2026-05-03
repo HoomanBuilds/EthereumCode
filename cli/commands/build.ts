@@ -29,6 +29,7 @@ export async function cmdBuild(argv: string[]): Promise<void> {
     { value: "arbitrum", label: "arbitrum", hint: "defi composability" },
     { value: "optimism", label: "optimism", hint: "public goods" },
     { value: "mainnet", label: "mainnet", hint: "cheap + secure" },
+    { value: "zksync", label: "zksync", hint: "zk-native" },
   ])) as ChainId;
 
   const lanes = new Lanes([

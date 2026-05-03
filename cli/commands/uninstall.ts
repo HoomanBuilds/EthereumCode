@@ -8,10 +8,10 @@ import { emit } from "../util/output.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function getSkillsRoot(): string {
-  const devPath = join(__dirname, "..", "..", "skills");
-  if (existsSync(devPath)) return devPath;
-  const distPath = join(__dirname, "..", "..", "..", "skills");
-  if (existsSync(distPath)) return distPath;
+  const skillsPath = join(__dirname, "..", "..", "skills");
+  if (existsSync(skillsPath)) return skillsPath;
+  const distSkills = join(__dirname, "..", "skills");
+  if (existsSync(distSkills)) return distSkills;
   return "";
 }
 
@@ -59,11 +59,12 @@ export async function cmdUninstall(argv: string[]): Promise<void> {
     }
   }
 
-  if (existsSync(configDir)) {
+  const configExisted = existsSync(configDir);
+  if (configExisted) {
     rmSync(configDir, { recursive: true, force: true });
   }
 
-  if (removedAny.size === 0 && !existsSync(configDir)) {
+  if (removedAny.size === 0 && !configExisted) {
     emit(
       () => console.log(c.faint("  nothing to uninstall.")),
       { command: "uninstall", removed: [] }

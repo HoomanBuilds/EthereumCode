@@ -22,7 +22,10 @@ const IDEAS = corpus as CorpusItem[];
 // Claude flesh out the one-pager grounded on ethskills.
 export async function generateIdea(brief: string): Promise<IdeaOut> {
   const ranked = rank(brief);
-  const pick = ranked[0] ?? IDEAS[0]!;
+  const pick = ranked[0];
+  if (!pick) {
+    throw new Error("no ideas available. corpus is empty.");
+  }
 
   const res = await invoke({
     task: "idea",

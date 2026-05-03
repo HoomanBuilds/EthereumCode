@@ -21,6 +21,13 @@ const COMMANDS: Record<string, string> = {
   completion: "generate shell completions",
   config: "manage cli configuration",
   journey: "interactive developer journey",
+  beginner: "learn ethereum fundamentals",
+  hackathon: "prepare a hackathon submission",
+  grant: "apply for a grant program",
+  design: "frontend design patterns for dapps",
+  validate: "validate an idea before building",
+  review: "brutal product review",
+  debug: "debug failing contracts and tests",
 };
 
 const GLOBAL_FLAGS = "--help --version --agent";

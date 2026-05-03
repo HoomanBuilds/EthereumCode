@@ -5,6 +5,7 @@ import { runAuditor } from "../agents/auditor.js";
 import { writeProjectFile } from "../util/fs.js";
 import { appendSection, readContext } from "../handoff/context.js";
 import { isAgent } from "../util/output.js";
+import { which } from "../util/exec.js";
 
 export async function cmdAudit(argv: string[]): Promise<void> {
   const _args = parseArgs(argv);
@@ -15,8 +16,10 @@ export async function cmdAudit(argv: string[]): Promise<void> {
     console.log(`  context_loaded: ${ctx !== null}`);
   }
 
-  step("loading audit/ security/ skills");
-  step("running slither");
+  const slither = await which("slither");
+  if (slither.ok) step("running slither");
+  else step("slither not installed — static analysis skipped");
+
   step("running ethskills checklist");
 
   const report = await runAuditor();
