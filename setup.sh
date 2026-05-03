@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ethereum-code installer — idempotent. Target: first command to running dApp < 2 minutes.
-# usage:  curl -fsSL https://ethereum-code/setup.sh | bash
+# usage:  curl -fsSL https://ethereum-code.vercel.app/setup.sh | bash
 
 set -euo pipefail
 

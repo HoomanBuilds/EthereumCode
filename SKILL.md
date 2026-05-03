@@ -65,7 +65,7 @@ Three hard rules enforced at runtime:
 ## install
 
 ```bash
-curl -fsSL https://ethereum-code/setup.sh | bash
+curl -fsSL https://ethereum-code.vercel.app/setup.sh | bash
 eth doctor
 eth new
 ```

@@ -9,7 +9,7 @@ An AI-native CLI framework that takes a founder from raw idea to deployed Ethere
 </p>
 
 ```bash
-curl -fsSL https://ethereum-code/setup.sh | bash
+curl -fsSL https://ethereum-code.vercel.app/setup.sh | bash
 eth new
 ```
 
@@ -186,7 +186,7 @@ Competitive landscape mapped to your niche. Investor-grade seed deck. Smart-mone
 
 ```bash
 # 1. install (idempotent; installs node check, foundry, eth global, writes config.toml)
-curl -fsSL https://ethereum-code/setup.sh | bash
+curl -fsSL https://ethereum-code.vercel.app/setup.sh | bash
 
 # 2. verify the toolchain and set up your key
 eth doctor
@@ -203,7 +203,7 @@ claude "/find-next-crypto-idea What should I build on Ethereum?"
 ### local development (if you're hacking on the framework itself)
 
 ```bash
-git clone https://github.com/yourname/ethereum-code.git
+git clone https://github.com/HoomanBuilds/EthereumCode.git
 cd ethereum-code
 npm install
 npm run build            # tsup -> dist/index.js
@@ -410,7 +410,7 @@ forge test
 ### day-one workflow
 
 ```bash
-git clone https://github.com/yourname/ethereum-code.git
+git clone https://github.com/HoomanBuilds/EthereumCode.git
 cd ethereum-code
 npm install
 npx tsc --noEmit         # typecheck
@@ -515,7 +515,7 @@ A proper vitest suite is on the roadmap. See [roadmap](#roadmap).
 
 **v0.7** — `eth skills refresh` command that pulls newer versions of the bundled ethskills files from upstream and shows a diff.
 
-**v0.8** — landing page at ethereum-code (Next.js) that mirrors the CLI's taste — only after the CLI earns it.
+**v0.8** — landing page at https://ethereum-code.vercel.app/ (Next.js) that mirrors the CLI's taste — only after the CLI earns it.
 
 **v0.9** — `@ethereum-code/sdk` — programmatic access so other tools can call the engines without going through the CLI.
 
