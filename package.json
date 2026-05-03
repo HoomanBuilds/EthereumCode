@@ -1,6 +1,6 @@
 {
   "name": "ethereum-code",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Idea → Build → Ship → Audit → Raise. An AI-native Ethereum framework for founders obsessed with taste.",
   "license": "MIT",
   "type": "module",
@@ -10,10 +10,17 @@
   "files": [
     "dist",
     "cli/data",
-    "templates",
+    "templates/defi-vault/foundry.toml",
+    "templates/defi-vault/remappings.txt",
+    "templates/defi-vault/src",
+    "templates/defi-vault/test",
+    "templates/defi-vault/script",
+    "templates/defi-vault/frontend",
+    "templates/defi-vault/README.md",
     "skills",
     "SKILL.md",
-    "README.md"
+    "README.md",
+    ".npmignore"
   ],
   "scripts": {
     "build": "tsup",

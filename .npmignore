@@ -1,0 +1,13 @@
+templates/defi-vault/lib/
+templates/defi-vault/out/
+docs/cli.svg
+.claude/
+.ethereum-code/
+CLAUDE.md
+audit.md
+debug.md
+defi-vault/
+idea.md
+validate.md
+test-temp/
+docs/test-results.md
