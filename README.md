@@ -188,11 +188,11 @@ Competitive landscape mapped to your niche. Investor-grade seed deck. Smart-mone
 # 1. install (idempotent; installs node check, foundry, eth global, writes config.toml)
 curl -fsSL https://ethereum-code/setup.sh | bash
 
-# 2. verify the toolchain
+# 2. verify the toolchain and set up your key
 eth doctor
+eth doctor --init    # prompts for ANTHROPIC_API_KEY, rpc, wallet
 
-# 3a. CLI path — set your key
-export ANTHROPIC_API_KEY=sk-ant-...
+# 3a. CLI path — full pipeline
 eth new
 
 # 3b. Claude Code path — no key needed
