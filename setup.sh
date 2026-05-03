@@ -16,9 +16,9 @@ say()   { printf "  ${CYAN}●${END} %s\n" "$*"; }
 ok()    { printf "  ${GOOD}✓${END} %s\n" "$*"; }
 warn()  { printf "  ${WARN}✗${END} %s\n" "$*"; }
 bail()  { printf "  ${BAD}✗${END} %s\n" "$*" >&2; exit 1; }
-head()  { printf "\n${BOLD}%s${END}  ${DIM}%s${END}\n" "$1" "$2"; }
+hdr()   { printf "\n${BOLD}%s${END}  ${DIM}%s${END}\n" "$1" "$2"; }
 
-head "ethereum-code" "idea → build → ship → audit → raise"
+hdr "ethereum-code" "idea → build → ship → audit → raise"
 
 # --- 1. node -----------------------------------------------------------------
 if command -v node >/dev/null 2>&1; then
@@ -85,7 +85,7 @@ else
 fi
 
 # --- 6. doctor ---------------------------------------------------------------
-head "doctor" "verifying toolchain"
+hdr "doctor" "verifying toolchain"
 if eth doctor; then
   ok "toolchain ok"
 else
@@ -93,7 +93,7 @@ else
 fi
 
 # --- 7. install agent skills -------------------------------------------------
-head "skills" "installing slash-command skills"
+hdr "skills" "installing slash-command skills"
 if eth init >/dev/null 2>&1; then
   ok "skills installed to ~/.claude/skills and ~/.codex/skills"
 else
