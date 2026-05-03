@@ -60,6 +60,23 @@ const RULES: Rule[] = [
     why: "native account abstraction + zk validity",
   },
   {
+    id: "0g",
+    weight: 4,
+    patterns: [
+      /\b0g\b/i,
+      /\bzero\s*gravity\b/i,
+      /\bagents?\b/i,
+      /\bai\b/i,
+      /\binference\b/i,
+      /\bcompute\b/i,
+      /\bdecentralized\s*(storage|compute|ai)\b/i,
+      /\bpersistent\s*memory\b/i,
+      /\bonchain\s*memory\b/i,
+      /\bautonomous\s*agent\b/i,
+    ],
+    why: "decentralized AI stack with onchain storage and compute",
+  },
+  {
     id: "mainnet",
     weight: 1,
     patterns: [/\bens\b/i, /\brestak/i, /\bmev\b/i, /\bblue\s*chip/i, /\binstitutional/i],

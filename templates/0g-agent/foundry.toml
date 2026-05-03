@@ -1,0 +1,12 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+[rpc_endpoints]
+0g = "https://evmrpc.0g.ai"
+0g-testnet = "https://evmrpc-testnet.0g.ai"
+
+[etherscan]
+0g = { key = "", url = "https://chainscan.0g.ai/api" }
+0g-testnet = { key = "", url = "https://chainscan-galileo.0g.ai/api" }

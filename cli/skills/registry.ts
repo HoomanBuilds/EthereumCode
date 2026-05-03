@@ -14,6 +14,7 @@ export type TaskKey =
   | "build.review"
   | "build.debug"
   | "build.frontend.design"
+  | "build.agent"
   | "launch.deck"
   | "launch.hackathon"
   | "launch.grant";
@@ -50,7 +51,10 @@ export type SkillSlug =
   | "number-formatting"
   | "create-pitch-deck"
   | "submit-to-hackathon"
-  | "apply-grant";
+  | "apply-grant"
+  | "0g-storage"
+  | "0g-compute"
+  | "0g-chain";
 
 export const SKILLS: Record<TaskKey, SkillSlug[]> = {
   architect: ["ship", "concepts", "l2s", "standards", "why"],
@@ -64,6 +68,7 @@ export const SKILLS: Record<TaskKey, SkillSlug[]> = {
   "build.review": ["roast-my-product", "design-taste", "frontend-ux"],
   "build.debug": ["debug-contract", "tools", "testing"],
   "build.frontend.design": ["frontend-design-guidelines", "frontend-ux", "design-taste"],
+  "build.agent": ["0g-storage", "0g-compute", "0g-chain", "tools", "security"],
   "launch.deck": ["create-pitch-deck", "why"],
   "launch.hackathon": ["submit-to-hackathon", "ship"],
   "launch.grant": ["apply-grant", "why"],

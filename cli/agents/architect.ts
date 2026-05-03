@@ -7,7 +7,7 @@ import { chain } from "../chains/registry.js";
 
 export interface Plan {
   contracts: number;
-  template: "defi-vault" | "nft-drop" | "dao-governance" | "agent-wallet" | "rwa-issuance" | "zk-privacy";
+  template: "defi-vault" | "nft-drop" | "dao-governance" | "agent-wallet" | "rwa-issuance" | "zk-privacy" | "0g-agent";
   integrations: string[];
   chainWhy: string;
   raw: string;
@@ -26,7 +26,7 @@ export async function runArchitect(input: { brief: string; chain: ChainId }): Pr
       `chain: ${ch.name} (${ch.id}, chainId ${ch.chainId})`,
       `chain superpower: ${ch.superpower}`,
       "",
-      "Return JSON with keys: contracts (number 1-3), template (one of: defi-vault, nft-drop, dao-governance, agent-wallet, rwa-issuance, zk-privacy), integrations (string[]), chainWhy (string, <= 120 chars).",
+      "Return JSON with keys: contracts (number 1-3), template (one of: defi-vault, nft-drop, dao-governance, agent-wallet, rwa-issuance, zk-privacy, 0g-agent), integrations (string[]), chainWhy (string, <= 120 chars).",
     ].join("\n"),
   });
 

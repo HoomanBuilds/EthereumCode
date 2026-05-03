@@ -1,7 +1,7 @@
 // Opinionated chain registry. One source of truth for RPC, explorer, bridge, and superpower.
 // Every new chain must answer: "what's its superpower?" — not just "it's cheaper".
 
-export type ChainId = "mainnet" | "base" | "arbitrum" | "optimism" | "zksync";
+export type ChainId = "mainnet" | "base" | "arbitrum" | "optimism" | "zksync" | "0g";
 
 export interface ChainConfig {
   id: ChainId;
@@ -11,7 +11,7 @@ export interface ChainConfig {
   rpcDefault: string;
   explorer: string;
   blockscout?: string;
-  currency: "ETH";
+  currency: "ETH" | "0G";
   superpower: string;
   testnet: {
     name: string;
@@ -107,6 +107,23 @@ export const CHAINS: Record<ChainId, ChainConfig> = {
       rpcDefault: "https://sepolia.era.zksync.dev",
       explorer: "https://sepolia.explorer.zksync.io",
       faucet: "https://faucet.triangleplatform.com/zksync/sepolia",
+    },
+  },
+  "0g": {
+    id: "0g",
+    name: "0G (Zero Gravity)",
+    chainId: 16661,
+    rpcEnv: "ZEROG_RPC",
+    rpcDefault: "https://evmrpc.0g.ai",
+    explorer: "https://chainscan.0g.ai",
+    currency: "0G",
+    superpower: "decentralized AI stack · onchain storage + compute",
+    testnet: {
+      name: "0G Testnet (Galileo)",
+      chainId: 16602,
+      rpcDefault: "https://evmrpc-testnet.0g.ai",
+      explorer: "https://chainscan-galileo.0g.ai",
+      faucet: "https://faucet.0g.ai",
     },
   },
 };

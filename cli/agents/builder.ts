@@ -45,6 +45,14 @@ export async function runBuilder(input: {
     await run("forge", ["install", "OpenZeppelin/openzeppelin-contracts@v5.0.0"], { cwd: copy.root });
   }
 
+  // Step 1c: install 0G SDK if building on 0G chain.
+  if (input.chain === "0g") {
+    const npm = await which("npm");
+    if (npm.ok) {
+      await run("npm", ["install", "@0gfoundation/0g-storage-ts-sdk"], { cwd: copy.root });
+    }
+  }
+
   // Step 2: ask Claude to generate contract + test edits.
   const res = await invoke({
     task: "build.contracts",

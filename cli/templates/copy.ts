@@ -28,7 +28,7 @@ export async function copyTemplate(
   try {
     await stat(src);
   } catch {
-    throw new Error(`template "${template}" not found. available: defi-vault`);
+    throw new Error(`template "${template}" not found. available: defi-vault, 0g-agent`);
   }
 
   const slug = opts.slug ?? template;
