@@ -1,12 +1,14 @@
-# ethereum-code
-
-**idea → build → ship → audit → raise**
+<p align="center">
+  <img src="./public/logo.png" alt="ethereum-code logo" width="120"/>
+</p>
+<h1 align="center">ethereum-code</h1>
+<p align="center"><strong>idea → build → ship → audit → raise</strong></p>
 
 An AI-native CLI framework that takes a founder from raw idea to deployed Ethereum dApp in hours, not weeks. Chain-aware by default. Grounded in a bundled snapshot of [ethskills](https://github.com/ethskills/ethskills) — no runtime URL fetches, no hallucinated addresses. Opinionated so you don't have to be.
 
-<p align="center">
+<!-- <p align="center">
   <img src="./docs/cli.svg" alt="ethereum-code CLI" width="820"/>
-</p>
+</p> -->
 
 ```bash
 curl -fsSL https://ethereum-code.vercel.app/setup.sh | bash
@@ -37,7 +39,7 @@ eth new
 
 ## what it is
 
-`ethereum-code` is the Ethereum answer to [solana.new](https://www.solana.new) — but sharper, deeper, and more opinionated. It's a single TypeScript CLI (`eth`) that orchestrates a crew of Claude-powered sub-agents through the five phases every founder hits on the way from a napkin sketch to a deployed, audited, funded product on Ethereum or one of its L2s.
+`ethereum-code` is an AI-native CLI framework that takes a founder from raw idea to deployed Ethereum dApp in hours, not weeks. It's a single TypeScript CLI (`eth`) that orchestrates a crew of Claude-powered sub-agents through the five phases every founder hits on the way from a napkin sketch to a deployed, audited, funded product on Ethereum or one of its L2s.
 
 The wedge is **grounding**. Every agent invocation loads the relevant ethskills markdown — **bundled locally in `./skills/`, never fetched at runtime** — into context *before* it writes a line of code. No hallucinated contract addresses. No stale gas costs. No generic "deploy on mainnet" advice when the use case obviously belongs on Base. What ships in the repo is what every agent sees.
 
@@ -253,6 +255,8 @@ ethereum-code/
 ├── SKILL.md                    self-describing for other AI agents
 ├── docs/
 │   └── cli.svg                 terminal screenshot for the README
+├── public/
+│   └── logo.png                project logo
 ├── skills/                     bundled ethskills snapshot (31 SKILL.md files, MIT)
 │   ├── SKILL_ROUTER.md         routing table for self-correcting skill switches
 │   ├── idea/                   why · concepts · l2s · eth-beginner · validate-idea
@@ -262,7 +266,8 @@ ethereum-code/
 │   │                           indexing · noir · protocol · debug-contract ·
 │   │                           design-taste · frontend-design-guidelines ·
 │   │                           number-formatting · page-load-animations ·
-│   │                           roast-my-product
+│   │                           roast-my-product · 0g-storage · 0g-compute ·
+│   │                           0g-chain
 │   ├── audit/                  audit · qa
 │   ├── ship/                   ship
 │   ├── launch/                 apply-grant · create-pitch-deck · submit-to-hackathon
@@ -314,7 +319,7 @@ ethereum-code/
 │   │   ├── registry.ts         task → skill slug routing table
 │   │   └── loader.ts           walks skills/<phase>/<slug>/SKILL.md, memoised
 │   ├── chains/
-│   │   ├── registry.ts         mainnet · base · arbitrum · op · zksync
+│   │   ├── registry.ts         mainnet · base · arbitrum · op · zksync · 0g
 │   │   └── recommend.ts        heuristic use-case → chain hint
 │   ├── data/
 │   │   ├── clonable-repos.json  curated repo catalog (88 entries)
@@ -340,14 +345,23 @@ ethereum-code/
 │       ├── output.ts           --agent flag support + emit() pattern
 │       └── update-check.ts     version nudge on command completion
 └── templates/
-    └── defi-vault/             reference template (see below)
+    ├── defi-vault/             reference template (see below)
+    │   ├── foundry.toml
+    │   ├── remappings.txt
+    │   ├── src/StableVault.sol
+    │   ├── test/StableVault.t.sol
+    │   ├── script/Deploy.s.sol
+    │   ├── frontend/app/page.tsx
+    │   ├── frontend/README.md
+    │   └── README.md
+    └── 0g-agent/               autonomous agent with 0G Storage KV memory
         ├── foundry.toml
         ├── remappings.txt
-        ├── src/StableVault.sol
-        ├── test/StableVault.t.sol
+        ├── src/Agent.sol
+        ├── src/Memory.sol
+        ├── test/Agent.t.sol
+        ├── test/Agent.fuzz.t.sol
         ├── script/Deploy.s.sol
-        ├── frontend/app/page.tsx
-        ├── frontend/README.md
         └── README.md
 ```
 
@@ -441,7 +455,7 @@ CHAINS.yournewchain = {
   rpcEnv: "YOURNEWCHAIN_RPC",
   rpcDefault: "https://...",
   explorer: "https://...",
-  currency: "ETH",
+  currency: "ETH" | "0G",
   superpower: "what makes this chain non-generic — one line",
   testnet: { name, chainId, rpcDefault, explorer, faucet },
 };
@@ -531,7 +545,7 @@ Disable: `ETH_TELEMETRY=0 eth doctor` or `eth telemetry disable`. Clear: `eth te
 
 ## credits
 
-Inspired by [solana.new](https://www.solana.new).
+Inspired by the approach pioneered by [solana.new](https://www.solana.new).
 Grounded on a bundled snapshot of [ethskills](https://github.com/ethskills/ethskills) (MIT) — see `skills/README.md`.
 Agent runtime built on [Claude](https://www.anthropic.com) (Opus 4.6 + Sonnet).
 
