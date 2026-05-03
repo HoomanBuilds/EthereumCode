@@ -35,11 +35,14 @@ export async function runBuilder(input: {
   // Step 1: copy the template skeleton to ./<project>.
   const copy = await copyTemplate(input.plan.template, { chain: input.chain });
 
-  // Step 1b: install forge dependencies (lib/forge-std, lib/openzeppelin-contracts).
+  // Step 1b: init git and install forge dependencies (lib/ not shipped in npm package).
   const forge = await which("forge");
-  if (forge.ok) {
-    await run("forge", ["install", "foundry-rs/forge-std", "--no-commit"], { cwd: copy.root });
-    await run("forge", ["install", "OpenZeppelin/openzeppelin-contracts", "--no-commit"], { cwd: copy.root });
+  const git = await which("git");
+  if (forge.ok && git.ok) {
+    await run("git", ["init"], { cwd: copy.root });
+    await run("git", ["add", "-A"], { cwd: copy.root });
+    await run("forge", ["install", "foundry-rs/forge-std"], { cwd: copy.root });
+    await run("forge", ["install", "OpenZeppelin/openzeppelin-contracts"], { cwd: copy.root });
   }
 
   // Step 2: ask Claude to generate contract + test edits.
