@@ -1,5 +1,18 @@
 import * as p from "@clack/prompts";
 import { c, g } from "./theme.js";
+import { loadConfig } from "../util/env.js";
+
+let warnedApiKey = false;
+
+export async function warnApiKey(): Promise<void> {
+  if (warnedApiKey) return;
+  warnedApiKey = true;
+  const cfg = await loadConfig();
+  const hasKey = Boolean(process.env.ANTHROPIC_API_KEY ?? cfg.anthropicKey);
+  if (!hasKey) {
+    process.stdout.write(`\n  ${c.warn(g.dot)} no anthropic api key — running in stub mode. set ${c.bold("ANTHROPIC_API_KEY")} or run ${c.bold("eth doctor --init")} to configure\n\n`);
+  }
+}
 
 // Thin wrapper around @clack/prompts so every prompt in the CLI shares one voice.
 // Rules: no filler words, no emoji, no "please".

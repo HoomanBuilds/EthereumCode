@@ -1,4 +1,4 @@
-import { intro, outro, text, select, step, done } from "../ui/prompt.js";
+import { intro, outro, text, select, step, done, warnApiKey } from "../ui/prompt.js";
 import { c } from "../ui/theme.js";
 import { parseArgs } from "../util/args.js";
 import { generateIdea, firstPrinciples } from "../ideas/engine.js";
@@ -8,6 +8,7 @@ import { isAgent } from "../util/output.js";
 
 export async function cmdIdea(argv: string[]): Promise<void> {
   const args = parseArgs(argv);
+  await warnApiKey();
   intro("idea");
 
   const brief = args.brief ?? (await text("what are you exploring?", "ethereum-native agent wallets"));

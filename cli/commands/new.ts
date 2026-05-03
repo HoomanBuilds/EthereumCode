@@ -1,5 +1,5 @@
 import { banner } from "../ui/banner.js";
-import { intro, outro, text, select, note } from "../ui/prompt.js";
+import { intro, outro, text, select, note, warnApiKey } from "../ui/prompt.js";
 import { c } from "../ui/theme.js";
 import { cmdIdea } from "./idea.js";
 import { cmdBuild } from "./build.js";
@@ -7,8 +7,8 @@ import { cmdAudit } from "./audit.js";
 import { cmdShip } from "./ship.js";
 import { cmdRaise } from "./raise.js";
 
-// The one-prompt entry. "What are you building?" → route.
 export async function cmdNew(_argv: string[]): Promise<void> {
+  await warnApiKey();
   console.log(banner());
   console.log("");
   intro("what are you building?");

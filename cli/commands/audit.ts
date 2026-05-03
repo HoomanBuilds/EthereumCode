@@ -1,4 +1,4 @@
-import { intro, outro, step, done, fail } from "../ui/prompt.js";
+import { intro, outro, step, done, fail, warnApiKey } from "../ui/prompt.js";
 import { c } from "../ui/theme.js";
 import { parseArgs } from "../util/args.js";
 import { runAuditor } from "../agents/auditor.js";
@@ -9,6 +9,7 @@ import { which } from "../util/exec.js";
 
 export async function cmdAudit(argv: string[]): Promise<void> {
   const _args = parseArgs(argv);
+  await warnApiKey();
   intro("audit");
 
   const ctx = await readContext();

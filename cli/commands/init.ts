@@ -2,7 +2,7 @@ import { cp, mkdir, readdir, stat } from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { intro, outro } from "../ui/prompt.js";
+import { intro, outro, warnApiKey } from "../ui/prompt.js";
 import { c, g } from "../ui/theme.js";
 import { parseArgs } from "../util/args.js";
 
@@ -83,6 +83,7 @@ async function installInto(targets: string[], skills: Skill[], force: boolean): 
 }
 
 export async function cmdInit(argv: string[]): Promise<void> {
+  await warnApiKey();
   const args = parseArgs(argv);
   const force = args.force === true;
   const agent = args.agent === true;

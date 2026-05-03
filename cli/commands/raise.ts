@@ -1,4 +1,4 @@
-import { intro, outro, step, done } from "../ui/prompt.js";
+import { intro, outro, step, done, warnApiKey } from "../ui/prompt.js";
 import { c } from "../ui/theme.js";
 import { parseArgs } from "../util/args.js";
 import { runRaise } from "../agents/raise.js";
@@ -8,6 +8,7 @@ import { isAgent } from "../util/output.js";
 
 export async function cmdRaise(argv: string[]): Promise<void> {
   const args = parseArgs(argv);
+  await warnApiKey();
   intro("raise");
 
   const ctx = await readContext();

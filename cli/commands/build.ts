@@ -1,4 +1,4 @@
-import { intro, outro, select, text, step, done } from "../ui/prompt.js";
+import { intro, outro, select, text, step, done, warnApiKey } from "../ui/prompt.js";
 import { c } from "../ui/theme.js";
 import { Lanes } from "../ui/stream.js";
 import { parseArgs } from "../util/args.js";
@@ -11,6 +11,7 @@ import { isAgent } from "../util/output.js";
 
 export async function cmdBuild(argv: string[]): Promise<void> {
   const args = parseArgs(argv);
+  await warnApiKey();
   intro("build");
 
   const ctx = await readContext();

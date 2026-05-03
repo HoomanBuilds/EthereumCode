@@ -1,4 +1,4 @@
-import { intro, outro, select, step, done, confirm, text } from "../ui/prompt.js";
+import { intro, outro, select, step, done, confirm, text, warnApiKey } from "../ui/prompt.js";
 import { c } from "../ui/theme.js";
 import { parseArgs } from "../util/args.js";
 import { runReviewer } from "../agents/reviewer.js";
@@ -16,6 +16,7 @@ import { findProjectRoot } from "../deploy/deploy.js";
 
 export async function cmdShip(argv: string[]): Promise<void> {
   const args = parseArgs(argv);
+  await warnApiKey();
   intro("ship");
 
   const ctx = await readContext();
