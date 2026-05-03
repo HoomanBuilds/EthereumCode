@@ -1,4 +1,5 @@
 import { invoke } from "./runtime.js";
+import { run, which } from "../util/exec.js";
 import type { ChainId } from "../chains/registry.js";
 import type { Plan } from "./architect.js";
 import { writeProjectFile } from "../util/fs.js";
@@ -33,6 +34,13 @@ export async function runBuilder(input: {
 }): Promise<BuildOutput> {
   // Step 1: copy the template skeleton to ./<project>.
   const copy = await copyTemplate(input.plan.template, { chain: input.chain });
+
+  // Step 1b: install forge dependencies (lib/forge-std, lib/openzeppelin-contracts).
+  const forge = await which("forge");
+  if (forge.ok) {
+    await run("forge", ["install", "foundry-rs/forge-std", "--no-commit"], { cwd: copy.root });
+    await run("forge", ["install", "OpenZeppelin/openzeppelin-contracts", "--no-commit"], { cwd: copy.root });
+  }
 
   // Step 2: ask Claude to generate contract + test edits.
   const res = await invoke({
