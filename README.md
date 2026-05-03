@@ -203,7 +203,7 @@ claude "/find-next-crypto-idea What should I build on Ethereum?"
 ### local development (if you're hacking on the framework itself)
 
 ```bash
-git clone https://github.com/HoomanBuilds/EthereumCode.git
+git clone https://github.com/HoomanBuilds/ethereum-code.git
 cd ethereum-code
 npm install
 npm run build            # tsup -> dist/index.js
@@ -410,7 +410,7 @@ forge test
 ### day-one workflow
 
 ```bash
-git clone https://github.com/HoomanBuilds/EthereumCode.git
+git clone https://github.com/HoomanBuilds/ethereum-code.git
 cd ethereum-code
 npm install
 npx tsc --noEmit         # typecheck
