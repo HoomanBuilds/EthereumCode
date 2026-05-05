@@ -1,6 +1,6 @@
 {
   "name": "ethereum-code",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Idea → Build → Ship → Audit → Raise. An AI-native Ethereum framework for founders obsessed with taste.",
   "license": "MIT",
   "type": "module",
