@@ -6,9 +6,6 @@
 
 An AI-native CLI framework that takes a founder from raw idea to deployed Ethereum dApp in hours, not weeks. Chain-aware by default. Grounded in a bundled snapshot of [ethskills](https://github.com/ethskills/ethskills) — no runtime URL fetches, no hallucinated addresses. Opinionated so you don't have to be.
 
-<!-- <p align="center">
-  <img src="./docs/cli.svg" alt="ethereum-code CLI" width="820"/>
-</p> -->
 
 ```bash
 curl -fsSL https://ethereum-code.vercel.app/setup.sh | bash
