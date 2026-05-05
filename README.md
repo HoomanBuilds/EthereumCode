@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/logo.png" alt="ethereum-code logo" width="120"/>
+  <img src="https://raw.githubusercontent.com/HoomanBuilds/ethereum-code/main/public/logo.png" alt="ethereum-code logo" width="120"/>
 </p>
 <h1 align="center">ethereum-code</h1>
 <p align="center"><strong>idea → build → ship → audit → raise</strong></p>
